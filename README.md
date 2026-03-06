@@ -1,56 +1,72 @@
-# axon011.github.io
-portfolio for resume
-# Hello, I'm Aravind Pradeep 👋
+<div align="center">
 
-### AI Master's Student | Computer Vision & Edge AI
+# Hey, I'm Aravind Pradeep
 
-Highly motivated AI Master's student with a strong foundation in Computer Vision and a dedicated interest in applying Generative AI and efficient deep learning to solve perception and scene understanding challenges in automated systems and IoT. Profound experience in building, containerizing (Docker, LXC), and deploying deep learning models (PyTorch, TensorFlow) from high-level research to resource-constrained edge devices.
+### Junior AI Engineer | Agentic Systems & RAG
 
-- 📧 **Email:** [aravindpradeep001@gmail.com](mailto:aravindpradeep001@gmail.com)
-- 🔗 **LinkedIn:** [linkedin.com/in/aravind-pradeepmadathinal](https://linkedin.com/in/aravind-pradeepmadathinal)
-- 📍 **Location:** Cottbus, Germany
+[![Portfolio](https://img.shields.io/badge/Portfolio-axon011.github.io-0D47A1?style=for-the-badge&logo=github&logoColor=white)](https://axon011.github.io)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/aravind-pradeepmadathinal)
+[![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:aravindpradeep001@gmail.com)
 
 ---
 
-### 🛠️ My Tech Stack
+Building **agentic systems, multi-agent pipelines, and production RAG architectures**.
 
-| AI / Machine Learning           | Frameworks & Libraries            | Programming & DevOps     | IoT & Networking   |
-| ------------------------------- | --------------------------------- | ------------------------ | ------------------ |
-| `Computer Vision`, `Deep Learning` | `PyTorch`, `Hugging Face`     | `Python`, `Go (Golang)`  | `MQTT`             |
-| `Explainable AI (XAI)`          | `TensorFlow`, `Keras`, `Scikit-learn` | `Docker`, `LXC Containers` | `Network Protocols`|
-| `Transformer Architectures`     | `OpenCV`, `dlib`, `Pandas`, `NumPy` | `Kubernetes`, `Git`      |                    |
-| `Model Evaluation & Error Analysis` |                                   | `Embedded Linux`, `C/C++` |                    |
+M.Sc. AI @ BTU Cottbus | Working Student @ Perinet GmbH
 
+</div>
 
 ---
 
-### 🚀 Featured Projects
+### What I'm Working On
 
-| Project Name                                     | Description                                                                                                                                                 | Key Technologies Used                                               |
-| ------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------- |
-| **Embedded AI Chatbot** <br/> [🔗 View on GitHub](#) | Designed a lightweight chatbot optimized for minimal CPU/memory on an embedded Linux device. Developed the backend API in Go and used MQTT for real-time communication. | `Go (Golang)`, `LXC`, `MQTT`, `Embedded Linux`, `AI` |
-| **Analysis of Models for Facial Emotion Recognition** <br/> [🔗 View on GitHub](#) | Implemented a hybrid model (CNN/EfficientNetB0) and performed an **in-depth error analysis** by examining misclassifications to provide structured recommendations for architectural improvements. | `Python`, `TensorFlow`, `Keras`, `Computer Vision`, `Error Analysis`    |
-| **Benchmarking Transformer Models for Q&A** <br/> [🔗 View on GitHub](#) | Implemented and benchmarked several **transformer-based language models** (e.g., Gemma, Phi-2) for a RAG pipeline, with a profound literature review to select SOTA models and techniques. | `Python`, `PyTorch`, `Hugging Face Transformers`, `RAG` |
-
----
-
-### 💼 Professional Experience
-
-- **System Programmer (AI Integration)** @ *Perinet GmbH* (June 2024 - Present)
-  - Develop, containerize (Docker, LXC), and deploy scalable AI/ML applications and services, specializing in IoT environments.
-  - Utilize **Go (Golang)** to build and maintain efficient backend APIs for AI service integration.
-  - Implement and manage real-time data pipelines for IoT devices using **MQTT** and other networking protocols.
-  - Research and integrate lightweight AI models for deployment on resource-constrained edge devices.
-
-- **Software Engineer Trainee** @ *Cognizant Technology Solutions* (Oct 2021 - Aug 2022)
-  - Developed and maintained enterprise software solutions according to project requirements.
+- Designing **LangGraph multi-agent pipelines** with structured output and retry logic
+- Building **production RAG systems** with hybrid retrieval, RAGAs evaluation, and MLflow tracking
+- Shipping **LLMOps observability** dashboards with Langfuse, React/TypeScript, and AWS
+- Researching **Vision Transformer optimization** on edge devices (M.Sc. thesis)
 
 ---
 
-### 🎓 Education
+### Tech Stack
 
-- **M.S. in Artificial Intelligence**
-  - *Brandenburg University of Technology, Cottbus, DE* (Oct 2023 – Est. Dec 2025)
+```
+AI / Agents     LangGraph  CrewAI  LangChain  RAG  ReAct  Prompt Engineering
+LLMOps          Langfuse  MLflow  RAGAs  A/B Evaluation
+Python & ML     PyTorch  Hugging Face  OpenAI API  Anthropic API  scikit-learn
+Backend         FastAPI  Golang  REST  MQTT  SSE Streaming  Pydantic
+Vector DBs      Qdrant  ChromaDB  pgvector  Hybrid Retrieval
+Cloud / DevOps  Docker  Kubernetes  GitHub Actions  Azure  AWS  Linux
+Frontend        React  TypeScript  JavaScript  HTML/CSS
+Data            PostgreSQL  MySQL  SQL  Vector Databases
+```
 
-- **Bachelor's in Computer Application**
-  - *BVM Holy Cross College, Kottayam, IN* (Jul 2018 – Mar 2021)
+---
+
+### Featured Projects
+
+| Project | Stack | Description |
+|---------|-------|-------------|
+| **Multi-Agent Research Pipeline** | LangGraph, CrewAI, FastAPI, Docker | 3-agent system (Planner, Researcher, Writer) with structured output and CI/CD |
+| **Production RAG + Eval Harness** | FastAPI, Qdrant, RAGAs, MLflow | Hybrid retrieval RAG API with benchmarking and experiment tracking |
+| **LLMOps Observability Dashboard** | Langfuse, React/TS, PostgreSQL, AWS | Auto-logging middleware with real-time cost/latency/feedback dashboard |
+| **GenAI Study Assistant** | FastAPI, React, GPT-4o, Azure | Live app: lecture notes to summaries, flashcards, quizzes via SSE streaming |
+| **Commercial RAG Assistant** | LangChain, Go, MQTT | Production RAG over company docs with agentic reasoning at Perinet |
+| **ViT Edge Optimization** | PyTorch, ONNX, ARM | M.Sc. thesis: pruning, quantization, and edge benchmarking |
+
+---
+
+<div align="center">
+
+### Visit my portfolio for the full interactive experience
+
+[![axon011.github.io](https://img.shields.io/badge/axon011.github.io-Visit_Now-38bdf8?style=for-the-badge&logo=googlechrome&logoColor=white)](https://axon011.github.io)
+
+---
+
+![GitHub Stats](https://github-readme-stats.vercel.app/api?username=axon011&show_icons=true&theme=tokyonight&hide_border=true&bg_color=0f172a&title_color=38bdf8&icon_color=38bdf8&text_color=94a3b8)
+
+![Top Languages](https://github-readme-stats.vercel.app/api/top-langs/?username=axon011&layout=compact&theme=tokyonight&hide_border=true&bg_color=0f172a&title_color=38bdf8&text_color=94a3b8)
+
+![GitHub Streak](https://github-readme-streak-stats.herokuapp.com?user=axon011&theme=tokyonight&hide_border=true&background=0f172a&ring=38bdf8&fire=38bdf8&currStreakLabel=38bdf8)
+
+</div>
