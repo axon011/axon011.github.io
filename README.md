@@ -4,7 +4,7 @@
 
 ### Junior AI Engineer | Agentic Systems & RAG
 
-[![Portfolio](https://img.shields.io/badge/Portfolio-axon011.github.io-0D47A1?style=for-the-badge&logo=github&logoColor=white)](https://axon011.github.io)
+[![Portfolio](https://img.shields.io/badge/Portfolio-aravindpradee.me-0D47A1?style=for-the-badge&logo=github&logoColor=white)](https://aravindpradee.me)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Connect-0077B5?style=for-the-badge&logo=linkedin&logoColor=white)](https://linkedin.com/in/aravind-pradeepmadathinal)
 [![Email](https://img.shields.io/badge/Email-Contact-EA4335?style=for-the-badge&logo=gmail&logoColor=white)](mailto:aravindpradeep001@gmail.com)
 
@@ -59,7 +59,7 @@ Data            PostgreSQL  MySQL  SQL  Vector Databases
 
 ### Visit my portfolio for the full interactive experience
 
-[![axon011.github.io](https://img.shields.io/badge/axon011.github.io-Visit_Now-38bdf8?style=for-the-badge&logo=googlechrome&logoColor=white)](https://axon011.github.io)
+[![aravindpradee.me](https://img.shields.io/badge/aravindpradee.me-Visit_Now-38bdf8?style=for-the-badge&logo=googlechrome&logoColor=white)](https://aravindpradee.me)
 
 ---
 
