@@ -393,6 +393,9 @@ body {
     color: var(--text-muted);
     opacity: 0.5;
 }
+.terminal-body {
+    cursor: text;
+}
 .terminal-line {
     margin-bottom: 4px;
 }
