@@ -392,7 +392,7 @@ document.addEventListener('DOMContentLoaded', () => {
         e.preventDefault();
         const cmd = terminalInput.value.trim().toLowerCase();
         terminalInput.value = '';
-        terminalInput.focus();
+        terminalInput.focus({ preventScroll: true });
         if (!cmd) return;
 
         addTerminalLine(cmd, true);
