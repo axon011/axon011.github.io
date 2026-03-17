@@ -405,6 +405,22 @@ document.addEventListener('DOMContentLoaded', () => {
     // GitHub API Integration
     // ==========================================
 
+    // GitHub language color map
+    const LANG_COLORS = {
+        Python: '#3572A5',
+        JavaScript: '#f1e05a',
+        TypeScript: '#2b7489',
+        Go: '#00ADD8',
+        Rust: '#dea584',
+        HTML: '#e34c26',
+        CSS: '#563d7c',
+        Shell: '#89e051',
+        'Jupyter Notebook': '#DA5B0B',
+        C: '#555555',
+        'C++': '#f34b7d',
+        Java: '#b07219',
+    };
+
     // AI/ML tech term highlighting
     const AI_TERMS = [
         'Agentic AI', 'Multi-Agent', 'LangGraph', 'LangChain', 'CrewAI',
@@ -474,6 +490,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     async function fetchGitHubData() {
         const projectsGrid = document.getElementById('projects-grid');
+        const langFilters = document.getElementById('lang-filters');
+        const searchInput = document.getElementById('projects-search');
+        const noResults = document.getElementById('no-results');
         const TOP_N = 6;
 
         // Show shimmer skeletons immediately while fetching
@@ -493,7 +512,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const user = await userRes.json();
             const repos = await reposRes.json();
 
-            // Stats (unchanged)
+            // Stats
             const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
             const totalForks = repos.reduce((sum, r) => sum + (r.forks_count || 0), 0);
             animateCounter('stat-repos', user.public_repos || repos.length);
@@ -507,13 +526,22 @@ document.addEventListener('DOMContentLoaded', () => {
                 .sort((a, b) => (b.stargazers_count + b.forks_count) - (a.stargazers_count + a.forks_count))
                 .slice(0, TOP_N);
 
-            // Fetch all READMEs in parallel (raw.githubusercontent.com is not API rate-limited)
+            // Fetch all READMEs in parallel
             const readmes = await Promise.all(topRepos.map(r => fetchReadme(r.name)));
 
+            // Build language filter buttons
+            const langs = ['All', ...new Set(topRepos.map(r => r.language).filter(Boolean))];
+            langFilters.innerHTML = langs.map(lang => {
+                const dot = lang !== 'All'
+                    ? `<span class="lang-dot" style="background:${LANG_COLORS[lang] || 'var(--accent-color)'}"></span>`
+                    : '';
+                return `<button class="filter-btn${lang === 'All' ? ' active' : ''}" data-lang="${lang}">${dot}${lang}</button>`;
+            }).join('');
+
+            // Render cards
             projectsGrid.innerHTML = topRepos.map((repo, i) => {
                 const readmeDesc = extractReadmeDescription(readmes[i]);
                 const rawDesc = readmeDesc || repo.description || 'No description available.';
-                // HTML-escape before injecting highlighted spans (XSS safety)
                 const escaped = rawDesc.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 const descHtml = highlightTechTerms(escaped);
 
@@ -529,6 +557,12 @@ document.addEventListener('DOMContentLoaded', () => {
                            ${repo.forks_count}
                        </span>` : '';
 
+                const langColor = LANG_COLORS[repo.language] || 'var(--accent-color)';
+                const langHtml = repo.language
+                    ? `<span class="flex items-center gap-1.5 text-xs px-2 py-1 rounded" style="background: var(--accent-bg); color: var(--accent-color);">
+                           <span class="lang-dot" style="background:${langColor}"></span>${repo.language}
+                       </span>` : '';
+
                 const topicsHtml = repo.topics
                     ? repo.topics.slice(0, 3).map(t =>
                         `<span class="text-xs px-2 py-1 rounded" style="background: var(--accent-bg); color: var(--accent-color);">${t}</span>`
@@ -536,25 +570,63 @@ document.addEventListener('DOMContentLoaded', () => {
                     : '';
 
                 return `
-                    <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
-                       class="project-card glassmorphism rounded-lg p-6 block">
-                        <div class="flex items-start justify-between mb-3">
-                            <svg class="w-7 h-7" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                            </svg>
-                            <div class="flex items-center gap-3 text-xs" style="color: var(--text-muted);">
-                                ${starsHtml}${forksHtml}
+                    <div class="project-card-wrap" data-lang="${repo.language || ''}" data-name="${repo.name.toLowerCase()}" data-desc="${rawDesc.toLowerCase()}">
+                        <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
+                           class="project-card glassmorphism rounded-lg p-6 flex flex-col h-full">
+                            <div class="flex items-start justify-between mb-3">
+                                <svg class="w-7 h-7" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
+                                </svg>
+                                <div class="flex items-center gap-3 text-xs" style="color: var(--text-muted);">
+                                    ${starsHtml}${forksHtml}
+                                </div>
                             </div>
-                        </div>
-                        <h3 class="text-lg font-bold mb-2" style="color: var(--text-color);">${repo.name}</h3>
-                        <p class="text-sm mb-4" style="color: var(--text-muted);">${descHtml}</p>
-                        <div class="flex flex-wrap gap-2">
-                            ${repo.language ? `<span class="text-xs px-2 py-1 rounded" style="background: var(--accent-bg); color: var(--accent-color);">${repo.language}</span>` : ''}
-                            ${topicsHtml}
-                        </div>
-                    </a>
+                            <h3 class="text-lg font-bold mb-2" style="color: var(--text-color);">${repo.name}</h3>
+                            <p class="text-sm mb-4 flex-1" style="color: var(--text-muted);">${descHtml}</p>
+                            <div class="flex flex-wrap gap-2">
+                                ${langHtml}${topicsHtml}
+                            </div>
+                            <span class="card-action">
+                                View on GitHub
+                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+                            </span>
+                        </a>
+                    </div>
                 `;
             }).join('');
+
+            // --- Filter & search logic ---
+            let activeFilter = 'All';
+
+            function applyFilters() {
+                const query = searchInput.value.trim().toLowerCase();
+                let visible = 0;
+                document.querySelectorAll('.project-card-wrap').forEach(wrap => {
+                    const matchesLang = activeFilter === 'All' || wrap.dataset.lang === activeFilter;
+                    const matchesSearch = !query ||
+                        wrap.dataset.name.includes(query) ||
+                        wrap.dataset.desc.includes(query);
+                    if (matchesLang && matchesSearch) {
+                        wrap.classList.remove('hidden-card');
+                        visible++;
+                    } else {
+                        wrap.classList.add('hidden-card');
+                    }
+                });
+                noResults.classList.toggle('hidden', visible > 0);
+            }
+
+            langFilters.addEventListener('click', e => {
+                const btn = e.target.closest('.filter-btn');
+                if (!btn) return;
+                activeFilter = btn.dataset.lang;
+                langFilters.querySelectorAll('.filter-btn').forEach(b =>
+                    b.classList.toggle('active', b === btn)
+                );
+                applyFilters();
+            });
+
+            searchInput.addEventListener('input', applyFilters);
 
         } catch (err) {
             console.warn('GitHub API fetch failed:', err);
