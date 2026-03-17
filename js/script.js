@@ -387,23 +387,23 @@ document.addEventListener('DOMContentLoaded', () => {
         terminalInput.focus();
     });
 
-    terminalInput.addEventListener('keydown', (e) => {
-        if (e.key === 'Enter') {
-            e.preventDefault();
-            const cmd = terminalInput.value.trim().toLowerCase();
-            terminalInput.value = '';
-            if (!cmd) return;
+    // Use form submit so Android soft-keyboard Enter works reliably
+    document.getElementById('terminal-form').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const cmd = terminalInput.value.trim().toLowerCase();
+        terminalInput.value = '';
+        terminalInput.focus({ preventScroll: true });
+        if (!cmd) return;
 
-            addTerminalLine(cmd, true);
+        addTerminalLine(cmd, true);
 
-            if (commands[cmd]) {
-                const result = commands[cmd]();
-                if (result !== null && result !== undefined) {
-                    addTerminalLine(result, false);
-                }
-            } else {
-                addTerminalLine(`Command not found: ${cmd}. Type <span class="terminal-prompt">help</span> for available commands.`, false);
+        if (commands[cmd]) {
+            const result = commands[cmd]();
+            if (result !== null && result !== undefined) {
+                addTerminalLine(result, false);
             }
+        } else {
+            addTerminalLine(`Command not found: ${cmd}. Type <span class="terminal-prompt">help</span> for available commands.`, false);
         }
     });
 
