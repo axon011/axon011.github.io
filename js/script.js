@@ -382,8 +382,14 @@ document.addEventListener('DOMContentLoaded', () => {
     // Auto-run intro
     addTerminalLine('Welcome! Type <span class="terminal-prompt">help</span> to see available commands.', false);
 
+    // Click anywhere in the terminal to focus the input
+    document.getElementById('terminal-body').addEventListener('click', () => {
+        terminalInput.focus();
+    });
+
     terminalInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault();
             const cmd = terminalInput.value.trim().toLowerCase();
             terminalInput.value = '';
             if (!cmd) return;
