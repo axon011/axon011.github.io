@@ -165,8 +165,14 @@
         <!-- Projects -->
         <section id="projects" class="mb-24 scroll-target">
             <h2 class="section-heading mb-10">Projects</h2>
+            <div class="mb-6 flex flex-col gap-4">
+                <input id="projects-search" type="text" placeholder="Search projects..."
+                       class="form-input rounded-lg px-4 py-2.5 text-sm w-full md:w-80">
+                <div id="lang-filters" class="flex flex-wrap gap-2"></div>
+            </div>
             <!-- Dynamically populated by script.js via GitHub API + README fetch -->
             <div id="projects-grid" class="grid md:grid-cols-2 gap-6"></div>
+            <p id="no-results" class="text-center py-8 hidden" style="color: var(--text-muted);">No projects match your search.</p>
         </section>
 
         <!-- Skills with animated bars -->
