@@ -389,6 +389,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     terminalInput.addEventListener('keydown', (e) => {
         if (e.key === 'Enter') {
+            e.preventDefault();
             const cmd = terminalInput.value.trim().toLowerCase();
             terminalInput.value = '';
             if (!cmd) return;
