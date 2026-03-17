@@ -124,10 +124,19 @@
                 </div>
                 <div id="terminal-body" class="terminal-body p-4 md:p-6 font-mono text-sm leading-relaxed" style="min-height: 280px;">
                     <div id="terminal-output"></div>
-                    <div class="flex items-center mt-2">
+                    <form id="terminal-form" class="flex items-center mt-2" autocomplete="off">
                         <span style="color: var(--accent-color);">$&nbsp;</span>
-                        <input id="terminal-input" type="text" class="terminal-input flex-1" placeholder="Type 'help' for commands..." autocomplete="off" spellcheck="false">
-                    </div>
+                        <input id="terminal-input" type="text" class="terminal-input flex-1"
+                               placeholder="Type 'help' for commands..."
+                               autocomplete="off" spellcheck="false"
+                               autocapitalize="none" autocorrect="off"
+                               enterkeyhint="send">
+                        <button type="submit" class="terminal-send-btn" aria-label="Run command">
+                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </form>
                 </div>
             </div>
         </section>
