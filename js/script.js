@@ -110,10 +110,6 @@ document.addEventListener('DOMContentLoaded', () => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-                // Animate skill bars within this section
-                entry.target.querySelectorAll('.skill-bar').forEach(bar => {
-                    bar.style.width = bar.dataset.width + '%';
-                });
             }
         });
     }, { threshold: 0.1 });
@@ -138,19 +134,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }, { threshold: 0.3 });
 
     sections.forEach(s => navObserver.observe(s));
-
-    // ==========================================
-    // Cursor Glow (desktop only)
-    // ==========================================
-    const cursorGlow = document.getElementById('cursor-glow');
-    if (window.matchMedia('(pointer: fine)').matches) {
-        window.addEventListener('mousemove', (e) => {
-            requestAnimationFrame(() => {
-                cursorGlow.style.top = e.clientY + 'px';
-                cursorGlow.style.left = e.clientX + 'px';
-            });
-        });
-    }
 
     // ==========================================
     // Neural Net Background
@@ -266,148 +249,6 @@ document.addEventListener('DOMContentLoaded', () => {
     window.addEventListener('mouseout', () => { mouse.x = null; mouse.y = null; });
 
     // ==========================================
-    // Interactive Terminal
-    // ==========================================
-    const terminalInput = document.getElementById('terminal-input');
-    const terminalOutput = document.getElementById('terminal-output');
-
-    const commands = {
-        help: () => `Available commands:
-  <span class="terminal-prompt">about</span>     - Who am I
-  <span class="terminal-prompt">skills</span>    - Technical skills
-  <span class="terminal-prompt">projects</span>  - Key projects
-  <span class="terminal-prompt">contact</span>   - How to reach me
-  <span class="terminal-prompt">education</span> - Academic background
-  <span class="terminal-prompt">experience</span>- Work experience
-  <span class="terminal-prompt">resume</span>    - Download resume
-  <span class="terminal-prompt">github</span>    - Open GitHub profile
-  <span class="terminal-prompt">clear</span>     - Clear terminal`,
-
-        about: () => `<span style="color: var(--accent-color);">Aravind Pradeep</span> - Junior AI Engineer
-
-  Specializing in <strong>agentic systems, multi-agent pipelines,
-  and production RAG architectures</strong>.
-
-  M.Sc. in AI from BTU Cottbus. Currently at Perinet GmbH
-  building LLM-powered workflows for IoT products.
-
-  Stack: Python, LangChain, LangGraph, FastAPI, Docker/K8s
-  Focus: GenAI, LLMOps, Full-Stack AI Applications`,
-
-        skills: () => `<span style="color: var(--accent-color);">Technical Skills:</span>
-
-  AI/Agents:   LangGraph, CrewAI, RAG, ReAct, Prompt Eng.
-  LLMOps:      Langfuse, MLflow, RAGAs, A/B evaluation
-  Python/ML:   PyTorch, HuggingFace, OpenAI/Anthropic APIs
-  Backend:     FastAPI, Golang, REST, MQTT, SSE streaming
-  Vector DBs:  Qdrant, ChromaDB, pgvector
-  Cloud/DevOps:Docker, K8s, GitHub Actions, Azure, AWS
-  Frontend:    React, TypeScript, JavaScript
-  Data/DB:     PostgreSQL, MySQL, SQL`,
-
-        projects: () => `<span style="color: var(--accent-color);">Key Projects:</span>
-
-  1. Multi-Agent Research Pipeline
-     LangGraph + CrewAI + FastAPI + Docker
-
-  2. Production RAG System with Eval Harness
-     FastAPI + Qdrant + RAGAs + MLflow
-
-  3. LLMOps Observability Dashboard
-     Langfuse + React/TS + PostgreSQL + AWS
-
-  4. GenAI Study Assistant (Live on Azure)
-     FastAPI + React + GPT-4o + SSE
-
-  5. Content-Aware ViT on Edge (M.Sc. Thesis)
-     PyTorch + ONNX + ARM optimization`,
-
-        contact: () => `<span style="color: var(--accent-color);">Contact:</span>
-
-  Email:    aravindpradeep001@gmail.com
-  LinkedIn: linkedin.com/in/aravind-pradeepmadathinal
-  GitHub:   github.com/axon011
-  Location: Cottbus, Germany`,
-
-        education: () => `<span style="color: var(--accent-color);">Education:</span>
-
-  M.Sc. Artificial Intelligence (Research)
-  Brandenburg University of Technology, Cottbus
-  Oct 2023 - Est. Dec 2025
-
-  B.Sc. Computer Application
-  BVM Holy Cross College, India
-  Jul 2018 - Mar 2021`,
-
-        experience: () => `<span style="color: var(--accent-color);">Experience:</span>
-
-  Working Student - AI Integration & Agentic Systems
-  Perinet GmbH | Cottbus | Jun 2024 - Present
-  > RAG agents, LLM workflows, Docker/K8s, Langfuse
-
-  Software Engineer Trainee
-  Cognizant Technology Solutions | India | Oct 2021 - Aug 2022
-  > Enterprise systems, agile teams, debugging`,
-
-        resume: () => {
-            window.open('AI Product Engineer.pdf', '_blank');
-            return 'Opening resume PDF...';
-        },
-
-        github: () => {
-            window.open('https://github.com/' + GITHUB_USERNAME, '_blank');
-            return 'Opening GitHub profile...';
-        },
-
-        clear: () => {
-            terminalOutput.innerHTML = '';
-            return null;
-        }
-    };
-
-    function addTerminalLine(text, isCommand) {
-        if (text === null) return;
-        const line = document.createElement('div');
-        line.classList.add('terminal-line');
-        if (isCommand) {
-            line.innerHTML = `<span class="terminal-prompt">$ </span><span>${text}</span>`;
-        } else {
-            line.innerHTML = `<pre class="terminal-response" style="white-space:pre-wrap;margin:0;font-family:inherit;">${text}</pre>`;
-        }
-        terminalOutput.appendChild(line);
-        const body = document.getElementById('terminal-body');
-        body.scrollTop = body.scrollHeight;
-    }
-
-    // Auto-run intro
-    addTerminalLine('Welcome! Type <span class="terminal-prompt">help</span> to see available commands.', false);
-
-    // Click anywhere in the terminal to focus the input
-    document.getElementById('terminal-body').addEventListener('click', () => {
-        terminalInput.focus();
-    });
-
-    // Use form submit so Android soft-keyboard Enter works reliably
-    document.getElementById('terminal-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const cmd = terminalInput.value.trim().toLowerCase();
-        terminalInput.value = '';
-        terminalInput.focus({ preventScroll: true });
-        if (!cmd) return;
-
-        addTerminalLine(cmd, true);
-
-        if (commands[cmd]) {
-            const result = commands[cmd]();
-            if (result !== null && result !== undefined) {
-                addTerminalLine(result, false);
-            }
-        } else {
-            addTerminalLine(`Command not found: ${cmd}. Type <span class="terminal-prompt">help</span> for available commands.`, false);
-        }
-    });
-
-    // ==========================================
     // GitHub API Integration
     // ==========================================
 
@@ -497,7 +338,6 @@ document.addEventListener('DOMContentLoaded', () => {
     async function fetchGitHubData() {
         const projectsGrid = document.getElementById('projects-grid');
         const langFilters = document.getElementById('lang-filters');
-        const searchInput = document.getElementById('projects-search');
         const noResults = document.getElementById('no-results');
         const TOP_N = 6;
 
@@ -505,26 +345,14 @@ document.addEventListener('DOMContentLoaded', () => {
         renderSkeletons(projectsGrid, TOP_N);
 
         try {
-            const [userRes, reposRes] = await Promise.all([
-                fetch(`https://api.github.com/users/${GITHUB_USERNAME}`),
-                fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`)
-            ]);
+            const reposRes = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/repos?per_page=100&sort=updated`);
 
-            if (!userRes.ok || !reposRes.ok) {
+            if (!reposRes.ok) {
                 projectsGrid.innerHTML = '<p class="col-span-2 text-center" style="color: var(--text-muted);">Could not load projects.</p>';
                 return;
             }
 
-            const user = await userRes.json();
             const repos = await reposRes.json();
-
-            // Stats
-            const totalStars = repos.reduce((sum, r) => sum + (r.stargazers_count || 0), 0);
-            const totalForks = repos.reduce((sum, r) => sum + (r.forks_count || 0), 0);
-            animateCounter('stat-repos', user.public_repos || repos.length);
-            animateCounter('stat-stars', totalStars);
-            animateCounter('stat-forks', totalForks);
-            animateCounter('stat-followers', user.followers || 0);
 
             // Select top repos by popularity
             const topRepos = repos
@@ -601,18 +429,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 `;
             }).join('');
 
-            // --- Filter & search logic ---
+            // --- Filter logic ---
             let activeFilter = 'All';
 
             function applyFilters() {
-                const query = searchInput.value.trim().toLowerCase();
                 let visible = 0;
                 document.querySelectorAll('.project-card-wrap').forEach(wrap => {
                     const matchesLang = activeFilter === 'All' || wrap.dataset.lang === activeFilter;
-                    const matchesSearch = !query ||
-                        wrap.dataset.name.includes(query) ||
-                        wrap.dataset.desc.includes(query);
-                    if (matchesLang && matchesSearch) {
+                    if (matchesLang) {
                         wrap.classList.remove('hidden-card');
                         visible++;
                     } else {
@@ -632,8 +456,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 applyFilters();
             });
 
-            searchInput.addEventListener('input', applyFilters);
-
         } catch (err) {
             console.warn('GitHub API fetch failed:', err);
             projectsGrid.innerHTML = `<p class="col-span-2 text-center" style="color: var(--text-muted);">Could not load projects. <a href="https://github.com/${GITHUB_USERNAME}" style="color: var(--accent-color);">View on GitHub →</a></p>`;
@@ -649,22 +471,6 @@ document.addEventListener('DOMContentLoaded', () => {
         img.src = `https://ghchart.rshah.org/${isDark ? '38bdf8' : '0D47A1'}/${GITHUB_USERNAME}`;
         img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
         img.onerror = () => { fallback.textContent = 'Could not load contribution graph.'; };
-    }
-
-    function animateCounter(id, target) {
-        const el = document.getElementById(id);
-        if (!el) return;
-        const duration = 1500;
-        const start = performance.now();
-
-        function step(now) {
-            const elapsed = now - start;
-            const progress = Math.min(elapsed / duration, 1);
-            const eased = 1 - Math.pow(1 - progress, 3);
-            el.textContent = Math.floor(eased * target);
-            if (progress < 1) requestAnimationFrame(step);
-        }
-        requestAnimationFrame(step);
     }
 
     fetchGitHubData();
