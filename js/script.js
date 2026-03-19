@@ -467,10 +467,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const img = document.getElementById('github-graph');
         const fallback = document.getElementById('github-graph-fallback');
         const isDark = htmlEl.getAttribute('data-theme') === 'dark';
-        const theme = isDark ? 'github-dark' : 'github-light';
-        img.src = `https://ghchart.rshah.org/${isDark ? '38bdf8' : '0D47A1'}/${GITHUB_USERNAME}`;
+        const color = isDark ? '38bdf8' : '0D47A1';
+        img.style.display = 'none';
+        fallback.style.display = 'block';
+        fallback.textContent = 'Loading contribution graph...';
+        img.src = `https://ghchart.rshah.org/${color}/${GITHUB_USERNAME}`;
         img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
-        img.onerror = () => { fallback.textContent = 'Could not load contribution graph.'; };
+        img.onerror = () => { fallback.textContent = 'Could not load contribution graph. View on GitHub instead.'; };
     }
 
     fetchGitHubData();
@@ -480,4 +483,17 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.addEventListener('click', () => {
         setTimeout(loadContributionGraph, 100);
     });
+
+    // Scroll down arrow
+    const scrollDownBtn = document.getElementById('scroll-down');
+    if (scrollDownBtn) {
+        const scrollDownHandler = () => {
+            const next = document.getElementById('about') || document.querySelector('.scroll-target:not(#hero .scroll-target)');
+            if (next) next.scrollIntoView({ behavior: 'smooth' });
+        };
+        scrollDownBtn.addEventListener('click', scrollDownHandler);
+        scrollDownBtn.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); scrollDownHandler(); }
+        });
+    }
 });
