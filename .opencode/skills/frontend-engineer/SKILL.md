@@ -53,69 +53,52 @@ You are a senior frontend engineer working on a live portfolio website hosted at
 - Always support both light and dark themes
 - Always consider mobile responsiveness (test at 375px, 768px, 1024px)
 
-### 3. Commit and Push
-- Commit changes with a clear message
-- Push to `origin main`
-- Wait for GitHub Pages deployment to complete
+### 3. Test Locally FIRST (REQUIRED)
 
-### 4. Test on Live Site with Chrome DevTools MCP (REQUIRED)
+**ALWAYS test locally before committing or pushing.** Do NOT push untested changes.
 
-**All testing happens AFTER deployment on the live site.** Do NOT test locally before deploying — test the real deployed version at https://aravindpradee.me.
+To test locally, start a local HTTP server:
+```bash
+npx serve .
+# or
+python -m http.server 8000
+# or
+php -S localhost:8000
+```
 
-Use these Chrome DevTools MCP tools:
+Then use Chrome DevTools MCP tools to test:
 
 | Tool | Purpose |
 |------|---------|
-| `chrome-devtools_navigate_page` | Open the live site |
+| `chrome-devtools_navigate_page` | Open the local site (http://localhost:8000) |
 | `chrome-devtools_evaluate_script` | Enable scroll animations, toggle themes |
 | `chrome-devtools_take_screenshot` | Capture screenshots (fullPage: true) |
 | `chrome-devtools_resize_page` | Test responsive breakpoints |
 | `chrome-devtools_click` | Test buttons, nav items |
 | `chrome-devtools_list_console_messages` | Check for JS errors |
 | `chrome-devtools_list_network_requests` | Check for failed requests |
-| `chrome-devtools_take_snapshot` | Get accessibility tree |
-| `chrome-devtools_lighthouse_audit` | Run performance/accessibility/SEO audits |
 
-#### Testing Steps
+#### Local Testing Steps
 
-1. **Navigate to site**
-   - Use: `chrome-devtools_navigate_page` with URL `https://aravindpradee.me`
-
-2. **Enable scroll animations**
-   - Use: `chrome-devtools_evaluate_script`
-   - Script: `document.querySelectorAll('.scroll-target').forEach(el => el.classList.add('visible'))`
-
-3. **Take screenshots at all viewports**
-   - Desktop: `chrome-devtools_resize_page` (1440, 900) → `chrome-devtools_take_screenshot` (fullPage: true)
+1. **Start local server** in the workspace directory
+2. **Navigate to local site** — `chrome-devtools_navigate_page` with URL `http://localhost:8000`
+3. **Enable scroll animations** — `document.querySelectorAll('.scroll-target').forEach(el => el.classList.add('visible'))`
+4. **Test all viewports**
+   - Desktop: `chrome-devtools_resize_page` (1440, 900) → screenshot
    - Tablet: `chrome-devtools_resize_page` (768, 1024) → screenshot
    - Mobile: `chrome-devtools_resize_page` (375, 812) → screenshot
+5. **Test themes** — toggle dark/light mode, screenshot both
+6. **Check for errors** — `chrome-devtools_list_console_messages` and `chrome-devtools_list_network_requests`
+7. **Fix issues** if found, then retest locally
+8. **ONLY THEN** commit and push
 
-4. **Test themes**
-   - Dark: `chrome-devtools_evaluate_script` with `document.documentElement.setAttribute('data-theme', 'dark')` → screenshot
-   - Light: `chrome-devtools_evaluate_script` with `document.documentElement.setAttribute('data-theme', 'light')` → screenshot
+### 4. Commit and Push (only after local testing passes)
+- Commit changes with a clear message
+- Push to `origin main`
+- Wait for GitHub Pages deployment (~1-2 minutes)
 
-5. **Check for errors**
-   - `chrome-devtools_list_console_messages` (types: ["error", "warn"])
-   - `chrome-devtools_list_network_requests` (check for 404s)
-
-## Post-Deployment Testing Checklist
-
-Run ALL of these after every deployment:
-
-1. [ ] Navigate to https://aravindpradee.me
-2. [ ] Enable scroll animations
-3. [ ] Screenshot desktop (1440x900)
-4. [ ] Screenshot tablet (768x1024)
-5. [ ] Screenshot mobile (375x812)
-6. [ ] Screenshot dark mode
-7. [ ] Screenshot light mode
-8. [ ] Check console for errors
-9. [ ] Check network for failed requests
-10. [ ] Test theme toggle
-11. [ ] Test mobile menu
-12. [ ] Test project filter pills
-13. [ ] Review screenshots for issues
-14. [ ] If issues found: fix, commit, push, repeat
+### 5. Quick Verification After Push (optional)
+Once deployment is complete, do a quick smoke test on the live site to confirm no regression.
 
 ## Section Map (index.html)
 
@@ -129,7 +112,7 @@ Run ALL of these after every deployment:
 | `#github-stats` | Contribution graph + GitHub link |
 | `#education` | Timeline with two entries |
 | `#languages` | 3 language cards with level badges |
-| `#contact` | Contact info + Formspree form |
+| `#contact` | Contact info (email, LinkedIn, location) |
 
 ## Common Patterns
 
@@ -151,9 +134,12 @@ Levels: `skill-level-expert`, `skill-level-advanced`, `skill-level-intermediate`
 
 ## Pre-Commit Checklist
 
+- [ ] **Tested locally** at localhost (NOT on live site)
 - [ ] Works in both light and dark mode
 - [ ] Responsive at 375px, 768px, and 1440px
 - [ ] All links have `target="_blank" rel="noopener noreferrer"` for external URLs
 - [ ] Scroll animations work (`.scroll-target` class present)
 - [ ] No hardcoded colors — uses CSS variables
+- [ ] No JS errors in console
+- [ ] No 404s in network requests
 - [ ] Accessible: proper `aria-label`, semantic HTML, sufficient contrast
