@@ -480,37 +480,4 @@ document.addEventListener('DOMContentLoaded', () => {
     themeToggleBtn.addEventListener('click', () => {
         setTimeout(loadContributionGraph, 100);
     });
-
-    // ==========================================
-    // Contact Form
-    // ==========================================
-    const contactForm = document.getElementById('contact-form');
-    const formStatus = document.getElementById('form-status');
-
-    contactForm.addEventListener('submit', async (e) => {
-        e.preventDefault();
-        const formData = new FormData(contactForm);
-
-        try {
-            const res = await fetch(contactForm.action, {
-                method: 'POST',
-                body: formData,
-                headers: { 'Accept': 'application/json' }
-            });
-
-            formStatus.classList.remove('hidden');
-            if (res.ok) {
-                formStatus.textContent = 'Message sent successfully!';
-                formStatus.style.color = '#10b981';
-                contactForm.reset();
-            } else {
-                formStatus.textContent = 'Failed to send. Try emailing directly.';
-                formStatus.style.color = '#ef4444';
-            }
-        } catch {
-            formStatus.classList.remove('hidden');
-            formStatus.textContent = 'Network error. Try emailing directly.';
-            formStatus.style.color = '#ef4444';
-        }
-    });
 });
