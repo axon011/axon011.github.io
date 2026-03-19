@@ -9,7 +9,6 @@
     --glass-border: rgba(0, 0, 0, 0.1);
     --timeline-color: rgba(13, 71, 161, 0.3);
     --timeline-dot-bg: #FFFFFF;
-    --terminal-bg: rgba(245, 245, 245, 0.9);
     --input-bg: rgba(255, 255, 255, 0.8);
 }
 
@@ -24,7 +23,6 @@
     --glass-border: rgba(255, 255, 255, 0.1);
     --timeline-color: rgba(56, 189, 248, 0.3);
     --timeline-dot-bg: #0f172a;
-    --terminal-bg: rgba(15, 23, 42, 0.95);
     --input-bg: rgba(30, 41, 59, 0.8);
 }
 
@@ -37,14 +35,6 @@ body {
     transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Custom cursor - desktop only */
-@media (pointer: fine) {
-    body { cursor: none; }
-    #cursor-glow { display: block; }
-}
-@media (pointer: coarse) {
-    #cursor-glow { display: none; }
-}
 
 /* Scroll Progress */
 .scroll-progress-bar {
@@ -68,20 +58,6 @@ body {
     z-index: -10;
 }
 
-/* Cursor glow */
-#cursor-glow {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 400px;
-    height: 400px;
-    background: radial-gradient(circle, var(--accent-bg) 0%, rgba(0, 0, 0, 0) 60%);
-    border-radius: 50%;
-    pointer-events: none;
-    transform: translate(-50%, -50%);
-    transition: transform 0.1s ease-out;
-    z-index: 9999;
-}
 
 /* Navbar */
 .navbar {
@@ -169,18 +145,36 @@ body {
     display: inline-flex;
     align-items: center;
     padding: 0.75rem 1.75rem;
-    background: var(--accent-color);
+    background: linear-gradient(135deg, var(--accent-color), #06b6d4);
     color: white;
     font-weight: 600;
     font-size: 0.875rem;
-    border-radius: 0.5rem;
+    border-radius: 9999px;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    border: none;
+    position: relative;
+    overflow: hidden;
+}
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, #06b6d4, var(--accent-color));
+    opacity: 0;
+    transition: opacity 0.3s ease;
 }
 .btn-primary:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 25px rgba(13, 71, 161, 0.3);
+}
+.btn-primary:hover::before {
+    opacity: 1;
+}
+.btn-primary > * {
+    position: relative;
+    z-index: 1;
 }
 [data-theme="dark"] .btn-primary:hover {
     box-shadow: 0 8px 25px rgba(56, 189, 248, 0.3);
@@ -190,19 +184,24 @@ body {
     display: inline-flex;
     align-items: center;
     padding: 0.75rem 1.75rem;
-    background: transparent;
+    background: var(--glass-bg);
     color: var(--accent-color);
     font-weight: 600;
     font-size: 0.875rem;
     border: 1px solid var(--accent-border);
-    border-radius: 0.5rem;
+    border-radius: 9999px;
     transition: all 0.3s ease;
     text-transform: uppercase;
     letter-spacing: 0.05em;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
 }
 .btn-secondary:hover {
-    background: var(--accent-bg);
+    background: var(--accent-color);
+    color: white;
+    border-color: var(--accent-color);
     transform: translateY(-2px);
+    box-shadow: 0 8px 25px var(--accent-bg);
 }
 
 /* Social links */
@@ -248,27 +247,6 @@ body {
     opacity: 1;
 }
 
-/* Stat cards */
-.stat-card {
-    position: relative;
-    overflow: hidden;
-}
-.stat-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 40%;
-    height: 2px;
-    background: var(--accent-color);
-    opacity: 0;
-    transition: all 0.3s ease;
-}
-.stat-card:hover::after {
-    opacity: 1;
-    width: 80%;
-}
 
 /* Section heading */
 .section-heading {
@@ -357,68 +335,38 @@ body {
     50% { opacity: 0; }
 }
 
-/* Skill bars */
-.skill-bar-bg {
-    width: 100%;
-    height: 6px;
-    background: var(--glass-border);
-    border-radius: 3px;
-    overflow: hidden;
+/* Skill levels */
+.skill-item {
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--glass-border);
 }
-.skill-bar {
-    height: 100%;
-    width: 0%;
-    background: linear-gradient(90deg, var(--accent-color), #06b6d4);
-    border-radius: 3px;
-    transition: width 1.2s cubic-bezier(0.4, 0, 0.2, 1);
+.skill-item:last-child {
+    border-bottom: none;
+}
+.skill-level {
+    font-size: 0.7rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    white-space: nowrap;
+}
+.skill-level-expert {
+    background: var(--accent-color);
+    color: white;
+}
+.skill-level-advanced {
+    background: var(--accent-bg);
+    color: var(--accent-color);
+    border: 1px solid var(--accent-border);
+}
+.skill-level-intermediate {
+    background: var(--glass-bg);
+    color: var(--text-muted);
+    border: 1px solid var(--glass-border);
 }
 
-/* Terminal */
-.terminal-body {
-    background: var(--terminal-bg);
-    font-family: 'JetBrains Mono', monospace;
-    max-height: 350px;
-    overflow-y: auto;
-}
-.terminal-input {
-    background: transparent;
-    border: none;
-    outline: none;
-    color: var(--text-color);
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 0.875rem;
-    caret-color: var(--accent-color);
-}
-.terminal-input::placeholder {
-    color: var(--text-muted);
-    opacity: 0.5;
-}
-.terminal-body {
-    cursor: text;
-}
-.terminal-send-btn {
-    background: transparent;
-    border: none;
-    color: var(--accent-color);
-    padding: 0.25rem 0.5rem;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.2s ease;
-    flex-shrink: 0;
-}
-.terminal-send-btn:hover {
-    opacity: 1;
-}
-.terminal-line {
-    margin-bottom: 4px;
-}
-.terminal-prompt {
-    color: var(--accent-color);
-}
-.terminal-response {
-    color: var(--text-color);
-    opacity: 0.9;
-}
 
 /* Contact items */
 .contact-item {
@@ -470,15 +418,9 @@ body {
 /* Accent utility */
 .accent-color { color: var(--accent-color); }
 
-/* Counter animation */
-@keyframes countUp {
-    from { opacity: 0; transform: translateY(10px); }
-    to { opacity: 1; transform: translateY(0); }
-}
 
 /* Responsive */
 @media (max-width: 768px) {
-    #cursor-glow { display: none; }
     .section-heading { font-size: 1.25rem; }
 }
 

@@ -78,7 +78,6 @@
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body class="antialiased">
-    <div id="cursor-glow"></div>
     <canvas id="neural-net-bg"></canvas>
 
     <!-- Scroll Progress Bar -->
@@ -145,6 +144,10 @@
                 <div class="flex flex-wrap justify-center gap-4 scroll-target">
                     <a href="#projects" class="btn-primary">View Projects</a>
                     <a href="#contact" class="btn-secondary">Get in Touch</a>
+                    <a href="AI Product Engineer.pdf" download class="btn-secondary">
+                        <svg class="w-5 h-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                        Resume
+                    </a>
                     <a href="https://github.com/axon011" target="_blank" rel="noopener noreferrer" class="btn-secondary">
                         <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
                         GitHub
@@ -174,31 +177,34 @@
             </div>
         </section>
 
-        <!-- Interactive Terminal -->
+        <!-- About Me -->
         <section id="about" class="mb-24 scroll-target">
             <h2 class="section-heading mb-10">About Me</h2>
-            <div class="terminal glassmorphism rounded-lg overflow-hidden">
-                <div class="terminal-header flex items-center gap-2 px-4 py-3" style="background: var(--glass-border);">
-                    <span class="w-3 h-3 rounded-full bg-red-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-yellow-500"></span>
-                    <span class="w-3 h-3 rounded-full bg-green-500"></span>
-                    <span class="ml-4 text-sm font-mono" style="color: var(--text-muted);">aravind@portfolio ~ </span>
-                </div>
-                <div id="terminal-body" class="terminal-body p-4 md:p-6 font-mono text-sm leading-relaxed" style="min-height: 280px;">
-                    <div id="terminal-output"></div>
-                    <form id="terminal-form" class="flex items-center mt-2" autocomplete="off" novalidate>
-                        <span style="color: var(--accent-color);">$&nbsp;</span>
-                        <input id="terminal-input" type="text" class="terminal-input flex-1"
-                               placeholder="Type 'help' for commands..."
-                               autocomplete="off" spellcheck="false"
-                               autocapitalize="none" autocorrect="off"
-                               enterkeyhint="send">
-                        <button type="submit" class="terminal-send-btn" aria-label="Run command">
-                            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
-                            </svg>
-                        </button>
-                    </form>
+            <div class="glassmorphism rounded-lg p-6 md:p-8">
+                <p class="text-lg leading-relaxed mb-6" style="color: var(--text-color);">
+                    I'm an AI &amp; ML Engineer based in <strong>Cottbus, Germany</strong>, currently pursuing my M.Sc. in Artificial Intelligence at BTU Cottbus-Senftenberg.
+                    At <strong>Perinet GmbH</strong>, I design and ship <strong>agentic systems, RAG pipelines, and multi-agent workflows</strong> integrated into production IoT platforms.
+                </p>
+                <p class="text-base leading-relaxed mb-8" style="color: var(--text-muted);">
+                    My focus is on taking GenAI from prototype to production &mdash; building reliable LLM-powered applications with proper observability, evaluation, and deployment pipelines. I work across the full stack, from Python backends and vector databases to React frontends and Kubernetes clusters.
+                </p>
+                <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                    <div class="text-center p-3">
+                        <div class="text-2xl font-black" style="color: var(--accent-color);">M.Sc.</div>
+                        <div class="text-xs mt-1" style="color: var(--text-muted);">Artificial Intelligence</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-2xl font-black" style="color: var(--accent-color);">1+</div>
+                        <div class="text-xs mt-1" style="color: var(--text-muted);">Years at Perinet GmbH</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-2xl font-black" style="color: var(--accent-color);">GenAI</div>
+                        <div class="text-xs mt-1" style="color: var(--text-muted);">Agents, RAG, LLMOps</div>
+                    </div>
+                    <div class="text-center p-3">
+                        <div class="text-2xl font-black" style="color: var(--accent-color);">Full-Stack</div>
+                        <div class="text-xs mt-1" style="color: var(--text-muted);">Prototype to Production</div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -236,9 +242,7 @@
         <!-- Projects -->
         <section id="projects" class="mb-24 scroll-target">
             <h2 class="section-heading mb-10">Projects</h2>
-            <div class="mb-6 flex flex-col gap-4">
-                <input id="projects-search" type="text" placeholder="Search projects..."
-                       class="form-input rounded-lg px-4 py-2.5 text-sm w-full md:w-80">
+            <div class="mb-6">
                 <div id="lang-filters" class="flex flex-wrap gap-2"></div>
             </div>
             <!-- Dynamically populated by script.js via GitHub API + README fetch -->
@@ -252,52 +256,52 @@
             <div class="grid md:grid-cols-2 gap-6">
                 <div class="glassmorphism rounded-lg p-6">
                     <h3 class="font-bold mb-5" style="color: var(--text-color);">AI / Agents</h3>
-                    <div class="space-y-4">
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">Agentic Systems / LangGraph</span><span style="color: var(--accent-color);">90%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="90"></div></div>
+                    <div class="space-y-3">
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">Agentic Systems / LangGraph</span>
+                            <span class="skill-level skill-level-expert">Expert</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">RAG Pipelines / LangChain</span><span style="color: var(--accent-color);">88%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="88"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">RAG Pipelines / LangChain</span>
+                            <span class="skill-level skill-level-expert">Expert</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">Prompt Engineering</span><span style="color: var(--accent-color);">85%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="85"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">Prompt Engineering</span>
+                            <span class="skill-level skill-level-advanced">Advanced</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">LLMOps (Langfuse / MLflow)</span><span style="color: var(--accent-color);">82%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="82"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">LLMOps (Langfuse / MLflow)</span>
+                            <span class="skill-level skill-level-advanced">Advanced</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">PyTorch / Deep Learning</span><span style="color: var(--accent-color);">85%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="85"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">PyTorch / Deep Learning</span>
+                            <span class="skill-level skill-level-advanced">Advanced</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="glassmorphism rounded-lg p-6">
                     <h3 class="font-bold mb-5" style="color: var(--text-color);">Programming & Backend</h3>
-                    <div class="space-y-4">
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">Python</span><span style="color: var(--accent-color);">92%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="92"></div></div>
+                    <div class="space-y-3">
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">Python</span>
+                            <span class="skill-level skill-level-expert">Expert</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">FastAPI / REST APIs</span><span style="color: var(--accent-color);">88%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="88"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">FastAPI / REST APIs</span>
+                            <span class="skill-level skill-level-expert">Expert</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">Go (Golang)</span><span style="color: var(--accent-color);">75%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="75"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">Go (Golang)</span>
+                            <span class="skill-level skill-level-intermediate">Intermediate</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">React / TypeScript</span><span style="color: var(--accent-color);">72%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="72"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">React / TypeScript</span>
+                            <span class="skill-level skill-level-intermediate">Intermediate</span>
                         </div>
-                        <div class="skill-bar-wrapper">
-                            <div class="flex justify-between text-sm mb-1"><span style="color: var(--text-color);">SQL / PostgreSQL</span><span style="color: var(--accent-color);">70%</span></div>
-                            <div class="skill-bar-bg"><div class="skill-bar" data-width="70"></div></div>
+                        <div class="skill-item flex items-center justify-between">
+                            <span class="text-sm" style="color: var(--text-color);">SQL / PostgreSQL</span>
+                            <span class="skill-level skill-level-intermediate">Intermediate</span>
                         </div>
                     </div>
                 </div>
@@ -340,28 +344,13 @@
         <!-- GitHub Stats -->
         <section id="github-stats" class="mb-24 scroll-target">
             <h2 class="section-heading mb-10">GitHub Activity</h2>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
-                <div class="glassmorphism rounded-lg p-5 text-center stat-card">
-                    <div class="text-3xl font-black" style="color: var(--accent-color);" id="stat-repos">--</div>
-                    <div class="text-sm mt-1" style="color: var(--text-muted);">Public Repos</div>
-                </div>
-                <div class="glassmorphism rounded-lg p-5 text-center stat-card">
-                    <div class="text-3xl font-black" style="color: var(--accent-color);" id="stat-stars">--</div>
-                    <div class="text-sm mt-1" style="color: var(--text-muted);">Total Stars</div>
-                </div>
-                <div class="glassmorphism rounded-lg p-5 text-center stat-card">
-                    <div class="text-3xl font-black" style="color: var(--accent-color);" id="stat-forks">--</div>
-                    <div class="text-sm mt-1" style="color: var(--text-muted);">Total Forks</div>
-                </div>
-                <div class="glassmorphism rounded-lg p-5 text-center stat-card">
-                    <div class="text-3xl font-black" style="color: var(--accent-color);" id="stat-followers">--</div>
-                    <div class="text-sm mt-1" style="color: var(--text-muted);">Followers</div>
-                </div>
-            </div>
-            <!-- GitHub contribution graph -->
             <div class="glassmorphism rounded-lg p-6 text-center">
                 <img id="github-graph" src="" alt="GitHub Contribution Graph" class="w-full rounded" style="display:none;">
                 <p id="github-graph-fallback" class="text-sm" style="color: var(--text-muted);">Loading contribution graph...</p>
+                <a href="https://github.com/axon011" target="_blank" rel="noopener noreferrer" class="btn-secondary inline-flex mt-6">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
+                    View on GitHub
+                </a>
             </div>
         </section>
 
@@ -391,18 +380,15 @@
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="glassmorphism rounded-lg p-6 text-center">
                     <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">English</div>
-                    <div class="text-sm" style="color: var(--accent-color);">Fluent (C1)</div>
-                    <div class="mt-3 skill-bar-bg"><div class="skill-bar" data-width="90"></div></div>
+                    <div class="mt-2"><span class="skill-level skill-level-expert">Fluent (C1)</span></div>
                 </div>
                 <div class="glassmorphism rounded-lg p-6 text-center">
                     <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">German</div>
-                    <div class="text-sm" style="color: var(--accent-color);">Intermediate (B1)</div>
-                    <div class="mt-3 skill-bar-bg"><div class="skill-bar" data-width="50"></div></div>
+                    <div class="mt-2"><span class="skill-level skill-level-intermediate">Intermediate (B1)</span></div>
                 </div>
                 <div class="glassmorphism rounded-lg p-6 text-center">
                     <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">Malayalam</div>
-                    <div class="text-sm" style="color: var(--accent-color);">Native</div>
-                    <div class="mt-3 skill-bar-bg"><div class="skill-bar" data-width="100"></div></div>
+                    <div class="mt-2"><span class="skill-level skill-level-expert">Native</span></div>
                 </div>
             </div>
         </section>
