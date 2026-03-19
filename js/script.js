@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fillStyle = colors.particle;
-            ctx.globalAlpha = 0.4;
+            ctx.globalAlpha = 0.25;
             ctx.fill();
             ctx.globalAlpha = 1.0;
         }
@@ -215,22 +215,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function connectParticles() {
         const colors = getThemeColors();
-        const maxDist = 18000;
+        const maxDist = 22000;
         for (let a = 0; a < particles.length; a++) {
-            for (let b = a + 1; b < particles.length; b++) {
+            for (let b = a +1; b < particles.length; b++) {
                 let dx = particles[a].x - particles[b].x;
                 let dy = particles[a].y - particles[b].y;
                 let distSq = dx * dx + dy * dy;
                 if (distSq < maxDist) {
                     ctx.strokeStyle = colors.line;
-                    ctx.globalAlpha = Math.max(0, 1 - distSq / maxDist);
-                    ctx.lineWidth = 0.5;
+                    ctx.globalAlpha = Math.max(0,0.7 - distSq / maxDist);
+                    ctx.lineWidth = 0.3;
                     ctx.beginPath();
                     ctx.moveTo(particles[a].x, particles[a].y);
                     ctx.lineTo(particles[b].x, particles[b].y);
                     ctx.stroke();
-                    ctx.globalAlpha = 1.0;
+                    ctx.globalAlpha =1.0;
                 }
+            }
+        }
+    }
             }
         }
     }
