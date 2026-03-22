@@ -170,7 +170,7 @@ document.addEventListener('DOMContentLoaded', () => {
             ctx.beginPath();
             ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
             ctx.fillStyle = colors.particle;
-            ctx.globalAlpha = 0.4;
+            ctx.globalAlpha = 0.25;
             ctx.fill();
             ctx.globalAlpha = 1.0;
         }
@@ -202,7 +202,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function initParticles() {
         particles = [];
-        const count = Math.min((canvas.width * canvas.height) / 12000, 120);
+        const count = Math.min((canvas.width * canvas.height) / 15000, 80);
         for (let i = 0; i < count; i++) {
             let size = Math.random() * 2 + 0.5;
             let x = Math.random() * (canvas.width - size * 4) + size * 2;
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return `
                     <div class="project-card-wrap" data-lang="${repo.language || ''}" data-name="${repo.name.toLowerCase()}" data-desc="${rawDesc.toLowerCase()}">
                         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
-                           class="project-card glassmorphism rounded-lg p-6 flex flex-col h-full">
+                           class="project-card card rounded-lg p-6 flex flex-col h-full">
                             <div class="flex items-start justify-between mb-3">
                                 <svg class="w-7 h-7" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
