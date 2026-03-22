@@ -468,8 +468,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const contribFallback = document.getElementById('github-graph-fallback');
     let contribData = null;
 
-    let contribAnimated = false;
-
     async function fetchContribData() {
         try {
             const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`);
@@ -488,50 +486,28 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             contribData = buckets;
-            // Try to draw immediately; if not visible yet, observer will trigger it
-            tryDrawGraph();
+            drawContribGraph(false);
         } catch (err) {
             contribFallback.style.display = 'block';
             contribFallback.textContent = 'Could not load contribution data. View on GitHub instead.';
         }
     }
 
-    function tryDrawGraph() {
-        if (!contribData) return;
-        const container = contribCanvas.parentElement;
-        const rect = container.getBoundingClientRect();
-        if (rect.width > 0 && rect.height > 0) {
-            animateGraph();
-        }
-    }
-
-    // Observe when the github-stats section scrolls into view
-    const statsSection = document.getElementById('github-stats');
-    if (statsSection) {
-        const graphObserver = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting && contribData && !contribAnimated) {
-                    setTimeout(animateGraph, 100); // small delay to ensure layout is ready
-                }
-            });
-        }, { threshold: 0.1 });
-        graphObserver.observe(statsSection);
-    }
-
-    function animateGraph() {
-        if (!contribData) return;
-        contribAnimated = true;
-        const dpr = window.devicePixelRatio || 1;
+    function drawContribGraph(animate) {
+        if (!contribData || !contribCanvas) return;
         const container = contribCanvas.parentElement;
         const w = container.clientWidth;
         const h = container.clientHeight;
-        if (w === 0 || h === 0) return;
+        if (w === 0 || h === 0) {
+            // Retry after a short delay if container isn't laid out yet
+            setTimeout(() => drawContribGraph(animate), 200);
+            return;
+        }
+        const dpr = window.devicePixelRatio || 1;
         contribCanvas.width = w * dpr;
         contribCanvas.height = h * dpr;
         contribCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-        const w = rect.width;
-        const h = rect.height;
         const padding = { top: 20, right: 20, bottom: 30, left: 40 };
         const chartW = w - padding.left - padding.right;
         const chartH = h - padding.top - padding.bottom;
@@ -548,13 +524,13 @@ document.addEventListener('DOMContentLoaded', () => {
         const areaColor = isDark ? 'rgba(56,189,248,0.1)' : 'rgba(13,71,161,0.08)';
 
         let progress = 0;
-        const totalFrames = 60;
+        const totalFrames = animate ? 60 : 1;
 
         function draw() {
             progress++;
             const t = Math.min(progress / totalFrames, 1);
-            const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
-            const visiblePoints = Math.floor(eased * points.length);
+            const eased = animate ? (1 - Math.pow(1 - t, 3)) : 1;
+            const visiblePoints = Math.max(2, Math.floor(eased * points.length));
 
             contribCtx.clearRect(0, 0, w, h);
 
@@ -586,8 +562,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 const label = d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
                 contribCtx.fillText(label, points[i].x, h - 8);
             }
-
-            if (visiblePoints < 2) { if (progress < totalFrames) requestAnimationFrame(draw); return; }
 
             // Smooth curve through points
             contribCtx.beginPath();
@@ -652,14 +626,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Redraw graph on theme change (no re-animation, just redraw)
     themeToggleBtn.addEventListener('click', () => {
-        setTimeout(() => { if (contribData) { contribAnimated = false; animateGraph(); } }, 100);
+        setTimeout(() => { if (contribData) drawContribGraph(false); }, 100);
     });
 
     // Redraw on resize
     let resizeTimer;
     window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => { if (contribData) { contribAnimated = false; animateGraph(); } }, 200);
+        resizeTimer = setTimeout(() => { if (contribData) drawContribGraph(false); }, 200);
     });
 
     // Scroll down arrow
