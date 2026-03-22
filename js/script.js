@@ -468,14 +468,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const contribFallback = document.getElementById('github-graph-fallback');
     let contribData = null;
 
+    let contribAnimated = false;
+
     async function fetchContribData() {
         try {
-            // Fetch last 90 days of events (GitHub API returns last 90 days, max 300 events)
             const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`);
             if (!res.ok) throw new Error('API error');
             const events = await res.json();
 
-            // Bucket events by day for the last 30 days
             const days = 30;
             const buckets = new Array(days).fill(0);
             const now = Date.now();
@@ -488,20 +488,47 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             contribData = buckets;
-            animateGraph();
+            // Try to draw immediately; if not visible yet, observer will trigger it
+            tryDrawGraph();
         } catch (err) {
             contribFallback.style.display = 'block';
             contribFallback.textContent = 'Could not load contribution data. View on GitHub instead.';
         }
     }
 
+    function tryDrawGraph() {
+        if (!contribData) return;
+        const container = contribCanvas.parentElement;
+        const rect = container.getBoundingClientRect();
+        if (rect.width > 0 && rect.height > 0) {
+            animateGraph();
+        }
+    }
+
+    // Observe when the github-stats section scrolls into view
+    const statsSection = document.getElementById('github-stats');
+    if (statsSection) {
+        const graphObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting && contribData && !contribAnimated) {
+                    setTimeout(animateGraph, 100); // small delay to ensure layout is ready
+                }
+            });
+        }, { threshold: 0.1 });
+        graphObserver.observe(statsSection);
+    }
+
     function animateGraph() {
         if (!contribData) return;
+        contribAnimated = true;
         const dpr = window.devicePixelRatio || 1;
-        const rect = contribCanvas.getBoundingClientRect();
-        contribCanvas.width = rect.width * dpr;
-        contribCanvas.height = rect.height * dpr;
-        contribCtx.scale(dpr, dpr);
+        const container = contribCanvas.parentElement;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w === 0 || h === 0) return;
+        contribCanvas.width = w * dpr;
+        contribCanvas.height = h * dpr;
+        contribCtx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
         const w = rect.width;
         const h = rect.height;
@@ -623,13 +650,17 @@ document.addEventListener('DOMContentLoaded', () => {
     fetchGitHubData();
     fetchContribData();
 
-    // Redraw graph on theme change
+    // Redraw graph on theme change (no re-animation, just redraw)
     themeToggleBtn.addEventListener('click', () => {
-        setTimeout(() => { if (contribData) animateGraph(); }, 100);
+        setTimeout(() => { if (contribData) { contribAnimated = false; animateGraph(); } }, 100);
     });
 
     // Redraw on resize
-    window.addEventListener('resize', () => { if (contribData) animateGraph(); });
+    let resizeTimer;
+    window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => { if (contribData) { contribAnimated = false; animateGraph(); } }, 200);
+    });
 
     // Scroll down arrow
     const scrollDownBtn = document.getElementById('scroll-down');
