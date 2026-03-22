@@ -462,16 +462,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // GitHub contribution graph
+    // GitHub contribution graph (activity graph - heartbeat style)
     function loadContributionGraph() {
         const img = document.getElementById('github-graph');
         const fallback = document.getElementById('github-graph-fallback');
         const isDark = htmlEl.getAttribute('data-theme') === 'dark';
+        const theme = isDark ? 'react-dark' : 'minimal';
         const color = isDark ? '38bdf8' : '0D47A1';
+        const bgColor = isDark ? '00000000' : 'ffffff00';
         img.style.display = 'none';
         fallback.style.display = 'block';
         fallback.textContent = 'Loading contribution graph...';
-        img.src = `https://ghchart.rshah.org/${color}/${GITHUB_USERNAME}`;
+        img.src = `https://github-readme-activity-graph.vercel.app/graph?username=${GITHUB_USERNAME}&theme=${theme}&hide_border=true&bg_color=${bgColor}&color=${color}&line=${color}&point=${color}&area=true&area_color=${color}`;
         img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
         img.onerror = () => { fallback.textContent = 'Could not load contribution graph. View on GitHub instead.'; };
     }
