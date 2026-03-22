@@ -462,29 +462,174 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // GitHub contribution graph (activity graph - heartbeat style)
-    function loadContributionGraph() {
-        const img = document.getElementById('github-graph');
-        const fallback = document.getElementById('github-graph-fallback');
+    // GitHub contribution graph — animated heartbeat canvas
+    const contribCanvas = document.getElementById('contribution-canvas');
+    const contribCtx = contribCanvas.getContext('2d');
+    const contribFallback = document.getElementById('github-graph-fallback');
+    let contribData = null;
+
+    async function fetchContribData() {
+        try {
+            // Fetch last 90 days of events (GitHub API returns last 90 days, max 300 events)
+            const res = await fetch(`https://api.github.com/users/${GITHUB_USERNAME}/events?per_page=100`);
+            if (!res.ok) throw new Error('API error');
+            const events = await res.json();
+
+            // Bucket events by day for the last 30 days
+            const days = 30;
+            const buckets = new Array(days).fill(0);
+            const now = Date.now();
+            const msPerDay = 86400000;
+
+            events.forEach(ev => {
+                const age = now - new Date(ev.created_at).getTime();
+                const dayIndex = days - 1 - Math.floor(age / msPerDay);
+                if (dayIndex >= 0 && dayIndex < days) buckets[dayIndex]++;
+            });
+
+            contribData = buckets;
+            animateGraph();
+        } catch (err) {
+            contribFallback.style.display = 'block';
+            contribFallback.textContent = 'Could not load contribution data. View on GitHub instead.';
+        }
+    }
+
+    function animateGraph() {
+        if (!contribData) return;
+        const dpr = window.devicePixelRatio || 1;
+        const rect = contribCanvas.getBoundingClientRect();
+        contribCanvas.width = rect.width * dpr;
+        contribCanvas.height = rect.height * dpr;
+        contribCtx.scale(dpr, dpr);
+
+        const w = rect.width;
+        const h = rect.height;
+        const padding = { top: 20, right: 20, bottom: 30, left: 40 };
+        const chartW = w - padding.left - padding.right;
+        const chartH = h - padding.top - padding.bottom;
+        const maxVal = Math.max(...contribData, 1);
+        const points = contribData.map((v, i) => ({
+            x: padding.left + (i / (contribData.length - 1)) * chartW,
+            y: padding.top + chartH - (v / maxVal) * chartH
+        }));
+
         const isDark = htmlEl.getAttribute('data-theme') === 'dark';
-        const theme = isDark ? 'react-dark' : 'minimal';
-        const color = isDark ? '38bdf8' : '0D47A1';
-        const bgColor = isDark ? '00000000' : 'ffffff00';
-        img.style.display = 'none';
-        fallback.style.display = 'block';
-        fallback.textContent = 'Loading contribution graph...';
-        img.src = `https://github-readme-activity-graph.vercel.app/graph?username=${GITHUB_USERNAME}&theme=${theme}&hide_border=true&bg_color=${bgColor}&color=${color}&line=${color}&point=${color}&area=true&area_color=${color}`;
-        img.onload = () => { img.style.display = 'block'; fallback.style.display = 'none'; };
-        img.onerror = () => { fallback.textContent = 'Could not load contribution graph. View on GitHub instead.'; };
+        const accentColor = isDark ? '#38bdf8' : '#0D47A1';
+        const mutedColor = isDark ? 'rgba(203,213,225,0.3)' : 'rgba(0,0,0,0.1)';
+        const textColor = isDark ? '#94a3b8' : '#64748b';
+        const areaColor = isDark ? 'rgba(56,189,248,0.1)' : 'rgba(13,71,161,0.08)';
+
+        let progress = 0;
+        const totalFrames = 60;
+
+        function draw() {
+            progress++;
+            const t = Math.min(progress / totalFrames, 1);
+            const eased = 1 - Math.pow(1 - t, 3); // ease-out cubic
+            const visiblePoints = Math.floor(eased * points.length);
+
+            contribCtx.clearRect(0, 0, w, h);
+
+            // Grid lines
+            contribCtx.strokeStyle = mutedColor;
+            contribCtx.lineWidth = 0.5;
+            for (let i = 0; i <= 4; i++) {
+                const y = padding.top + (chartH / 4) * i;
+                contribCtx.beginPath();
+                contribCtx.moveTo(padding.left, y);
+                contribCtx.lineTo(w - padding.right, y);
+                contribCtx.stroke();
+            }
+
+            // Y-axis labels
+            contribCtx.fillStyle = textColor;
+            contribCtx.font = '10px Inter, sans-serif';
+            contribCtx.textAlign = 'right';
+            for (let i = 0; i <= 4; i++) {
+                const val = Math.round((maxVal / 4) * (4 - i));
+                const y = padding.top + (chartH / 4) * i;
+                contribCtx.fillText(val, padding.left - 8, y + 3);
+            }
+
+            // X-axis labels (every 7 days)
+            contribCtx.textAlign = 'center';
+            for (let i = 0; i < contribData.length; i += 7) {
+                const d = new Date(Date.now() - (contribData.length - 1 - i) * 86400000);
+                const label = d.toLocaleDateString('en', { month: 'short', day: 'numeric' });
+                contribCtx.fillText(label, points[i].x, h - 8);
+            }
+
+            if (visiblePoints < 2) { if (progress < totalFrames) requestAnimationFrame(draw); return; }
+
+            // Smooth curve through points
+            contribCtx.beginPath();
+            contribCtx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < visiblePoints; i++) {
+                const prev = points[i - 1];
+                const curr = points[i];
+                const cpx = (prev.x + curr.x) / 2;
+                contribCtx.bezierCurveTo(cpx, prev.y, cpx, curr.y, curr.x, curr.y);
+            }
+
+            // Area fill
+            const lastVisible = points[visiblePoints - 1];
+            contribCtx.lineTo(lastVisible.x, padding.top + chartH);
+            contribCtx.lineTo(points[0].x, padding.top + chartH);
+            contribCtx.closePath();
+            contribCtx.fillStyle = areaColor;
+            contribCtx.fill();
+
+            // Line stroke
+            contribCtx.beginPath();
+            contribCtx.moveTo(points[0].x, points[0].y);
+            for (let i = 1; i < visiblePoints; i++) {
+                const prev = points[i - 1];
+                const curr = points[i];
+                const cpx = (prev.x + curr.x) / 2;
+                contribCtx.bezierCurveTo(cpx, prev.y, cpx, curr.y, curr.x, curr.y);
+            }
+            contribCtx.strokeStyle = accentColor;
+            contribCtx.lineWidth = 2;
+            contribCtx.stroke();
+
+            // Glow on the leading point
+            if (visiblePoints > 0) {
+                const tip = points[visiblePoints - 1];
+                contribCtx.beginPath();
+                contribCtx.arc(tip.x, tip.y, 4, 0, Math.PI * 2);
+                contribCtx.fillStyle = accentColor;
+                contribCtx.fill();
+                contribCtx.beginPath();
+                contribCtx.arc(tip.x, tip.y, 8, 0, Math.PI * 2);
+                contribCtx.fillStyle = isDark ? 'rgba(56,189,248,0.2)' : 'rgba(13,71,161,0.15)';
+                contribCtx.fill();
+            }
+
+            // Data point dots
+            for (let i = 0; i < visiblePoints; i++) {
+                contribCtx.beginPath();
+                contribCtx.arc(points[i].x, points[i].y, 2.5, 0, Math.PI * 2);
+                contribCtx.fillStyle = accentColor;
+                contribCtx.fill();
+            }
+
+            if (progress < totalFrames) requestAnimationFrame(draw);
+        }
+
+        draw();
     }
 
     fetchGitHubData();
-    loadContributionGraph();
+    fetchContribData();
 
-    // Reload graph on theme change
+    // Redraw graph on theme change
     themeToggleBtn.addEventListener('click', () => {
-        setTimeout(loadContributionGraph, 100);
+        setTimeout(() => { if (contribData) animateGraph(); }, 100);
     });
+
+    // Redraw on resize
+    window.addEventListener('resize', () => { if (contribData) animateGraph(); });
 
     // Scroll down arrow
     const scrollDownBtn = document.getElementById('scroll-down');
