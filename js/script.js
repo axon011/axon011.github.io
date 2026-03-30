@@ -68,11 +68,11 @@ document.addEventListener('DOMContentLoaded', () => {
     // ==========================================
     const taglineEl = document.getElementById('tagline');
     const phrases = [
-        'Agentic Systems & RAG',
-        'Edge ViT Systems & LLMs',
+        'Agentic Systems & Production RAG',
         'Multi-Agent Pipelines',
+        'Full-Stack GenAI Apps',
         'LLMOps & Observability',
-        'Full-Stack GenAI Apps'
+        'Python, LangChain, FastAPI'
     ];
     let phraseIdx = 0;
     let charIdx = 0;
