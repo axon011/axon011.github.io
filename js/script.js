@@ -117,17 +117,23 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.scroll-target').forEach(t => observer.observe(t));
 
     // ==========================================
-    // Active Nav Highlighting
+    // Active Nav Highlighting (top nav + sidebar rail)
     // ==========================================
     const sections = document.querySelectorAll('section[id]');
     const navLinks = document.querySelectorAll('.nav-link-top');
+    const railLinks = document.querySelectorAll('.rail-link');
 
     const navObserver = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
+                const id = entry.target.id;
                 navLinks.forEach(link => {
                     link.classList.toggle('active',
-                        link.getAttribute('href') === '#' + entry.target.id);
+                        link.getAttribute('href') === '#' + id);
+                });
+                railLinks.forEach(link => {
+                    link.classList.toggle('active',
+                        link.dataset.section === id);
                 });
             }
         });
@@ -363,13 +369,24 @@ document.addEventListener('DOMContentLoaded', () => {
             // Fetch all READMEs in parallel
             const readmes = await Promise.all(topRepos.map(r => fetchReadme(r.name)));
 
-            // Build language filter buttons
-            const langs = ['All', ...new Set(topRepos.map(r => r.language).filter(Boolean))];
-            langFilters.innerHTML = langs.map(lang => {
-                const dot = lang !== 'All'
-                    ? `<span class="lang-dot" style="background:${LANG_COLORS[lang] || 'var(--accent-color)'}"></span>`
+            // Build filter buttons from languages + top topics
+            const langSet = new Set(topRepos.map(r => r.language).filter(Boolean));
+            const topicCounts = {};
+            topRepos.forEach(r => (r.topics || []).forEach(t => {
+                topicCounts[t] = (topicCounts[t] || 0) + 1;
+            }));
+            const topTopics = Object.entries(topicCounts)
+                .filter(([t]) => !langSet.has(t.toLowerCase()) && !['python', 'typescript'].includes(t))
+                .sort((a, b) => b[1] - a[1])
+                .slice(0, 6)
+                .map(([t]) => t);
+            const filterLabels = ['All', ...langSet, ...topTopics];
+            langFilters.innerHTML = filterLabels.map(label => {
+                const isLang = langSet.has(label);
+                const dot = isLang
+                    ? `<span class="lang-dot" style="background:${LANG_COLORS[label] || 'var(--accent-color)'}"></span>`
                     : '';
-                return `<button class="filter-btn${lang === 'All' ? ' active' : ''}" data-lang="${lang}">${dot}${lang}</button>`;
+                return `<button class="filter-btn${label === 'All' ? ' active' : ''}" data-lang="${label}" data-type="${isLang ? 'lang' : 'topic'}">${dot}${label}</button>`;
             }).join('');
 
             // Render cards
@@ -404,7 +421,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     : '';
 
                 return `
-                    <div class="project-card-wrap" data-lang="${repo.language || ''}" data-name="${repo.name.toLowerCase()}" data-desc="${rawDesc.toLowerCase()}">
+                    <div class="project-card-wrap" data-lang="${repo.language || ''}" data-topics="${(repo.topics || []).join(',')}" data-name="${repo.name.toLowerCase()}" data-desc="${rawDesc.toLowerCase()}">
                         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
                            class="project-card card rounded-lg p-6 flex flex-col h-full">
                             <div class="flex items-start justify-between mb-3">
@@ -431,12 +448,21 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // --- Filter logic ---
             let activeFilter = 'All';
+            let activeType = 'all';
 
             function applyFilters() {
                 let visible = 0;
                 document.querySelectorAll('.project-card-wrap').forEach(wrap => {
-                    const matchesLang = activeFilter === 'All' || wrap.dataset.lang === activeFilter;
-                    if (matchesLang) {
+                    let matches = false;
+                    if (activeFilter === 'All') {
+                        matches = true;
+                    } else if (activeType === 'lang') {
+                        matches = wrap.dataset.lang === activeFilter;
+                    } else {
+                        const topics = (wrap.dataset.topics || '').split(',');
+                        matches = topics.includes(activeFilter);
+                    }
+                    if (matches) {
                         wrap.classList.remove('hidden-card');
                         visible++;
                     } else {
@@ -450,6 +476,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 const btn = e.target.closest('.filter-btn');
                 if (!btn) return;
                 activeFilter = btn.dataset.lang;
+                activeType = btn.dataset.type || 'all';
                 langFilters.querySelectorAll('.filter-btn').forEach(b =>
                     b.classList.toggle('active', b === btn)
                 );
