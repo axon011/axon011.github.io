@@ -362,7 +362,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Select top repos by popularity
             const topRepos = repos
-                .filter(r => !r.fork && r.name !== GITHUB_USERNAME + '.github.io')
+                .filter(r => !r.fork && r.name !== GITHUB_USERNAME + '.github.io' && r.name !== GITHUB_USERNAME)
                 .sort((a, b) => (b.stargazers_count + b.forks_count) - (a.stargazers_count + a.forks_count))
                 .slice(0, TOP_N);
 
