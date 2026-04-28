@@ -346,6 +346,115 @@ body::before {
     border-color: var(--accent-border);
 }
 
+/* Clay card — tactile, soft 3D, accent-tinted. For about stats + language pills. */
+.card-clay {
+    position: relative;
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--accent-color) 5%, var(--card-bg)) 0%, var(--card-bg) 100%);
+    border: 1px solid var(--card-border);
+    border-radius: 1rem;
+    box-shadow:
+        8px 8px 16px color-mix(in srgb, var(--accent-color) 4%, transparent),
+        -2px -2px 8px rgba(255, 255, 255, 0.5),
+        inset 0 -2px 4px color-mix(in srgb, var(--accent-color) 6%, transparent),
+        inset 0 1px 1px rgba(255, 255, 255, 0.6);
+    transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+[data-theme="dark"] .card-clay {
+    background:
+        linear-gradient(145deg, color-mix(in srgb, var(--accent-color) 6%, var(--card-bg)) 0%, var(--card-bg) 100%);
+    box-shadow:
+        8px 8px 20px rgba(0, 0, 0, 0.45),
+        -2px -2px 6px rgba(255, 255, 255, 0.025),
+        inset 0 -2px 4px color-mix(in srgb, var(--accent-color) 8%, transparent),
+        inset 0 1px 1px rgba(255, 255, 255, 0.04);
+}
+.card-clay:hover {
+    transform: translateY(-2px) scale(1.02);
+    box-shadow:
+        12px 14px 24px color-mix(in srgb, var(--accent-color) 8%, transparent),
+        -3px -3px 10px rgba(255, 255, 255, 0.55),
+        inset 0 -2px 4px color-mix(in srgb, var(--accent-color) 8%, transparent),
+        inset 0 1px 1px rgba(255, 255, 255, 0.7);
+}
+[data-theme="dark"] .card-clay:hover {
+    box-shadow:
+        14px 14px 28px rgba(0, 0, 0, 0.6),
+        -3px -3px 8px rgba(255, 255, 255, 0.04),
+        inset 0 -2px 4px color-mix(in srgb, var(--accent-color) 12%, transparent),
+        inset 0 1px 1px rgba(255, 255, 255, 0.06);
+}
+
+/* Flat reading card — no transform on hover; for experience/education. */
+.card-flat {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-left: 3px solid var(--accent-color);
+    border-radius: 0.75rem;
+    box-shadow: var(--card-shadow);
+    transition: border-color 0.2s ease;
+}
+.card-flat:hover { border-color: var(--accent-border); border-left-color: var(--accent-color); }
+
+/* Interactive glassmorphic card — animated gradient border on hover. For projects + contact. */
+.card-interactive {
+    position: relative;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: 0.85rem;
+    box-shadow: var(--card-shadow);
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.4s ease,
+                border-color 0.25s ease;
+}
+.card-interactive::before {
+    content: '';
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: conic-gradient(
+        from var(--angle, 0deg),
+        var(--accent-color),
+        #06b6d4,
+        #8b5cf6,
+        var(--accent-color)
+    );
+    -webkit-mask:
+        linear-gradient(#000 0 0) content-box,
+        linear-gradient(#000 0 0);
+    -webkit-mask-composite: xor;
+            mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+}
+.card-interactive:hover {
+    transform: translateY(-3px);
+    box-shadow:
+        0 14px 36px color-mix(in srgb, var(--accent-color) 14%, transparent),
+        0 4px 14px rgba(0, 0, 0, 0.08);
+    border-color: transparent;
+}
+.card-interactive:hover::before {
+    opacity: 1;
+    animation: rotate-gradient 4s linear infinite;
+}
+@property --angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+@keyframes rotate-gradient {
+    to { --angle: 360deg; }
+}
+@media (prefers-reduced-motion: reduce) {
+    .card-clay, .card-clay:hover,
+    .card-interactive, .card-interactive:hover { transform: none; }
+    .card-interactive:hover::before { animation: none; }
+}
+
 /* Glassmorphism — navbar only */
 .glassmorphism {
     background: var(--glass-bg);
