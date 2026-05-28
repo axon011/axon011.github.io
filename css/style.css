@@ -264,8 +264,10 @@ body::before {
     background: transparent;
     border: 1px solid var(--glass-border);
     border-radius: 50%;
-    width: 2.5rem;
-    height: 2.5rem;
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 44px;
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -711,7 +713,8 @@ body::before {
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    padding: 0.375rem 0.875rem;
+    padding: 0.625rem 0.875rem;
+    min-height: 44px;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
@@ -1030,6 +1033,12 @@ body::before {
 .agent-os-statusbar .metric {
     color: var(--accent-color);
     font-weight: 600;
+    transition: opacity 0.28s ease;
+}
+.agent-os-statusbar .metric.fading { opacity: 0; }
+@media (prefers-reduced-motion: reduce) {
+    .agent-os-statusbar .metric { transition: none; }
+    .agent-os-statusbar .metric.fading { opacity: 1; }
 }
 
 .agent-os-grid {

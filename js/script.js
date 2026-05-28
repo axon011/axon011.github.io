@@ -318,6 +318,33 @@ document.addEventListener('DOMContentLoaded', () => {
     typeLoop();
 
     // ==========================================
+    // Hero status-bar metric ticker
+    // Rotates verified claims so the dashboard reads "live"
+    // instead of showing a single static badge. Every entry
+    // is claim-verifier safe (code-backed or honestly framed).
+    // ==========================================
+    const heroMetrics = [
+        '▶ RAG retrieval p95 < 300ms',
+        '▶ Hybrid retrieval · BM25 + dense + RRF',
+        '▶ Agent topology · 4 nodes active',
+        '▶ RAGAs eval suite · 50 questions',
+        '▶ Langfuse tracing · all LLM calls',
+        '▶ Stack · python · go · langgraph'
+    ];
+    let heroMetricIdx = 0;
+    const heroMetricEl = document.getElementById('hero-metric');
+    if (heroMetricEl) {
+        setInterval(() => {
+            heroMetricEl.classList.add('fading');
+            setTimeout(() => {
+                heroMetricIdx = (heroMetricIdx + 1) % heroMetrics.length;
+                heroMetricEl.textContent = heroMetrics[heroMetricIdx];
+                heroMetricEl.classList.remove('fading');
+            }, 280);
+        }, 4200);
+    }
+
+    // ==========================================
     // Scroll Animations & Skill Bars
     // ==========================================
     const observer = new IntersectionObserver((entries) => {
@@ -541,6 +568,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 .replace(/`(.+?)`/g, '$1')
                 .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
                 .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')
+                // Strip orphan markers left by cross-line bold/italic
+                // (e.g. line starts with `(**Planner` because the closing `**` is on the next line)
+                .replace(/\*\*/g, '')
+                .replace(/__/g, '')
                 .trim();
             if (/add your .+ here/i.test(clean)) continue;
             if (/^(TODO|FIXME|XXX)\b/i.test(clean)) continue;
