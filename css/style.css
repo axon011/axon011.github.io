@@ -1004,6 +1004,10 @@ body::before {
     color: var(--text-muted);
     background: color-mix(in srgb, var(--accent-color) 3%, var(--card-bg));
 }
+/* Dark theme: --text-muted (#777) on tinted statusbar bg = 4.06:1 (WCAG AA fail).
+   Bump to a brighter muted for ~9:1 AAA. Light theme is unaffected (--text-muted in light is darker than #777). */
+[data-theme="dark"] .agent-os-statusbar { color: #a3a3a3; }
+
 .agent-os-statusbar .live {
     display: inline-flex;
     align-items: center;
