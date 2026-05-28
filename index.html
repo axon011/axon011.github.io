@@ -77,7 +77,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=11">
+    <link rel="stylesheet" href="css/style.css?v=12">
 
     <!-- Favicon -->
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230D47A1'/><text x='50' y='68' font-family='Inter,Arial' font-size='40' font-weight='900' fill='white' text-anchor='middle'>AP</text></svg>">
@@ -217,7 +217,10 @@
 
         <!-- About Me -->
         <section id="about" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">About Me</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>system.fetch_identity()</div>
+                <h2 class="section-heading"><span class="node-glyph">◦</span><span class="node-idx">01_</span>about</h2>
+            </div>
             <div class="card rounded-lg p-6 md:p-8">
                 <p class="text-lg leading-relaxed mb-6" style="color: var(--text-color);">
                     I'm an AI Engineer based in <strong>Cottbus, Germany</strong>, with an M.Sc. in Artificial Intelligence from BTU Cottbus-Senftenberg.
@@ -254,7 +257,10 @@
 
         <!-- Experience -->
         <section id="experience" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Experience</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>tool.fetch_experience(employer="Perinet")</div>
+                <h2 class="section-heading"><span class="node-glyph">▶</span><span class="node-idx">02_</span>experience</h2>
+            </div>
             <div class="card rounded-lg p-6 md:p-8">
                 <div class="relative timeline space-y-12">
                     <div class="relative timeline-item pl-10">
@@ -285,7 +291,10 @@
 
         <!-- Projects -->
         <section id="projects" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Projects</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>tool.list_repos(top_n=6, sort="stars+forks")</div>
+                <h2 class="section-heading"><span class="node-glyph">▦</span><span class="node-idx">03_</span>projects</h2>
+            </div>
             <div class="mb-6">
                 <div id="lang-filters" class="flex flex-wrap gap-2"></div>
             </div>
@@ -296,7 +305,10 @@
 
         <!-- Skills with animated bars -->
         <section id="skills" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Skills</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>system.list_capabilities()</div>
+                <h2 class="section-heading"><span class="node-glyph">◆</span><span class="node-idx">04_</span>skills</h2>
+            </div>
             <div class="grid md:grid-cols-6 gap-6">
                 <div class="card rounded-lg p-6 md:col-span-3">
                     <h3 class="font-bold mb-5" style="color: var(--text-color);">AI / Agents</h3>
@@ -396,7 +408,10 @@
 
         <!-- GitHub Stats -->
         <section id="github-stats" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">GitHub Activity</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>tool.github_activity(user="axon011")</div>
+                <h2 class="section-heading"><span class="node-glyph">◉</span><span class="node-idx">05_</span>activity</h2>
+            </div>
             <div class="card rounded-lg p-6 text-center">
                 <p class="text-sm font-semibold mb-4" style="color: var(--text-muted);">Aravind Pradeep's Contribution Graph</p>
                 <div style="position:relative; width:100%; height:220px;">
@@ -412,7 +427,10 @@
 
         <!-- Education -->
         <section id="education" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Education</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>tool.fetch_academic_history()</div>
+                <h2 class="section-heading"><span class="node-glyph">⌘</span><span class="node-idx">06_</span>education</h2>
+            </div>
             <div class="card rounded-lg p-6 md:p-8">
                 <div class="relative timeline space-y-8">
                     <div class="relative timeline-item pl-10">
@@ -433,7 +451,10 @@
 
         <!-- Languages -->
         <section id="languages" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Languages</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>system.list_languages()</div>
+                <h2 class="section-heading"><span class="node-glyph">◇</span><span class="node-idx">07_</span>languages</h2>
+            </div>
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                 <div class="card rounded-lg p-6 text-center">
                     <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">English</div>
@@ -455,7 +476,10 @@
 
         <!-- Contact -->
         <section id="contact" class="mb-20 scroll-target">
-            <h2 class="section-heading mb-12">Let's Connect</h2>
+            <div class="section-node mb-12">
+                <div class="node-call"><span class="nc-kw">// node_call</span>system.open_channel()</div>
+                <h2 class="section-heading"><span class="node-glyph">↔</span><span class="node-idx">08_</span>contact</h2>
+            </div>
             <p class="mb-6" style="color: var(--text-muted);">Open to AI Engineer / ML Engineer roles in Germany &mdash; remote or hybrid. Drop a line:</p>
             <div class="card-interactive p-6 md:p-8">
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -516,6 +540,6 @@
         </svg>
     </button>
 
-    <script src="js/script.js?v=11"></script>
+    <script src="js/script.js?v=12"></script>
 </body>
 </html>

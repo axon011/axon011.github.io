@@ -474,11 +474,13 @@ body::before {
 }
 
 
-/* Section heading */
+/* Section heading — agent-node framing */
 .section-heading {
-    font-size: 1.5rem;
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 1.35rem;
     font-weight: 700;
     color: var(--text-color);
+    letter-spacing: -0.01em;
     position: relative;
     display: inline-block;
 }
@@ -490,6 +492,33 @@ body::before {
     background: var(--accent-color);
     left: 0;
     bottom: -8px;
+}
+.section-heading .node-glyph {
+    color: var(--accent-color);
+    margin-right: 0.55rem;
+    font-weight: 400;
+    opacity: 0.9;
+}
+.section-heading .node-idx {
+    color: var(--text-muted);
+    font-weight: 500;
+    opacity: 0.65;
+}
+
+/* Wrapper for the node_call comment + section heading */
+.section-node { display: block; }
+.node-call {
+    font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    opacity: 0.7;
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+}
+.node-call .nc-kw {
+    color: var(--accent-color);
+    opacity: 0.75;
+    margin-right: 0.4rem;
 }
 
 /* Tags */
@@ -1003,6 +1032,11 @@ body::before {
     display: grid;
     grid-template-columns: 1fr;
 }
+/* Mobile: panel renders first, rail/trace-log second — so the name + role land above the fold */
+@media (max-width: 1023.98px) {
+    .agent-os-rail  { order: 2; }
+    .agent-panel    { order: 1; }
+}
 @media (min-width: 1024px) {
     .agent-os-grid { grid-template-columns: 240px 1fr; }
 }
@@ -1043,7 +1077,7 @@ body::before {
     text-align: left;
     cursor: pointer;
     transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
-    min-height: 40px;
+    min-height: 44px;
 }
 .agent-node-btn + .agent-node-btn { margin-top: 0.25rem; }
 .agent-node-btn:hover {
