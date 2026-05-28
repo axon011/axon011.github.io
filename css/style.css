@@ -24,7 +24,7 @@
     --bg-color: #0a0a0a;
     --bg-dot: rgba(255, 255, 255, 0.035);
     --text-color: #e5e5e5;
-    --text-muted: #777777;
+    --text-muted: #a3a3a3;
     --accent-color: #38bdf8;
     --accent-bg: rgba(56, 189, 248, 0.08);
     --accent-border: rgba(56, 189, 248, 0.18);
@@ -1007,10 +1007,6 @@ body::before {
     color: var(--text-muted);
     background: color-mix(in srgb, var(--accent-color) 3%, var(--card-bg));
 }
-/* Dark theme: --text-muted (#777) on tinted statusbar bg = 4.06:1 (WCAG AA fail).
-   Bump to a brighter muted for ~9:1 AAA. Light theme is unaffected (--text-muted in light is darker than #777). */
-[data-theme="dark"] .agent-os-statusbar { color: #a3a3a3; }
-
 .agent-os-statusbar .live {
     display: inline-flex;
     align-items: center;
@@ -1145,7 +1141,7 @@ body::before {
     color: var(--text-muted);
     padding: 0.1rem 0;
 }
-.trace-line .time { opacity: 0.5; flex-shrink: 0; }
+.trace-line .time { opacity: 0.7; flex-shrink: 0; }
 .trace-line.ok .msg { color: #10b981; }
 
 .agent-panel {
