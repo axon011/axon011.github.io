@@ -511,16 +511,16 @@ body::before {
 .section-node { display: block; }
 .node-call {
     font-family: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, monospace;
-    font-size: 0.72rem;
+    font-size: 0.65rem;
     color: var(--text-muted);
-    opacity: 0.7;
-    margin-bottom: 0.5rem;
+    opacity: 0.45;
+    margin-bottom: 0.4rem;
     letter-spacing: 0.02em;
 }
 .node-call .nc-kw {
     color: var(--accent-color);
-    opacity: 0.75;
-    margin-right: 0.4rem;
+    opacity: 0.6;
+    margin-right: 0.35rem;
 }
 
 /* Tags */
