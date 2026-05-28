@@ -307,7 +307,8 @@ document.addEventListener('DOMContentLoaded', () => {
     // Strip markdown and extract plain text description (~200 chars)
     function extractReadmeDescription(rawMarkdown) {
         if (!rawMarkdown) return null;
-        const lines = rawMarkdown.split('\n');
+        const stripped = rawMarkdown.replace(/<!--[\s\S]*?-->/g, '');
+        const lines = stripped.split('\n');
         const descLines = [];
         for (const line of lines) {
             const trimmed = line.trim();
@@ -318,12 +319,17 @@ document.addEventListener('DOMContentLoaded', () => {
             if (trimmed.startsWith('<') && trimmed.endsWith('>')) continue;
             if (trimmed.startsWith('![') || trimmed.startsWith('[![')) continue;
             let clean = trimmed
+                .replace(/^>\s*/, '')
                 .replace(/\*\*(.+?)\*\*/g, '$1')
                 .replace(/\*(.+?)\*/g, '$1')
+                .replace(/__(.+?)__/g, '$1')
+                .replace(/_(.+?)_/g, '$1')
                 .replace(/`(.+?)`/g, '$1')
                 .replace(/\[([^\]]+)\]\([^)]+\)/g, '$1')
                 .replace(/!\[([^\]]*)\]\([^)]+\)/g, '')
                 .trim();
+            if (/add your .+ here/i.test(clean)) continue;
+            if (/^(TODO|FIXME|XXX)\b/i.test(clean)) continue;
             if (clean.length > 20) descLines.push(clean);
             if (descLines.join(' ').length >= 200) break;
         }

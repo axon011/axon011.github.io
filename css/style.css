@@ -304,6 +304,10 @@ body::before {
 .btn-primary:active {
     filter: brightness(0.95);
 }
+/* Dark theme: cyan accent + white text = 2.14:1 (WCAG fail). Invert to dark text on cyan for ~8.5:1 AAA. */
+[data-theme="dark"] .btn-primary {
+    color: #0a0a0a;
+}
 
 .btn-secondary {
     display: inline-flex;
