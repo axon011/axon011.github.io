@@ -1116,29 +1116,53 @@ body::before {
     50%      { opacity: 1; }
 }
 
-/* Multi-agent pipeline DAG — replaces the synthetic trace log.
-   Shows the real Perinet pipeline (Planner -> Researcher -> Writer -> Critic
-   with a retry edge from Critic back to Writer). Active node pulses to
-   convey "live execution" without overclaiming. */
-.pipeline-viz {
+/* Faux execution trace log (Langfuse-style) — used in hero rail. */
+.trace-log {
     margin-top: 1rem;
-    padding: 0.7rem 0.75rem 0.65rem;
+    padding: 0.6rem 0.75rem;
     border: 1px solid var(--card-border);
     border-radius: 5px;
     background: var(--bg-color);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    line-height: 1.55;
+    max-height: 150px;
+    overflow-y: auto;
 }
+.trace-log-header {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+.trace-line {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    padding: 0.1rem 0;
+}
+.trace-line .time { flex-shrink: 0; }
+.trace-line.ok .msg { color: #10b981; }
+
+/* Multi-agent pipeline DAG — used inside the project_agent panel's
+   multi-agent-pipeline card. Shows the actual axon011/multi-agent-pipeline
+   topology (Planner -> Researcher -> Writer -> Critic with a retry loop).
+   Active node pulses to convey live execution. */
 .pipeline-viz-header {
     font-family: 'JetBrains Mono', ui-monospace, monospace;
     font-size: 0.6rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     color: var(--text-muted);
-    margin-bottom: 0.5rem;
+    margin: 0.25rem 0 0.25rem;
 }
 .pipeline-svg {
     width: 100%;
+    max-width: 200px;
     height: auto;
     display: block;
+    margin: 0.4rem auto;
 }
 .pipeline-svg .node-group rect {
     fill: var(--card-bg);
