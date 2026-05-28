@@ -125,39 +125,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     let activeAgent = 'profile_agent';
     let agentThinking = false;
-    const traceLogs = [
-        { t: '00:00.01', msg: 'System initialised. Loading agent topology...', ok: false },
-        { t: '00:00.04', msg: 'LangGraph state machine ready.',                ok: false },
-        { t: '00:00.12', msg: 'profile_agent active. Awaiting query.',         ok: true  }
-    ];
 
-    function fmtElapsed() {
-        const ms = Math.floor(performance.now());
-        const s  = Math.floor(ms / 1000);
-        const cs = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
-        return `${String(Math.floor(s / 60)).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}.${cs}`;
-    }
-
-    function randLatency() {
-        return Math.floor(180 + Math.random() * 110); // 180–290ms · keeps the <300ms claim honest
-    }
-
-    function appendLog(msg, ok = false) {
-        traceLogs.push({ t: fmtElapsed(), msg, ok });
-        renderTraceLog();
-    }
-
-    function renderTraceLog() {
-        const el = document.getElementById('trace-lines');
-        if (!el) return;
-        const visible = traceLogs.slice(-6);
-        el.innerHTML = visible.map(l =>
-            `<div class="trace-line ${l.ok ? 'ok' : ''}">
-                <span class="time">[${l.t}]</span>
-                <span class="msg">${l.msg}</span>
-            </div>`
-        ).join('');
-        el.scrollTop = el.scrollHeight;
+    // ==========================================
+    // Multi-agent pipeline pulse — animates the SVG DAG in the rail.
+    // Cycles a single "active node" indicator through
+    // planner -> researcher -> writer -> critic, then loops.
+    // The retry edge from Critic to Writer is static — the diagram
+    // tells that story; we don't pretend to animate failures.
+    // ==========================================
+    const PIPELINE_NODES = ['planner', 'researcher', 'writer', 'critic'];
+    let pipelineStep = 0;
+    function tickPipeline() {
+        const svg = document.querySelector('.pipeline-svg');
+        if (!svg) return;
+        svg.querySelectorAll('.node-group').forEach(g => g.classList.remove('active'));
+        const activeName = PIPELINE_NODES[pipelineStep];
+        const node = svg.querySelector(`[data-node="${activeName}"]`);
+        if (node) node.classList.add('active');
+        pipelineStep = (pipelineStep + 1) % PIPELINE_NODES.length;
     }
 
     function renderAgentRail() {
@@ -185,13 +170,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nameEl) nameEl.textContent = `${id}.json`;
         renderAgentRail();
         renderPanelThinking();
-        appendLog(`Invoking ${id}...`, false);
         setTimeout(() => {
             activeAgent = id;
             agentThinking = false;
             renderAgentRail();
             renderPanel();
-            appendLog(`Tool call ok. Latency: ${randLatency()}ms.`, true);
         }, 600);
     }
 
@@ -314,8 +297,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderAgentRail();
     renderPanel();
-    renderTraceLog();
     typeLoop();
+    tickPipeline();
+    setInterval(tickPipeline, 1200);
 
     // ==========================================
     // Hero status-bar metric ticker
