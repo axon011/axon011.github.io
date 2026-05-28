@@ -944,3 +944,337 @@ body::before {
     line-height: 1.4;
     white-space: nowrap;
 }
+
+/* ============================================================
+   Agent OS — phase 3
+   Multi-agent orchestrator interface for the hero. Mimics
+   Langfuse / LangSmith aesthetic: left rail of clickable agent
+   nodes, main panel with JSON-style output per active agent,
+   faux execution trace log. All state held in vanilla JS.
+   ============================================================ */
+.agent-os {
+    border: 1px solid var(--card-border);
+    border-radius: 8px;
+    background: var(--card-bg);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+}
+
+.agent-os-statusbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem 1.5rem;
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--card-border);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--accent-color) 3%, var(--card-bg));
+}
+.agent-os-statusbar .live {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: #10b981;
+    font-weight: 600;
+}
+.agent-os-statusbar .signal-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #10b981;
+    box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5);
+    animation: pulse-signal 2s ease-out infinite;
+}
+@keyframes pulse-signal {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0.5); }
+    50%      { box-shadow: 0 0 0 6px rgba(16, 185, 129, 0); }
+}
+.agent-os-statusbar .metric {
+    color: var(--accent-color);
+    font-weight: 600;
+}
+
+.agent-os-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+@media (min-width: 1024px) {
+    .agent-os-grid { grid-template-columns: 240px 1fr; }
+}
+
+.agent-os-rail {
+    border-bottom: 1px solid var(--card-border);
+    padding: 1rem;
+    background: var(--bg-color);
+}
+@media (min-width: 1024px) {
+    .agent-os-rail {
+        border-bottom: 0;
+        border-right: 1px solid var(--card-border);
+    }
+}
+.rail-header {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.62rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+}
+
+.agent-node-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+    padding: 0.5rem 0.7rem;
+    border-radius: 5px;
+    border: 1px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.78rem;
+    text-align: left;
+    cursor: pointer;
+    transition: background 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+    min-height: 40px;
+}
+.agent-node-btn + .agent-node-btn { margin-top: 0.25rem; }
+.agent-node-btn:hover {
+    background: var(--accent-bg);
+    color: var(--text-color);
+}
+.agent-node-btn.active {
+    background: var(--accent-bg);
+    color: var(--accent-color);
+    border-color: var(--accent-border);
+    font-weight: 600;
+}
+.agent-node-btn .glyph {
+    color: var(--accent-color);
+    margin-right: 0.5rem;
+    opacity: 0.85;
+}
+.agent-node-btn .node-pulse {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-color);
+    animation: node-pulse 0.8s ease-in-out infinite;
+}
+@keyframes node-pulse {
+    0%, 100% { opacity: 0.35; }
+    50%      { opacity: 1; }
+}
+
+.trace-log {
+    margin-top: 1rem;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: var(--bg-color);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    line-height: 1.55;
+    max-height: 150px;
+    overflow-y: auto;
+}
+.trace-log-header {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 0.4rem;
+}
+.trace-line {
+    display: flex;
+    gap: 0.5rem;
+    color: var(--text-muted);
+    padding: 0.1rem 0;
+}
+.trace-line .time { opacity: 0.5; flex-shrink: 0; }
+.trace-line.ok .msg { color: #10b981; }
+
+.agent-panel {
+    display: flex;
+    flex-direction: column;
+    min-height: 480px;
+}
+.agent-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+    padding: 0.55rem 1rem;
+    border-bottom: 1px solid var(--card-border);
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.76rem;
+    color: var(--text-muted);
+    background: color-mix(in srgb, var(--accent-color) 2%, var(--card-bg));
+}
+.agent-panel-header .active-node { color: var(--accent-color); font-weight: 600; }
+.agent-panel-header .breadcrumb-sep { opacity: 0.4; }
+
+.agent-panel-body { padding: 1.5rem; flex: 1; }
+
+.thinking {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.85rem;
+    min-height: 300px;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.85rem;
+    color: var(--accent-color);
+    opacity: 0.75;
+}
+.thinking .spinner {
+    width: 28px;
+    height: 28px;
+    border: 2px solid var(--accent-border);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+.agent-output { animation: agent-fade 0.35s ease-out; }
+@keyframes agent-fade {
+    from { opacity: 0; transform: translateY(4px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.json-line {
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    color: var(--accent-color);
+    font-size: 0.88rem;
+    line-height: 1.55;
+    word-break: break-word;
+}
+.json-key    { color: var(--text-muted); }
+.json-string { color: var(--accent-color); }
+.json-brace  { color: var(--text-muted); opacity: 0.5; }
+
+.system-prompt-block {
+    margin-top: 1rem;
+    padding: 1rem 1.15rem;
+    border: 1px solid var(--card-border);
+    border-left: 2px solid var(--accent-color);
+    border-radius: 4px;
+    background: color-mix(in srgb, var(--accent-color) 3%, var(--card-bg));
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: var(--text-color);
+}
+.prompt-label {
+    display: inline-block;
+    color: var(--accent-color);
+    font-weight: 700;
+    font-family: 'JetBrains Mono', ui-monospace, monospace;
+    font-size: 0.66rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-right: 0.5rem;
+}
+
+.agent-bullet {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.65rem;
+    padding: 0.35rem 0;
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--text-color);
+}
+.agent-bullet .arrow {
+    color: var(--accent-color);
+    font-weight: 600;
+    flex-shrink: 0;
+    font-family: 'JetBrains Mono', monospace;
+}
+
+.agent-project-card {
+    padding: 0.9rem 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: var(--bg-color);
+    cursor: pointer;
+    text-decoration: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    transition: border-color 0.2s ease, background 0.2s ease, transform 0.2s ease;
+}
+.agent-project-card:hover {
+    border-color: var(--accent-color);
+    background: color-mix(in srgb, var(--accent-color) 4%, var(--card-bg));
+    transform: translateY(-1px);
+}
+.agent-project-card .pname {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 700;
+    color: var(--accent-color);
+    font-size: 0.92rem;
+}
+.agent-project-card .pstack {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.68rem;
+    color: var(--text-muted);
+    padding: 0.18rem 0.45rem;
+    background: var(--card-bg);
+    border-radius: 3px;
+    align-self: flex-start;
+    border: 1px solid var(--card-border);
+}
+.agent-project-card .pmetric {
+    font-size: 0.85rem;
+    color: var(--text-color);
+    line-height: 1.5;
+}
+
+.contact-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--card-border);
+    border-radius: 5px;
+    background: var(--bg-color);
+    text-decoration: none;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.88rem;
+    transition: border-color 0.2s ease, background 0.2s ease;
+    min-height: 44px;
+}
+.contact-row:hover {
+    border-color: var(--accent-color);
+    background: color-mix(in srgb, var(--accent-color) 3%, var(--card-bg));
+}
+.contact-row .ckey {
+    color: var(--accent-color);
+    font-weight: 600;
+    min-width: 5rem;
+}
+.contact-row .cval {
+    color: var(--text-color);
+    word-break: break-all;
+}
+
+.comment-line {
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--text-muted);
+    opacity: 0.75;
+    font-size: 0.83rem;
+    margin-bottom: 1rem;
+}
+
+/* Reduce motion overrides */
+@media (prefers-reduced-motion: reduce) {
+    .signal-dot, .node-pulse, .thinking .spinner, .agent-output { animation: none !important; }
+}
