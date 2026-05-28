@@ -127,11 +127,48 @@ document.addEventListener('DOMContentLoaded', () => {
     let agentThinking = false;
 
     // ==========================================
-    // Multi-agent pipeline pulse — animates the SVG DAG in the rail.
+    // Faux execution trace log (Langfuse-flavoured).
+    // Lives in the hero rail. Appended to when agents are switched.
+    // ==========================================
+    const traceLogs = [
+        { t: '00:00.01', msg: 'System initialised. Loading agent topology...', ok: false },
+        { t: '00:00.04', msg: 'LangGraph state machine ready.',                ok: false },
+        { t: '00:00.12', msg: 'profile_agent active. Awaiting query.',         ok: true  }
+    ];
+
+    function fmtElapsed() {
+        const ms = Math.floor(performance.now());
+        const s  = Math.floor(ms / 1000);
+        const cs = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+        return `${String(Math.floor(s / 60)).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}.${cs}`;
+    }
+    function randLatency() {
+        return Math.floor(180 + Math.random() * 110); // 180–290ms
+    }
+    function appendLog(msg, ok = false) {
+        traceLogs.push({ t: fmtElapsed(), msg, ok });
+        renderTraceLog();
+    }
+    function renderTraceLog() {
+        const el = document.getElementById('trace-lines');
+        if (!el) return;
+        const visible = traceLogs.slice(-6);
+        el.innerHTML = visible.map(l =>
+            `<div class="trace-line ${l.ok ? 'ok' : ''}">
+                <span class="time">[${l.t}]</span>
+                <span class="msg">${l.msg}</span>
+            </div>`
+        ).join('');
+        el.scrollTop = el.scrollHeight;
+    }
+
+    // ==========================================
+    // Multi-agent pipeline pulse — animates the SVG DAG inside the
+    // project_agent panel's multi-agent-pipeline card.
     // Cycles a single "active node" indicator through
     // planner -> researcher -> writer -> critic, then loops.
-    // The retry edge from Critic to Writer is static — the diagram
-    // tells that story; we don't pretend to animate failures.
+    // The retry edge stays static — the diagram tells that story;
+    // we don't pretend to animate failures we can't measure.
     // ==========================================
     const PIPELINE_NODES = ['planner', 'researcher', 'writer', 'critic'];
     let pipelineStep = 0;
@@ -170,11 +207,14 @@ document.addEventListener('DOMContentLoaded', () => {
         if (nameEl) nameEl.textContent = `${id}.json`;
         renderAgentRail();
         renderPanelThinking();
+        appendLog(`Invoking ${id}...`, false);
         setTimeout(() => {
             activeAgent = id;
             agentThinking = false;
             renderAgentRail();
             renderPanel();
+            appendLog(`Tool call ok. Latency: ${randLatency()}ms.`, true);
+            if (id === 'project_agent') tickPipeline();
         }, 600);
     }
 
@@ -247,10 +287,24 @@ document.addEventListener('DOMContentLoaded', () => {
         if (id === 'project_agent') return `
             <p class="comment-line">// Top 4 by relevance to agent / RAG / LLMOps roles. Full list ↓ in Projects section.</p>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
-                <a href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener noreferrer" class="agent-project-card">
+                <a href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener noreferrer" class="agent-project-card project-card-dag">
                     <div class="pname">multi-agent-pipeline</div>
                     <div class="pstack">langgraph · crewai · fastapi</div>
-                    <div class="pmetric">4-agent orchestration (Planner → Researcher → Writer → Critic) with Pydantic-structured outputs + Langfuse tracing.</div>
+                    <svg viewBox="0 0 180 290" xmlns="http://www.w3.org/2000/svg" class="pipeline-svg" role="img" aria-label="Multi-agent pipeline DAG: Planner to Researcher to Writer to Critic, with retry edge from Critic back to Writer">
+                        <line x1="80" y1="42" x2="80" y2="66" class="edge"/>
+                        <polygon points="80,70 75,62 85,62" class="arrow"/>
+                        <line x1="80" y1="108" x2="80" y2="132" class="edge"/>
+                        <polygon points="80,136 75,128 85,128" class="arrow"/>
+                        <line x1="80" y1="174" x2="80" y2="198" class="edge"/>
+                        <polygon points="80,202 75,194 85,194" class="arrow"/>
+                        <path d="M 140 222 C 170 222 170 156 140 156" class="edge-retry" fill="none"/>
+                        <polygon points="140,156 148,151 148,161" class="arrow-retry"/>
+                        <g class="node-group" data-node="planner"><rect x="20" y="6" width="120" height="36" rx="5"/><text x="80" y="29" text-anchor="middle">planner</text></g>
+                        <g class="node-group" data-node="researcher"><rect x="20" y="72" width="120" height="36" rx="5"/><text x="80" y="95" text-anchor="middle">researcher</text></g>
+                        <g class="node-group" data-node="writer"><rect x="20" y="138" width="120" height="36" rx="5"/><text x="80" y="161" text-anchor="middle">writer</text></g>
+                        <g class="node-group" data-node="critic"><rect x="20" y="204" width="120" height="36" rx="5"/><text x="80" y="227" text-anchor="middle">critic</text></g>
+                    </svg>
+                    <div class="pipeline-meta">repair_threshold=0.75</div>
                 </a>
                 <a href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener noreferrer" class="agent-project-card">
                     <div class="pname">rag-eval-system</div>
@@ -297,6 +351,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     renderAgentRail();
     renderPanel();
+    renderTraceLog();
     typeLoop();
     tickPipeline();
     setInterval(tickPipeline, 1200);
