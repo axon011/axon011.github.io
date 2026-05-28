@@ -402,51 +402,41 @@ document.addEventListener('DOMContentLoaded', () => {
                 const escaped = rawDesc.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
                 const descHtml = highlightTechTerms(escaped);
 
-                const starsHtml = repo.stargazers_count > 0
-                    ? `<span class="flex items-center gap-1">
-                           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
-                           ${repo.stargazers_count}
-                       </span>` : '';
-
-                const forksHtml = repo.forks_count > 0
-                    ? `<span class="flex items-center gap-1">
-                           <svg class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24"><path d="M6 3a3 3 0 013 3c0 1.31-.84 2.42-2 2.83V11c0 .55.45 1 1 1h8c.55 0 1-.45 1-1V8.83c-1.16-.41-2-1.52-2-2.83a3 3 0 116 0c0 1.31-.84 2.42-2 2.83V11c0 1.65-1.35 3-3 3h-3v2.17c1.16.41 2 1.52 2 2.83a3 3 0 11-6 0c0-1.31.84-2.42 2-2.83V14H9c-1.65 0-3-1.35-3-3V8.83C4.84 8.42 4 7.31 4 6a3 3 0 012-2.83V3z"/></svg>
-                           ${repo.forks_count}
-                       </span>` : '';
+                const metaParts = [];
+                if (repo.stargazers_count > 0) metaParts.push(`★ ${repo.stargazers_count}`);
+                if (repo.forks_count > 0) metaParts.push(`⑂ ${repo.forks_count}`);
+                const updated = repo.pushed_at ? new Date(repo.pushed_at) : null;
+                if (updated && !isNaN(updated)) {
+                    const yyyy = updated.getUTCFullYear();
+                    const mm = String(updated.getUTCMonth() + 1).padStart(2, '0');
+                    metaParts.push(`${yyyy}-${mm}`);
+                }
+                const metaHtml = metaParts.length
+                    ? metaParts.map(p => `<span>${p}</span>`).join('<span class="meta-sep">·</span>')
+                    : '';
 
                 const langColor = LANG_COLORS[repo.language] || 'var(--accent-color)';
                 const langHtml = repo.language
-                    ? `<span class="flex items-center gap-1.5 text-xs px-2 py-1 rounded" style="background: var(--accent-bg); color: var(--accent-color);">
-                           <span class="lang-dot" style="background:${langColor}"></span>${repo.language}
+                    ? `<span class="project-chip" style="display:inline-flex;align-items:center;gap:6px;">
+                           <span class="lang-dot" style="background:${langColor}; width:8px; height:8px;"></span>${repo.language}
                        </span>` : '';
 
                 const topicsHtml = repo.topics
-                    ? repo.topics.slice(0, 3).map(t =>
-                        `<span class="text-xs px-2 py-1 rounded" style="background: var(--accent-bg); color: var(--accent-color);">${t}</span>`
-                      ).join('')
+                    ? repo.topics.slice(0, 3).map(t => `<span class="project-chip">${t}</span>`).join('')
                     : '';
 
                 return `
                     <div class="project-card-wrap" data-lang="${repo.language || ''}" data-topics="${(repo.topics || []).join(',')}" data-name="${repo.name.toLowerCase()}" data-desc="${rawDesc.toLowerCase()}">
                         <a href="${repo.html_url}" target="_blank" rel="noopener noreferrer"
-                           class="project-card card-interactive p-6 flex flex-col h-full">
-                            <div class="flex items-start justify-between mb-3">
-                                <svg class="w-7 h-7" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" />
-                                </svg>
-                                <div class="flex items-center gap-3 text-xs" style="color: var(--text-muted);">
-                                    ${starsHtml}${forksHtml}
-                                </div>
+                           class="project-card card-interactive p-5 flex flex-col h-full">
+                            <div class="flex items-baseline justify-between gap-3 mb-2">
+                                <h3 class="project-name truncate">${repo.name}</h3>
+                                <div class="project-meta">${metaHtml}</div>
                             </div>
-                            <h3 class="text-lg font-bold mb-2" style="color: var(--text-color);">${repo.name}</h3>
-                            <p class="text-sm mb-4 flex-1" style="color: var(--text-muted);">${descHtml}</p>
-                            <div class="flex flex-wrap gap-2">
+                            <p class="text-sm mb-4 flex-1 leading-relaxed" style="color: var(--text-muted);">${descHtml}</p>
+                            <div class="flex flex-wrap gap-1.5">
                                 ${langHtml}${topicsHtml}
                             </div>
-                            <span class="card-action">
-                                View on GitHub
-                                <svg class="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
-                            </span>
                         </a>
                     </div>
                 `;
