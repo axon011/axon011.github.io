@@ -64,21 +64,29 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // ==========================================
-    // Typing Effect (multiple phrases)
+    // Typing Effect (multiple phrases) — lives inside the
+    // Agent OS profile_agent panel. Re-grabs #tagline each
+    // tick so it pauses gracefully when the user navigates
+    // to another agent and the element is removed.
     // ==========================================
-    const taglineEl = document.getElementById('tagline');
     const phrases = [
-        'Agentic Systems & Production RAG',
-        'Multi-Agent Pipelines',
-        'Full-Stack GenAI Apps',
-        'LLMOps & Observability',
-        'Python, LangChain, FastAPI'
+        'agent topology online',
+        'tracing 4-node pipeline',
+        'hybrid retrieval @ 150ms',
+        'critic node validating output',
+        'flushing langfuse spans'
     ];
     let phraseIdx = 0;
     let charIdx = 0;
     let isDeleting = false;
 
     function typeLoop() {
+        const taglineEl = document.getElementById('tagline');
+        if (!taglineEl) {
+            // profile_agent panel not active — wait and retry
+            setTimeout(typeLoop, 500);
+            return;
+        }
         const current = phrases[phraseIdx];
         if (!isDeleting) {
             taglineEl.textContent = current.substring(0, charIdx + 1);
@@ -101,6 +109,212 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(typeLoop, 40);
         }
     }
+
+    // ==========================================
+    // Agent OS — interactive hero state machine
+    // Renders a multi-agent orchestrator interface in the hero.
+    // 4 clickable agents · simulated "thinking" delay ·
+    // faux execution trace log with timestamps + latency.
+    // ==========================================
+    const AGENTS = [
+        { id: 'profile_agent',    label: 'identity_overview',  glyph: '◉' },
+        { id: 'experience_agent', label: 'internal_workloads', glyph: '▶' },
+        { id: 'project_agent',    label: 'projects_oss',       glyph: '▦' },
+        { id: 'contact_agent',    label: 'contact_protocol',   glyph: '↔' }
+    ];
+
+    let activeAgent = 'profile_agent';
+    let agentThinking = false;
+    const traceLogs = [
+        { t: '00:00.01', msg: 'System initialised. Loading agent topology...', ok: false },
+        { t: '00:00.04', msg: 'LangGraph state machine ready.',                ok: false },
+        { t: '00:00.12', msg: 'profile_agent active. Awaiting query.',         ok: true  }
+    ];
+
+    function fmtElapsed() {
+        const ms = Math.floor(performance.now());
+        const s  = Math.floor(ms / 1000);
+        const cs = String(Math.floor((ms % 1000) / 10)).padStart(2, '0');
+        return `${String(Math.floor(s / 60)).padStart(2,'0')}:${String(s % 60).padStart(2,'0')}.${cs}`;
+    }
+
+    function randLatency() {
+        return Math.floor(180 + Math.random() * 110); // 180–290ms · keeps the <300ms claim honest
+    }
+
+    function appendLog(msg, ok = false) {
+        traceLogs.push({ t: fmtElapsed(), msg, ok });
+        renderTraceLog();
+    }
+
+    function renderTraceLog() {
+        const el = document.getElementById('trace-lines');
+        if (!el) return;
+        const visible = traceLogs.slice(-6);
+        el.innerHTML = visible.map(l =>
+            `<div class="trace-line ${l.ok ? 'ok' : ''}">
+                <span class="time">[${l.t}]</span>
+                <span class="msg">${l.msg}</span>
+            </div>`
+        ).join('');
+        el.scrollTop = el.scrollHeight;
+    }
+
+    function renderAgentRail() {
+        const el = document.getElementById('agent-nodes');
+        if (!el) return;
+        el.innerHTML = AGENTS.map(a => {
+            const isActive   = a.id === activeAgent;
+            const isThinking = isActive && agentThinking;
+            return `
+                <button class="agent-node-btn ${isActive ? 'active' : ''}" data-agent="${a.id}" aria-pressed="${isActive}">
+                    <span><span class="glyph">${a.glyph}</span>${a.label}</span>
+                    ${isThinking ? '<span class="node-pulse" aria-hidden="true"></span>' : ''}
+                </button>
+            `;
+        }).join('');
+        el.querySelectorAll('.agent-node-btn').forEach(btn => {
+            btn.addEventListener('click', () => selectAgent(btn.dataset.agent));
+        });
+    }
+
+    function selectAgent(id) {
+        if (id === activeAgent || agentThinking) return;
+        agentThinking = true;
+        const nameEl = document.getElementById('active-node-name');
+        if (nameEl) nameEl.textContent = `${id}.json`;
+        renderAgentRail();
+        renderPanelThinking();
+        appendLog(`Invoking ${id}...`, false);
+        setTimeout(() => {
+            activeAgent = id;
+            agentThinking = false;
+            renderAgentRail();
+            renderPanel();
+            appendLog(`Tool call ok. Latency: ${randLatency()}ms.`, true);
+        }, 600);
+    }
+
+    function renderPanelThinking() {
+        const el = document.getElementById('agent-panel-body');
+        if (!el) return;
+        el.innerHTML = `
+            <div class="thinking">
+                <div class="spinner" aria-hidden="true"></div>
+                <div>Agent is synthesising data...</div>
+            </div>
+        `;
+    }
+
+    function renderPanel() {
+        const el = document.getElementById('agent-panel-body');
+        if (!el) return;
+        el.innerHTML = `<div class="agent-output">${panelContent(activeAgent)}</div>`;
+    }
+
+    function panelContent(id) {
+        if (id === 'profile_agent') return `
+            <h1 class="text-3xl md:text-4xl font-black tracking-tight mb-2" style="color: var(--text-color);">
+                Aravind Pradeep
+            </h1>
+            <p class="json-line mb-4">
+                <span class="json-brace">{</span>
+                <span class="json-key">role:</span> <span class="json-string">"AI Engineer"</span>,
+                <span class="json-key">focus:</span> <span class="json-string">"Agentic Systems · RAG · Evals"</span>
+                <span class="json-brace">}</span>
+            </p>
+            <div class="system-prompt-block">
+                <span class="prompt-label">System Prompt</span>
+                AI Engineer in Cottbus, Germany. Builds and ships <strong>agentic systems, RAG pipelines, and multi-agent workflows</strong> that run internally on IoT product data &mdash; <strong>sub-300ms retrieval latency</strong>. Instruments tracing with Langfuse, evals with RAGAs and MLflow, prefers structured outputs and strict role boundaries over free-form prompting.
+            </div>
+            <div class="flex flex-wrap gap-2 mt-4">
+                <span class="project-chip">python</span>
+                <span class="project-chip">langgraph</span>
+                <span class="project-chip">qdrant</span>
+                <span class="project-chip">langfuse</span>
+                <span class="project-chip">mlflow</span>
+                <span class="project-chip">go</span>
+                <span class="project-chip">fastapi</span>
+                <span class="project-chip">docker</span>
+            </div>
+            <p class="shell-line mt-5" style="font-size: 0.82rem;">
+                <span class="shell-prompt">$ stream&gt;</span>
+                <span id="tagline" style="color: var(--accent-color);"></span><span class="typing-cursor"></span>
+            </p>
+        `;
+
+        if (id === 'experience_agent') return `
+            <p class="json-line mb-4">
+                <span class="json-brace">{</span>
+                <span class="json-key">employer:</span> <span class="json-string">"Perinet GmbH"</span>,
+                <span class="json-key">role:</span> <span class="json-string">"AI Engineer (Working Student)"</span>,
+                <span class="json-key">since:</span> <span class="json-string">"2024-06"</span>
+                <span class="json-brace">}</span>
+            </p>
+            <div class="mt-3">
+                <div class="agent-bullet"><span class="arrow">→</span><span>Deployed <strong>RAG conversational agents</strong> for 20+ internal users · <strong>sub-300ms retrieval latency</strong> · hybrid (BM25 + dense + RRF)</span></div>
+                <div class="agent-bullet"><span class="arrow">→</span><span>Built <strong>4-agent pipelines</strong> (Planner → Researcher → Writer → Critic) on LangGraph state machines · 60% manual reporting reduction</span></div>
+                <div class="agent-bullet"><span class="arrow">→</span><span>Connected LLM workflows to MQTT sensor data via <strong>Python + Go</strong> backends; REST APIs with Pydantic + FastAPI</span></div>
+                <div class="agent-bullet"><span class="arrow">→</span><span>Instrumented every LLM call with <strong>Langfuse</strong> tracing · MLflow experiment tracking · <strong>RAGAs</strong> faithfulness evals</span></div>
+                <div class="agent-bullet"><span class="arrow">→</span><span>Containerised with Docker + Kubernetes; CI/CD via GitHub Actions and GitLab</span></div>
+            </div>
+            <div class="comment-line mt-5">// PREVIOUS_NODE: Cognizant Technology Solutions · Software Engineer Trainee · 2021–2022</div>
+        `;
+
+        if (id === 'project_agent') return `
+            <p class="comment-line">// Top 4 by relevance to agent / RAG / LLMOps roles. Full list ↓ in Projects section.</p>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+                <a href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener noreferrer" class="agent-project-card">
+                    <div class="pname">multi-agent-pipeline</div>
+                    <div class="pstack">langgraph · crewai · fastapi</div>
+                    <div class="pmetric">4-agent orchestration (Planner → Researcher → Writer → Critic) with Pydantic-structured outputs + Langfuse tracing.</div>
+                </a>
+                <a href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener noreferrer" class="agent-project-card">
+                    <div class="pname">rag-eval-system</div>
+                    <div class="pstack">qdrant · ragas · mlflow</div>
+                    <div class="pmetric">Hybrid retrieval (BM25 + dense + RRF) · sub-300ms retrieval p95 · 50-question RAGAs eval suite.</div>
+                </a>
+                <a href="https://github.com/axon011/resume-tailor" target="_blank" rel="noopener noreferrer" class="agent-project-card">
+                    <div class="pname">resume-tailor</div>
+                    <div class="pstack">claude · latex · ats</div>
+                    <div class="pmetric">JD URL → tailored resume + cover letter + ATS score in ~3min. 32-pattern humaniser strips AI tells.</div>
+                </a>
+                <a href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener noreferrer" class="agent-project-card">
+                    <div class="pname">llm-fine-tuning</div>
+                    <div class="pstack">qlora · qwen2 · peft</div>
+                    <div class="pmetric">QLoRA fine-tune of Qwen2-0.5B for JD extraction. Loss 2.56 → 1.97 in 3 min on RTX 3050.</div>
+                </a>
+            </div>
+        `;
+
+        if (id === 'contact_agent') return `
+            <p class="comment-line">// Initialise connection protocols. All channels open.</p>
+            <div class="space-y-3" style="max-width: 36rem;">
+                <a href="mailto:aravindpradeep001@gmail.com" class="contact-row">
+                    <span class="ckey">email</span>
+                    <span class="cval">aravindpradeep001@gmail.com</span>
+                </a>
+                <a href="https://github.com/axon011" target="_blank" rel="noopener noreferrer" class="contact-row">
+                    <span class="ckey">github</span>
+                    <span class="cval">github.com/axon011</span>
+                </a>
+                <a href="https://linkedin.com/in/aravind-pradeepmadathinal" target="_blank" rel="noopener noreferrer" class="contact-row">
+                    <span class="ckey">linkedin</span>
+                    <span class="cval">aravind-pradeepmadathinal</span>
+                </a>
+                <a href="Aravind_Pradeep_AI_Engineer.pdf" download class="contact-row">
+                    <span class="ckey">resume</span>
+                    <span class="cval">Aravind_Pradeep_AI_Engineer.pdf ↓</span>
+                </a>
+            </div>
+        `;
+
+        return '';
+    }
+
+    renderAgentRail();
+    renderPanel();
+    renderTraceLog();
     typeLoop();
 
     // ==========================================
