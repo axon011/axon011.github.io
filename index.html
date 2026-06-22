@@ -179,7 +179,12 @@ section.block{padding:54px 0;border-top:1px solid var(--line)}
 .about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start}
 @media(max-width:780px){.about-grid{grid-template-columns:1fr;gap:28px}}
 .prose p{color:var(--muted);margin-bottom:16px;font-size:16.5px}
+.prose p:last-child{margin-bottom:0}
 .prose p strong{color:var(--ink);font-weight:600}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;
+  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-edge);
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%)}
+@media(max-width:560px){.panel{padding:22px 20px}}
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
 .fact{background:var(--surface);padding:20px 18px}
 .fact .n{font-size:22px;font-weight:800;letter-spacing:-0.02em}
@@ -332,7 +337,7 @@ footer .mono{color:var(--muted)}
   <section class="block reveal" id="about">
     <div class="sec-head"><span class="sec-idx">01</span><span class="sec-title">About</span><span class="sec-note mono">// who & what</span></div>
     <div class="about-grid">
-      <div class="prose">
+      <div class="prose panel">
         <p>I'm an AI Engineer focused on building systems that work in the real world — reliable tools people use, not demos that impress once and break.</p>
         <p>At <strong>Perinet</strong> (industrial IoT) I've spent two years on the backend and infrastructure side of their AI platform: <strong>Python and Go services</strong> wired into real-time MQTT sensor streams, FastAPI APIs, Docker and Kubernetes, CI/CD. I also ran the <strong>model-benchmarking</strong> that shaped the platform's design decisions.</p>
         <p>The deeper <strong>RAG, agentic and LLMOps</strong> work I've driven through my own projects: hybrid retrieval with RAGAs and MLflow evaluation, multi-agent systems on LangGraph, and an observability dashboard that traces every model call's latency and cost.</p>
@@ -350,7 +355,7 @@ footer .mono{color:var(--muted)}
   <!-- EXPERIENCE -->
   <section class="block reveal" id="experience">
     <div class="sec-head"><span class="sec-idx">02</span><span class="sec-title">Experience</span><span class="sec-note mono">// where I've worked</span></div>
-    <div class="tl">
+    <div class="panel"><div class="tl">
       <div class="job">
         <div class="when">Jul 2024 — Present</div>
         <div>
@@ -373,7 +378,7 @@ footer .mono{color:var(--muted)}
           </ul>
         </div>
       </div>
-    </div>
+    </div></div>
   </section>
 
   <!-- PROJECTS -->
