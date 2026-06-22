@@ -1,544 +1,540 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Aravind Pradeep | AI Engineer | Agentic Systems &amp; RAG | Full-Stack GenAI</title>
-    <meta name="description" content="AI Engineer based in Cottbus, Germany. M.Sc. Artificial Intelligence at BTU. Building agentic systems, internal RAG, and full-stack GenAI applications.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aravind Pradeep — AI Engineer</title>
+<meta name="description" content="Aravind Pradeep — AI Engineer in Cottbus, Germany. Building agentic systems, RAG and LLMOps. M.Sc. Artificial Intelligence at BTU Cottbus.">
 
-    <!-- Canonical & Crawl -->
-    <link rel="canonical" href="https://aravindpradee.me">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Aravind Pradeep">
+<link rel="canonical" href="https://aravindpradee.me">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Aravind Pradeep">
+<meta name="geo.region" content="DE-BB">
+<meta name="geo.placename" content="Cottbus, Brandenburg, Germany">
 
-    <!-- Geo / Local SEO -->
-    <meta name="geo.region" content="DE-BB">
-    <meta name="geo.placename" content="Cottbus, Brandenburg, Germany">
-    <meta name="geo.position" content="51.7563;14.3329">
-    <meta name="ICBM" content="51.7563, 14.3329">
+<meta property="og:title" content="Aravind Pradeep — AI Engineer">
+<meta property="og:description" content="AI Engineer in Cottbus, Germany. Agentic systems, RAG, LLMOps. Open to AI/ML Engineer roles.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://aravindpradee.me">
+<meta property="og:image" content="https://avatars.githubusercontent.com/axon011">
+<meta property="og:locale" content="en_GB">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Aravind Pradeep — AI Engineer">
+<meta name="twitter:description" content="Agentic systems, RAG, LLMOps. Cottbus, Germany.">
 
-    <!-- Open Graph -->
-    <meta property="og:title" content="Aravind Pradeep — AI &amp; ML Engineer in Cottbus, Germany">
-    <meta property="og:description" content="AI &amp; ML Engineer specialising in agentic systems, RAG pipelines, and internal LLM applications. Based in Cottbus, Germany.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://aravindpradee.me">
-    <meta property="og:image" content="https://avatars.githubusercontent.com/axon011">
-    <meta property="og:image:alt" content="Aravind Pradeep — AI &amp; ML Engineer">
-    <meta property="og:locale" content="en_GB">
-    <meta property="og:site_name" content="Aravind Pradeep Portfolio">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Aravind Pradeep",
+  "url": "https://aravindpradee.me",
+  "image": "https://avatars.githubusercontent.com/axon011",
+  "jobTitle": ["AI Engineer", "Machine Learning Engineer"],
+  "description": "AI Engineer based in Cottbus, Germany, working on agentic systems, RAG and LLMOps.",
+  "address": {"@type": "PostalAddress", "addressLocality": "Cottbus", "addressRegion": "Brandenburg", "addressCountry": "DE"},
+  "email": "aravindpradeep001@gmail.com",
+  "sameAs": ["https://github.com/axon011", "https://linkedin.com/in/aravind-pradeepmadathinal"],
+  "alumniOf": {"@type": "CollegeOrUniversity", "name": "Brandenburg University of Technology Cottbus-Senftenberg"},
+  "knowsAbout": ["Artificial Intelligence","Machine Learning","Agentic Systems","Retrieval-Augmented Generation","LangGraph","Large Language Models","LLMOps","Python","FastAPI","Docker","Kubernetes","PyTorch"]
+}
+</script>
 
-    <!-- Twitter Card -->
-    <meta name="twitter:card" content="summary">
-    <meta name="twitter:title" content="Aravind Pradeep — AI &amp; ML Engineer in Cottbus">
-    <meta name="twitter:description" content="Agentic systems, RAG pipelines, LLMOps. Based in Cottbus, Germany.">
-    <meta name="twitter:image" content="https://avatars.githubusercontent.com/axon011">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b4de4'/><text x='50' y='69' font-family='Inter,Arial' font-size='44' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
 
-    <!-- JSON-LD Person Schema -->
-    <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Person",
-      "name": "Aravind Pradeep",
-      "url": "https://aravindpradee.me",
-      "image": "https://avatars.githubusercontent.com/axon011",
-      "jobTitle": ["AI Engineer", "Machine Learning Engineer"],
-      "description": "AI & ML Engineer based in Cottbus, Germany, specialising in agentic systems, RAG pipelines, multi-agent frameworks, and internal LLM applications.",
-      "address": {
-        "@type": "PostalAddress",
-        "addressLocality": "Cottbus",
-        "addressRegion": "Brandenburg",
-        "addressCountry": "DE"
-      },
-      "email": "aravindpradeep001@gmail.com",
-      "sameAs": [
-        "https://github.com/axon011",
-        "https://linkedin.com/in/aravind-pradeepmadathinal"
-      ],
-      "alumniOf": {
-        "@type": "CollegeOrUniversity",
-        "name": "Brandenburg University of Technology Cottbus-Senftenberg",
-        "address": {
-          "@type": "PostalAddress",
-          "addressLocality": "Cottbus",
-          "addressCountry": "DE"
-        }
-      },
-      "knowsAbout": [
-        "Artificial Intelligence", "Machine Learning", "Agentic Systems",
-        "Retrieval-Augmented Generation", "LangChain", "LangGraph",
-        "Large Language Models", "LLMOps", "Python", "FastAPI", "Docker",
-        "RAG Evaluation", "Multi-Agent Systems", "PyTorch", "Kubernetes",
-        "React", "TypeScript", "Vector Databases", "Qdrant"
-      ]
-    }
-    </script>
+<style>
+:root{
+  --bg:#f7f8fb; --surface:rgba(255,255,255,.58); --surface-solid:#ffffff;
+  --ink:#15161a; --muted:#565a64; --faint:#82858f;
+  --line:rgba(20,30,60,.10); --line-strong:rgba(20,30,60,.18); --glass-edge:rgba(255,255,255,.65);
+  --accent:#1b4de4; --accent-ink:#1538a8;
+  --accent-wash:rgba(27,77,228,.10); --chip:rgba(255,255,255,.5);
+  --shadow:0 1px 2px rgba(20,22,40,.04),0 12px 30px -14px rgba(20,30,80,.16);
+  --shadow-lift:0 2px 6px rgba(20,22,40,.06),0 26px 56px -20px rgba(20,30,80,.26);
+  --blur:16px;
+  --aur1:rgba(27,77,228,.16); --aur2:rgba(132,92,255,.14); --aur3:rgba(20,180,160,.10);
+  --maxw:1080px; --r:16px;
+}
+html.dark{
+  --bg:#0a0b0f; --surface:rgba(28,30,38,.46); --surface-solid:#16171b;
+  --ink:#ecedf0; --muted:#9b9ea8; --faint:#6e7079;
+  --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.15); --glass-edge:rgba(255,255,255,.10);
+  --accent:#7e9bff; --accent-ink:#a9bcff;
+  --accent-wash:rgba(126,155,255,.14); --chip:rgba(255,255,255,.05);
+  --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -16px rgba(0,0,0,.7);
+  --shadow-lift:0 2px 8px rgba(0,0,0,.5),0 30px 60px -22px rgba(0,0,0,.8);
+  --blur:18px;
+  --aur1:rgba(70,110,255,.20); --aur2:rgba(150,90,255,.16); --aur3:rgba(20,170,180,.12);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{animation-duration:.01ms!important;transition-duration:.01ms!important}}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:Inter,system-ui,-apple-system,sans-serif;
+  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  letter-spacing:-0.011em;position:relative;
+}
+/* aurora field behind the glass */
+body::before{
+  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
+  background:
+    radial-gradient(46rem 32rem at 12% -6%, var(--aur1), transparent 60%),
+    radial-gradient(40rem 30rem at 92% 8%, var(--aur2), transparent 62%),
+    radial-gradient(44rem 36rem at 70% 100%, var(--aur3), transparent 60%);
+}
+/* frosted-glass surfaces */
+.card,.skill-card,.mini,.lang,.contact-card,.fact,.facts,.status,.icon-btn,.btn-ghost,.cc{
+  -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);
+  backdrop-filter:blur(var(--blur)) saturate(150%);
+}
+.card,.skill-card,.mini,.lang,.contact-card{
+  box-shadow:var(--shadow), inset 0 1px 0 var(--glass-edge);
+}
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+a{color:inherit;text-decoration:none}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;900&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/style.css?v=19">
+/* ---- nav ---- */
+.nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
+.brand{font-weight:800;font-size:15px;letter-spacing:-0.02em;display:flex;align-items:center;gap:9px}
+.brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
+.nav-links{display:flex;align-items:center;gap:28px}
+.nav-links a{font-size:13.5px;color:var(--muted);font-weight:500;transition:color .15s}
+.nav-links a:hover,.nav-links a.on{color:var(--ink)}
+.nav-actions{display:flex;align-items:center;gap:10px}
+.icon-btn{width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--surface);
+  display:grid;place-items:center;cursor:pointer;color:var(--muted);transition:.15s}
+.icon-btn:hover{color:var(--ink);border-color:var(--line-strong)}
+.btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;border-radius:9px;
+  padding:9px 15px;transition:.16s;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.btn-primary{background:var(--accent);color:#fff}
+.btn-primary:hover{background:var(--accent-ink)}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-ghost:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
+@media(max-width:760px){.nav-links{display:none}}
 
-    <!-- Favicon -->
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='20' fill='%230D47A1'/><text x='50' y='68' font-family='Inter,Arial' font-size='40' font-weight='900' fill='white' text-anchor='middle'>AP</text></svg>">
+/* ---- hero ---- */
+.hero{padding:88px 0 60px;position:relative}
+.hero::before{content:"";position:absolute;inset:-60px -40px 0;z-index:-1;
+  background-image:radial-gradient(var(--line-strong) 1px,transparent 1px);background-size:24px 24px;opacity:.45;
+  -webkit-mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent);mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent)}
+.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
+  display:inline-flex;align-items:center;gap:8px;margin-bottom:22px}
+.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--accent);
+  animation:pulse 2.4s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
+h1.title{font-size:clamp(38px,6vw,62px);line-height:1.04;font-weight:800;letter-spacing:-0.03em;max-width:14ch}
+h1.title em{font-style:normal;color:var(--accent)}
+.lede{margin-top:24px;font-size:clamp(16.5px,2.2vw,19px);color:var(--muted);max-width:60ch;line-height:1.6}
+.hero-cta{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);
+  border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;margin-top:34px}
+.status .led{width:7px;height:7px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 22%,transparent)}
+.hero-meta{margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 30px;font-size:13px;color:var(--faint)}
+.hero-meta b{color:var(--ink);font-weight:600}
+
+/* hero layout + live agent-pipeline visual */
+.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero-visual{order:-1;max-width:420px}}
+.viz-card{background:var(--surface);-webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%);
+  border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
+  overflow:hidden;animation:float 7s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.viz-head{display:flex;align-items:center;gap:7px;padding:12px 15px;border-bottom:1px solid var(--line)}
+.tl{width:10px;height:10px;border-radius:50%}.tl.r{background:#ff5f57}.tl.y{background:#febc2e}.tl.g{background:#28c840}
+.viz-title{font-size:12px;color:var(--muted);margin-left:6px}
+.viz-run{margin-left:auto;font-size:11px;color:var(--accent-ink);display:flex;align-items:center;gap:6px}
+.viz-run .led{width:6px;height:6px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 24%,transparent)}
+.viz-body{padding:15px}
+.vnode{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;
+  background:var(--chip);opacity:0;animation:vin .5s ease forwards;animation-delay:var(--d)}
+@keyframes vin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
+.vic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--accent-wash);color:var(--accent);font-size:14px;flex-shrink:0}
+.vtx{display:flex;flex-direction:column;line-height:1.3;flex:1;min-width:0}
+.vtx b{font-size:13.5px;font-weight:650}.vtx i{font-style:normal;font-size:11px;color:var(--faint)}
+.vst{font-size:10.5px;color:#16a34a;background:color-mix(in srgb,#19b562 13%,transparent);padding:2px 7px;border-radius:5px}
+.vst.run{color:var(--accent-ink);background:var(--accent-wash)}
+.vflow{height:15px;margin-left:27px;width:2px;background:linear-gradient(var(--line-strong),transparent);position:relative;overflow:visible}
+.vpulse{position:absolute;top:-5px;left:-2px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:fall 2.7s linear infinite}
+@keyframes fall{0%{top:-5px;opacity:0}20%{opacity:1}80%{opacity:1}100%{top:16px;opacity:0}}
+.viz-foot{display:flex;justify-content:space-between;padding:11px 15px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
+@media(prefers-reduced-motion:reduce){.viz-card,.vnode,.vpulse{animation:none!important;opacity:1!important}}
+
+/* ---- section scaffolding ---- */
+section.block{padding:54px 0;border-top:1px solid var(--line)}
+.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px}
+.sec-idx{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;
+  background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#8a5cff));
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.sec-title{font-size:24px;font-weight:800;letter-spacing:-0.02em}
+.sec-note{margin-left:auto;font-size:13px;color:var(--faint)}
+@media(max-width:600px){.sec-note{display:none}}
+
+/* ---- about ---- */
+.about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start}
+@media(max-width:780px){.about-grid{grid-template-columns:1fr;gap:28px}}
+.prose p{color:var(--muted);margin-bottom:16px;font-size:16.5px}
+.prose p strong{color:var(--ink);font-weight:600}
+.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
+.fact{background:var(--surface);padding:20px 18px}
+.fact .n{font-size:22px;font-weight:800;letter-spacing:-0.02em}
+.fact .l{font-size:12.5px;color:var(--muted);margin-top:3px}
+
+/* ---- timeline ---- */
+.tl{display:flex;flex-direction:column;gap:8px}
+.job{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line)}
+.job:first-child{border-top:0;padding-top:4px}
+@media(max-width:680px){.job{grid-template-columns:1fr;gap:8px}}
+.job .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--faint);padding-top:3px}
+.job h3{font-size:17px;font-weight:700;letter-spacing:-0.01em}
+.job .org{font-size:14px;color:var(--accent-ink);font-weight:600;margin-top:2px;margin-bottom:12px}
+.job ul{list-style:none;display:flex;flex-direction:column;gap:9px}
+.job li{position:relative;padding-left:18px;font-size:14.5px;color:var(--muted);line-height:1.55}
+.job li::before{content:"";position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--line-strong)}
+.job li strong{color:var(--ink);font-weight:600}
+
+/* ---- projects ---- */
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.proj-grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;
+  display:flex;flex-direction:column;transition:transform .18s ease,box-shadow .18s ease,border-color .18s ease;box-shadow:var(--shadow)}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
+  transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+.card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift);border-color:var(--line-strong)}
+.card:hover::before{transform:scaleX(1)}
+.card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.card h3{font-size:16.5px;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px}
+.card h3 .gh{color:var(--faint);transition:color .15s}
+.card:hover h3 .gh{color:var(--accent)}
+.card .desc{font-size:14px;color:var(--muted);margin:10px 0 14px;line-height:1.55;flex:1}
+.metric{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent-ink);
+  background:var(--accent-wash);border-radius:7px;padding:5px 9px;display:inline-block;margin-bottom:14px;align-self:flex-start}
+.chips{display:flex;flex-wrap:wrap;gap:6px}
+.chip{font-size:11.5px;font-weight:500;color:var(--muted);background:var(--chip);border:1px solid var(--line);
+  border-radius:6px;padding:3px 8px;font-family:"JetBrains Mono",monospace}
+
+/* ---- skills ---- */
+.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:720px){.skills-grid{grid-template-columns:1fr}}
+.skill-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.skill-card h4{font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+.skill-row{display:flex;flex-wrap:wrap;gap:7px}
+
+/* ---- mini grids (edu / lang) ---- */
+.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+@media(max-width:680px){.mini-grid{grid-template-columns:1fr}}
+.mini{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
+.mini h3{font-size:16px;font-weight:700}
+.mini .org{font-size:13.5px;color:var(--accent-ink);font-weight:600;margin:3px 0}
+.mini .when{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint)}
+.mini p{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.55}
+.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media(max-width:600px){.lang-grid{grid-template-columns:1fr}}
+.lang{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+.lang .lvl{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--accent-ink);background:var(--accent-wash);padding:3px 8px;border-radius:6px}
+
+/* ---- contact ---- */
+.contact-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--shadow)}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
+@media(max-width:600px){.contact-grid{grid-template-columns:1fr}}
+.cc{display:flex;align-items:center;gap:13px;padding:14px;border:1px solid var(--line);border-radius:11px;transition:.16s}
+.cc:hover{border-color:var(--line-strong);background:var(--bg)}
+.cc .ico{width:38px;height:38px;border-radius:9px;background:var(--accent-wash);display:grid;place-items:center;color:var(--accent);flex-shrink:0}
+.cc .k{font-size:13.5px;font-weight:600}
+.cc .v{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+
+footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--faint);font-size:13px}
+footer .mono{color:var(--muted)}
+
+/* reveal */
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal.in{opacity:1;transform:none}
+
+::selection{background:var(--accent);color:#fff}
+:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
+</style>
 </head>
-<body class="antialiased">
-    <canvas id="neural-net-bg"></canvas>
+<body>
 
-    <!-- Scroll Progress Bar -->
-    <div id="scroll-progress" class="scroll-progress-bar"></div>
+<nav class="nav">
+  <div class="nav-in">
+    <a href="#top" class="brand"><span class="dot"></span>Aravind Pradeep</a>
+    <div class="nav-links">
+      <a href="#about">About</a>
+      <a href="#experience">Experience</a>
+      <a href="#projects">Projects</a>
+      <a href="#skills">Skills</a>
+      <a href="#contact">Contact</a>
+    </div>
+    <div class="nav-actions">
+      <button class="icon-btn" id="theme" aria-label="Toggle theme">
+        <svg id="i-sun" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
+        <svg id="i-moon" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24" style="display:none"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
+      </button>
+      <a class="btn btn-primary" href="Aravind_Pradeep_AI_Engineer.pdf" target="_blank" rel="noopener">Résumé</a>
+    </div>
+  </div>
+</nav>
 
-    <!-- Top bar — minimal on desktop, full nav on mobile -->
-    <nav id="navbar" class="navbar">
-        <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between h-14">
-            <a href="#hero" class="text-lg font-black tracking-tight z-50" style="color: var(--accent-color);">AP</a>
-            <!-- Mobile-only nav links -->
-            <div class="hidden md:flex lg:hidden items-center space-x-8">
-                <a href="#about" class="nav-link-top">About</a>
-                <a href="#experience" class="nav-link-top">Experience</a>
-                <a href="#projects" class="nav-link-top">Projects</a>
-                <a href="#skills" class="nav-link-top">Skills</a>
-                <a href="#github-stats" class="nav-link-top">GitHub</a>
-                <a href="#contact" class="nav-link-top">Contact</a>
-            </div>
-            <div class="flex items-center gap-3 relative z-50">
-                <button id="theme-toggle" class="theme-toggle" aria-label="Toggle Dark Mode">
-                    <svg id="sun-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
-                    </svg>
-                    <svg id="moon-icon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
-                    </svg>
-                </button>
-                <button id="mobile-menu-btn" class="md:hidden theme-toggle" aria-label="Menu">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                    </svg>
-                </button>
-            </div>
+<main class="wrap" id="top">
+
+  <!-- HERO -->
+  <header class="hero">
+    <div class="hero-grid">
+      <div class="hero-copy">
+        <div class="eyebrow"><span class="pip"></span>AI Engineer · Cottbus, Germany</div>
+        <h1 class="title">I build AI systems that are meant to be <em>used</em>.</h1>
+        <p class="lede">Two years building the backend and infrastructure behind an industrial-IoT AI platform at Perinet, and a set of my own projects going deep on RAG, agents and LLMOps. I care less about the latest model and more about whether a system measurably works — and can show that it does.</p>
+        <div class="hero-cta">
+          <a class="btn btn-primary" href="#projects">View projects</a>
+          <a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a>
+          <a class="btn btn-ghost" href="mailto:aravindpradeep001@gmail.com">Email</a>
         </div>
-        <!-- Mobile Menu -->
-        <div id="mobile-menu" class="mobile-menu hidden md:hidden">
-            <a href="#about" class="mobile-menu-link">About</a>
-            <a href="#experience" class="mobile-menu-link">Experience</a>
-            <a href="#projects" class="mobile-menu-link">Projects</a>
-            <a href="#skills" class="mobile-menu-link">Skills</a>
-            <a href="#github-stats" class="mobile-menu-link">GitHub</a>
-            <a href="#contact" class="mobile-menu-link">Contact</a>
+        <div class="status"><span class="led"></span>Available full-time from summer 2026 · open to relocate</div>
+      </div>
+
+      <!-- live agent-pipeline visual -->
+      <div class="hero-visual" aria-hidden="true">
+        <div class="viz-card">
+          <div class="viz-head">
+            <span class="tl r"></span><span class="tl y"></span><span class="tl g"></span>
+            <span class="viz-title mono">agent_pipeline.py</span>
+            <span class="viz-run mono"><span class="led"></span>running</span>
+          </div>
+          <div class="viz-body">
+            <div class="vnode" style="--d:0s"><span class="vic">◆</span><span class="vtx"><b>Planner</b><i class="mono">decompose the task</i></span><span class="vst mono">ok</span></div>
+            <div class="vflow"><span class="vpulse"></span></div>
+            <div class="vnode" style="--d:.9s"><span class="vic">◈</span><span class="vtx"><b>Researcher</b><i class="mono">gather + cite sources</i></span><span class="vst mono">ok</span></div>
+            <div class="vflow"><span class="vpulse" style="animation-delay:.9s"></span></div>
+            <div class="vnode" style="--d:1.8s"><span class="vic">▦</span><span class="vtx"><b>Writer</b><i class="mono">draft the report</i></span><span class="vst mono">ok</span></div>
+            <div class="vflow"><span class="vpulse" style="animation-delay:1.8s"></span></div>
+            <div class="vnode" style="--d:2.7s"><span class="vic">◉</span><span class="vtx"><b>Critic</b><i class="mono">verify + loop back</i></span><span class="vst run mono">…</span></div>
+          </div>
+          <div class="viz-foot mono"><span>4 agents · LangGraph</span><span>p95 · 1.2s</span></div>
         </div>
-    </nav>
+      </div>
+    </div>
 
-    <!-- Sidebar rail — desktop only (lg+) -->
-    <aside id="sidebar-rail" class="sidebar-rail">
-        <nav class="sidebar-rail-inner">
-            <a href="#hero" class="rail-link active" data-section="hero">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1" /></svg>
-                <span class="rail-label">Home</span>
-            </a>
-            <a href="#about" class="rail-link" data-section="about">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>
-                <span class="rail-label">About</span>
-            </a>
-            <a href="#experience" class="rail-link" data-section="experience">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M21 13.255A23.193 23.193 0 0112 15c-3.183 0-6.22-.64-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m8 0H8m8 0a2 2 0 012 2v6a2 2 0 01-2 2H8a2 2 0 01-2-2V8a2 2 0 012-2" /></svg>
-                <span class="rail-label">Experience</span>
-            </a>
-            <a href="#projects" class="rail-link" data-section="projects">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z" /></svg>
-                <span class="rail-label">Projects</span>
-            </a>
-            <a href="#skills" class="rail-link" data-section="skills">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>
-                <span class="rail-label">Skills</span>
-            </a>
-            <a href="#github-stats" class="rail-link" data-section="github-stats">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
-                <span class="rail-label">GitHub</span>
-            </a>
-            <a href="#contact" class="rail-link" data-section="contact">
-                <svg class="rail-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
-                <span class="rail-label">Contact</span>
-            </a>
-        </nav>
-    </aside>
+    <div class="hero-meta">
+      <span><b>Stack</b> · Python, LangGraph, FastAPI, Docker/K8s</span>
+      <span><b>M.Sc. AI</b> · BTU Cottbus</span>
+      <span><b>~3 yrs</b> · professional software</span>
+    </div>
+  </header>
 
-    <main id="main" class="container mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
+  <!-- ABOUT -->
+  <section class="block reveal" id="about">
+    <div class="sec-head"><span class="sec-idx">01</span><span class="sec-title">About</span><span class="sec-note mono">// who & what</span></div>
+    <div class="about-grid">
+      <div class="prose">
+        <p>I'm an AI Engineer focused on building systems that work in the real world — reliable tools people use, not demos that impress once and break.</p>
+        <p>At <strong>Perinet</strong> (industrial IoT) I've spent two years on the backend and infrastructure side of their AI platform: <strong>Python and Go services</strong> wired into real-time MQTT sensor streams, FastAPI APIs, Docker and Kubernetes, CI/CD. I also ran the <strong>model-benchmarking</strong> that shaped the platform's design decisions.</p>
+        <p>The deeper <strong>RAG, agentic and LLMOps</strong> work I've driven through my own projects: hybrid retrieval with RAGAs and MLflow evaluation, multi-agent systems on LangGraph, and an observability dashboard that traces every model call's latency and cost.</p>
+        <p>I'm finishing my <strong>M.Sc. in Artificial Intelligence</strong> at BTU Cottbus, with close to three years of professional software experience overall, including earlier enterprise work at Cognizant. Open to AI / ML / LLM Engineer roles across Germany.</p>
+      </div>
+      <div class="facts">
+        <div class="fact"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
+        <div class="fact"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
+        <div class="fact"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
+        <div class="fact"><div class="n">6</div><div class="l">open-source projects</div></div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Hero Section -->
-        <section id="hero" class="min-h-screen flex items-center pt-16 relative">
-            <div class="hero-glow"></div>
-            <div class="w-full">
-                <div class="agent-os">
-                    <!-- Top status strip -->
-                    <div class="agent-os-statusbar">
-                        <div class="flex items-center gap-4 flex-wrap">
-                            <span class="live"><span class="signal-dot"></span>System Online</span>
-                            <span>Aravind_Pradeep_OS v2.0</span>
-                        </div>
-                        <div class="flex items-center gap-4 flex-wrap">
-                            <span>Target: AI / ML Engineer</span>
-                            <span>Cottbus, DE</span>
-                            <span class="metric" id="hero-metric">▶ RAG retrieval p95 &lt; 300ms</span>
-                        </div>
-                    </div>
+  <!-- EXPERIENCE -->
+  <section class="block reveal" id="experience">
+    <div class="sec-head"><span class="sec-idx">02</span><span class="sec-title">Experience</span><span class="sec-note mono">// where I've worked</span></div>
+    <div class="tl">
+      <div class="job">
+        <div class="when">Jul 2024 — Present</div>
+        <div>
+          <h3>AI Engineer (Working Student)</h3>
+          <div class="org">Perinet GmbH · Cottbus, Germany</div>
+          <ul>
+            <li>Built <strong>Python and Go backend services</strong> connecting LLM workflows to real-time MQTT sensor streams — versioned FastAPI REST APIs, containerized with Docker and Kubernetes, with automated GitHub Actions CI/CD for zero-touch deployments.</li>
+            <li>Led the <strong>containerization workstream</strong> for the company's AI platform — a chatbot, real-time MQTT anomaly detection, and a sensor-data exploration tool — handling profiling, QA, and deployment integration with the engineering and ML teams.</li>
+            <li>Owned the <strong>model-benchmarking workstream</strong>: evaluated retrieval speed, generation quality, and trade-offs across model variants to inform the platform's chatbot and corpus design.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="job">
+        <div class="when">Oct 2021 — May 2022</div>
+        <div>
+          <h3>Software Engineer Trainee</h3>
+          <div class="org">Cognizant Technology Solutions · India</div>
+          <ul>
+            <li>Built and maintained enterprise banking applications (COBOL, JCL, DB2) in agile sprints; developed structured debugging and production-deployment practices.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
-                    <div class="agent-os-grid">
-                        <!-- Left rail: section nav + faux execution trace log -->
-                        <div class="agent-os-rail">
-                            <div class="rail-header">◈ Agents</div>
-                            <div id="agent-nodes"></div>
+  <!-- PROJECTS -->
+  <section class="block reveal" id="projects">
+    <div class="sec-head"><span class="sec-idx">03</span><span class="sec-title">Projects</span><span class="sec-note mono">// selected open source</span></div>
+    <div class="proj-grid">
 
-                            <div class="trace-log">
-                                <div class="trace-log-header">▸ Execution Traces</div>
-                                <div id="trace-lines"></div>
-                            </div>
-                        </div>
+      <a class="card" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">
+        <div class="top"><h3>Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">A 4-agent system (Planner → Researcher → Writer → Critic) built on LangGraph state machines that turns a question into a sourced report, fully automated end to end.</p>
+        <span class="metric">LangGraph · strict role boundaries · CI/CD</span>
+        <div class="chips"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Docker</span></div>
+      </a>
 
-                        <!-- Right panel: active agent output -->
-                        <div class="agent-panel">
-                            <div class="agent-panel-header">
-                                <span>node_output</span>
-                                <span class="breadcrumb-sep">›</span>
-                                <span class="active-node" id="active-node-name">profile_agent.json</span>
-                            </div>
-                            <div class="agent-panel-body" id="agent-panel-body"></div>
-                        </div>
-                    </div>
-                </div>
+      <a class="card" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">
+        <div class="top"><h3>RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">A hybrid-retrieval RAG pipeline (BM25 + dense + Reciprocal Rank Fusion) with an automated RAGAs/MLflow evaluation harness and regression alerts on retrieval quality.</p>
+        <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
+        <div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span><span class="chip">FastAPI</span></div>
+      </a>
 
-                <!-- Scroll indicator -->
-                <div id="scroll-down" class="mt-8 cursor-pointer opacity-40 hover:opacity-70 transition-opacity flex justify-center" role="button" aria-label="Scroll to About section" tabindex="0">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" style="color: var(--text-muted);">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </div>
-            </div>
-        </section>
+      <a class="card" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">
+        <div class="top"><h3>LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">A self-hosted dashboard that traces every model call's latency, token counts and per-model cost across GPT-4o, Claude, Gemini and DeepSeek — no external tracing service.</p>
+        <span class="metric">full-stack · multi-stage Docker · 12 tests</span>
+        <div class="chips"><span class="chip">FastAPI</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span></div>
+      </a>
 
-        <!-- About Me -->
-        <section id="about" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>system.fetch_identity()</div>
-                <h2 class="section-heading"><span class="node-glyph">◦</span><span class="node-idx">01_</span>about</h2>
-            </div>
-            <div class="card rounded-lg p-6 md:p-8">
-                <p class="text-lg leading-relaxed mb-6" style="color: var(--text-color);">
-                    I'm an AI Engineer based in <strong>Cottbus, Germany</strong>, with an M.Sc. in Artificial Intelligence from BTU Cottbus-Senftenberg.
-                    At <strong>Perinet GmbH</strong>, I build and ship <strong>agentic systems, RAG pipelines, and multi-agent workflows</strong> that run internally on IoT product data &mdash; with <strong>sub-300ms retrieval latency</strong>.
-                </p>
-                <p class="text-base leading-relaxed mb-4" style="color: var(--text-muted);">
-                    My stack: Python backends with LangChain/LangGraph/FastAPI, React frontends, Docker and Kubernetes deployments. I keep LLM systems honest with Langfuse tracing, MLflow experiment tracking, and RAGAs evaluation rather than guessing at prompt quality.
-                </p>
-                <p class="text-base leading-relaxed mb-8" style="color: var(--text-muted);">
-                    Currently looking for <strong>AI Engineer / ML Engineer</strong> roles in <strong>Germany (remote or hybrid)</strong>. English-speaking teams preferred.
-                </p>
-            </div>
-            <div class="grid grid-cols-2 md:grid-cols-4 gap-5 mt-8">
-                <div class="card-clay text-center p-5">
-                    <div class="text-2xl font-black" style="color: var(--accent-color);">M.Sc.</div>
-                    <div class="text-xs mt-1" style="color: var(--text-muted);">Artificial Intelligence</div>
-                </div>
-                <div class="card-clay text-center p-5">
-                    <div class="text-2xl font-black" style="color: var(--accent-color);">2yr</div>
-                    <div class="text-xs mt-1" style="color: var(--text-muted);">Internal AI at Perinet</div>
-                </div>
-                <div class="card-clay text-center p-5">
-                    <div class="text-2xl font-black" style="color: var(--accent-color);">&lt;300ms</div>
-                    <div class="text-xs mt-1" style="color: var(--text-muted);">RAG Retrieval Latency</div>
-                </div>
-                <div class="card-clay text-center p-5">
-                    <div class="text-2xl font-black" style="color: var(--accent-color);">6+</div>
-                    <div class="text-xs mt-1" style="color: var(--text-muted);">Open Source Projects</div>
-                </div>
-            </div>
-        </section>
+      <a class="card" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">
+        <div class="top"><h3>Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">An end-to-end German news pipeline: Whisper ASR, cross-lingual NER, fine-tuned event classification, translation and summarization — engineered to run on a single 4 GB GPU.</p>
+        <span class="metric">+13% F1 · 8.4× faster inference</span>
+        <div class="chips"><span class="chip">Whisper</span><span class="chip">XLM-RoBERTa</span><span class="chip">PyTorch</span><span class="chip">MLflow</span></div>
+      </a>
 
-        <hr class="section-sep mb-20">
+      <a class="card" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">
+        <div class="top"><h3>LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">Fine-tuned Qwen2-0.5B with QLoRA (4-bit) to extract structured JSON from job descriptions, training ~0.44% of parameters — reliable structured output from messy text.</p>
+        <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
+        <div class="chips"><span class="chip">QLoRA</span><span class="chip">Qwen2</span><span class="chip">PEFT</span><span class="chip">PyTorch</span></div>
+      </a>
 
-        <!-- Experience -->
-        <section id="experience" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>tool.fetch_experience(employer="Perinet")</div>
-                <h2 class="section-heading"><span class="node-glyph">▶</span><span class="node-idx">02_</span>experience</h2>
-            </div>
-            <div class="card rounded-lg p-6 md:p-8">
-                <div class="relative timeline space-y-12">
-                    <div class="relative timeline-item pl-10">
-                        <h3 class="text-xl font-bold" style="color: var(--text-color);">Working Student - AI Integration & Agentic Systems</h3>
-                        <p class="font-medium" style="color: var(--text-muted);">Perinet GmbH | Cottbus, Germany</p>
-                        <p class="text-sm accent-color font-semibold">June 2024 - Present</p>
-                        <ul class="mt-4 list-disc list-inside space-y-2" style="color: var(--text-color);">
-                            <li>Design and deploy <strong>RAG-based conversational agents</strong> using Python, LangChain, and Hugging Face, serving 20+ internal users daily via REST APIs with <strong>sub-300ms retrieval latency</strong>.</li>
-                            <li>Build <strong>multi-agent pipelines</strong> with LangGraph state machines and CrewAI role definitions; structured output parsing and automatic retry logic, <strong>reducing manual reporting effort by ~60%</strong>.</li>
-                            <li>Develop backend services in Python and Golang connecting LLM workflows to real-time sensor data via MQTT; versioned REST APIs with Pydantic validation using <strong>FastAPI</strong>.</li>
-                            <li>Instrument all LLM calls with <strong>Langfuse</strong> for cost, latency, and quality tracing; track prompt iterations in MLflow, cutting <strong>prompt-tuning cycles from days to hours</strong>.</li>
-                            <li>Containerize and deploy AI services with <strong>Docker and Kubernetes</strong>; automate CI/CD via GitHub Actions and GitLab for zero-touch releases.</li>
-                        </ul>
-                    </div>
-                    <div class="relative timeline-item pl-10">
-                        <h3 class="text-xl font-bold" style="color: var(--text-color);">Software Engineer Trainee</h3>
-                        <p class="font-medium" style="color: var(--text-muted);">Cognizant Technology Solutions | India</p>
-                        <p class="text-sm accent-color font-semibold">Oct 2021 - Aug 2022</p>
-                        <ul class="mt-4 list-disc list-inside space-y-2" style="color: var(--text-color);">
-                            <li>Contributed to large-scale enterprise systems in agile teams; developed strong coding discipline, debugging practices, and cross-functional stakeholder communication skills.</li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </section>
+      <a class="card" href="https://github.com/axon011/resume-tailor" target="_blank" rel="noopener">
+        <div class="top"><h3>Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <p class="desc">A CLI tool I use daily that reads a job description, tailors a résumé and cover letter, and runs its own ATS and regression checks before producing the PDF.</p>
+        <span class="metric">multi-stage LLM pipeline · self-checking</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">LaTeX</span><span class="chip">CLI</span></div>
+      </a>
 
-        <hr class="section-sep mb-20">
+    </div>
+  </section>
 
-        <!-- Projects -->
-        <section id="projects" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>tool.list_repos(top_n=6, sort="stars+forks")</div>
-                <h2 class="section-heading"><span class="node-glyph">▦</span><span class="node-idx">03_</span>projects</h2>
-            </div>
-            <div class="mb-6">
-                <div id="lang-filters" class="flex flex-wrap gap-2"></div>
-            </div>
-            <!-- Dynamically populated by script.js via GitHub API + README fetch -->
-            <div id="projects-grid" class="grid md:grid-cols-2 gap-6"></div>
-            <p id="no-results" class="text-center py-8 hidden" style="color: var(--text-muted);">No projects match your search.</p>
-        </section>
+  <!-- SKILLS -->
+  <section class="block reveal" id="skills">
+    <div class="sec-head"><span class="sec-idx">04</span><span class="sec-title">Skills</span><span class="sec-note mono">// toolkit</span></div>
+    <div class="skills-grid">
+      <div class="skill-card">
+        <h4>AI &amp; Agents</h4>
+        <div class="skill-row"><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">CrewAI</span><span class="chip">RAG</span><span class="chip">Agentic AI</span><span class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span class="chip">MCP</span><span class="chip">Tool Use</span></div>
+      </div>
+      <div class="skill-card">
+        <h4>LLMOps &amp; Evaluation</h4>
+        <div class="skill-row"><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">Langfuse</span><span class="chip">LLM-as-Judge</span><span class="chip">Hybrid Retrieval</span><span class="chip">Qdrant</span><span class="chip">ChromaDB</span><span class="chip">pgvector</span></div>
+      </div>
+      <div class="skill-card">
+        <h4>Programming &amp; Backend</h4>
+        <div class="skill-row"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">FastAPI</span><span class="chip">REST / gRPC</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQL / PostgreSQL</span></div>
+      </div>
+      <div class="skill-card">
+        <h4>Infrastructure &amp; DevOps</h4>
+        <div class="skill-row"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">GitLab CI/CD</span><span class="chip">MQTT</span><span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Linux</span></div>
+      </div>
+    </div>
+  </section>
 
-        <!-- Skills with animated bars -->
-        <section id="skills" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>system.list_capabilities()</div>
-                <h2 class="section-heading"><span class="node-glyph">◆</span><span class="node-idx">04_</span>skills</h2>
-            </div>
-            <div class="grid md:grid-cols-6 gap-6">
-                <div class="card rounded-lg p-6 md:col-span-3">
-                    <h3 class="font-bold mb-5" style="color: var(--text-color);">AI / Agents</h3>
-                    <div class="space-y-3">
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">Agentic Systems / LangGraph</span>
-                            <span class="skill-level skill-level-expert">Expert</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">RAG Pipelines / LangChain</span>
-                            <span class="skill-level skill-level-expert">Expert</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">Prompt Engineering</span>
-                            <span class="skill-level skill-level-advanced">Advanced</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">LLMOps (Langfuse / MLflow)</span>
-                            <span class="skill-level skill-level-advanced">Advanced</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">PyTorch / Deep Learning</span>
-                            <span class="skill-level skill-level-advanced">Advanced</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">RAG Evaluation (RAGAs / LLM-as-Judge)</span>
-                            <span class="skill-level skill-level-advanced">Advanced</span>
-                        </div>
-                    </div>
-                </div>
+  <!-- EDUCATION -->
+  <section class="block reveal" id="education">
+    <div class="sec-head"><span class="sec-idx">05</span><span class="sec-title">Education</span><span class="sec-note mono">// academic</span></div>
+    <div class="mini-grid">
+      <div class="mini">
+        <h3>M.Sc. Artificial Intelligence</h3>
+        <div class="org">Brandenburg University of Technology · Cottbus</div>
+        <div class="when">Oct 2022 — 2026 (thesis phase)</div>
+        <p>Focus: Machine Learning, Computer Vision, Explainable ML. Thesis on content-aware Vision Transformer optimization for efficient inference on edge devices (PyTorch).</p>
+      </div>
+      <div class="mini">
+        <h3>B.Sc. Computer Application</h3>
+        <div class="org">BVM Holy Cross College · Kottayam, India</div>
+        <div class="when">Jul 2018 — Mar 2021</div>
+        <p>Foundations in software development, data structures, databases and systems.</p>
+      </div>
+    </div>
+  </section>
 
-                <div class="card rounded-lg p-6 md:col-span-3">
-                    <h3 class="font-bold mb-5" style="color: var(--text-color);">Programming & Backend</h3>
-                    <div class="space-y-3">
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">Python</span>
-                            <span class="skill-level skill-level-expert">Expert</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">FastAPI / REST APIs</span>
-                            <span class="skill-level skill-level-expert">Expert</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">Go (Golang)</span>
-                            <span class="skill-level skill-level-intermediate">Intermediate</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">React / TypeScript</span>
-                            <span class="skill-level skill-level-intermediate">Intermediate</span>
-                        </div>
-                        <div class="skill-item flex items-center justify-between">
-                            <span class="text-sm" style="color: var(--text-color);">SQL / PostgreSQL</span>
-                            <span class="skill-level skill-level-intermediate">Intermediate</span>
-                        </div>
-                    </div>
-                </div>
+  <!-- LANGUAGES -->
+  <section class="block reveal" id="languages">
+    <div class="sec-head"><span class="sec-idx">06</span><span class="sec-title">Languages</span><span class="sec-note mono">// spoken</span></div>
+    <div class="lang-grid">
+      <div class="lang"><span>English</span><span class="lvl">Fluent · C1</span></div>
+      <div class="lang"><span>German</span><span class="lvl">B1 · improving</span></div>
+      <div class="lang"><span>Malayalam</span><span class="lvl">Native</span></div>
+    </div>
+  </section>
 
-                <div class="card rounded-lg p-6 md:col-span-3">
-                    <h3 class="font-bold mb-5" style="color: var(--text-color);">AI Frameworks & Vector DBs</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">LangGraph</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">CrewAI</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">LangChain</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Hugging Face</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">OpenAI API</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Anthropic API</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Qdrant</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">ChromaDB</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">pgvector</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">RAGAs</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Langfuse</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">MLflow</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Hybrid Retrieval (BM25 + Dense)</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">LLM-as-Judge Evaluation</span>
-                    </div>
-                </div>
+  <!-- CONTACT -->
+  <section class="block reveal" id="contact">
+    <div class="sec-head"><span class="sec-idx">07</span><span class="sec-title">Contact</span><span class="sec-note mono">// get in touch</span></div>
+    <div class="contact-card">
+      <p style="color:var(--muted);max-width:54ch">Open to AI / ML / LLM Engineer roles across Germany — remote, hybrid or on-site, and happy to relocate. The fastest way to reach me is email.</p>
+      <div class="contact-grid">
+        <a class="cc" href="mailto:aravindpradeep001@gmail.com">
+          <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
+          <span style="min-width:0"><span class="k">Email</span><br><span class="v">aravindpradeep001@gmail.com</span></span>
+        </a>
+        <a class="cc" href="https://linkedin.com/in/aravind-pradeepmadathinal" target="_blank" rel="noopener">
+          <span class="ico"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.37-4-3.11-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg></span>
+          <span style="min-width:0"><span class="k">LinkedIn</span><br><span class="v">aravind-pradeepmadathinal</span></span>
+        </a>
+        <a class="cc" href="https://github.com/axon011" target="_blank" rel="noopener">
+          <span class="ico"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></span>
+          <span style="min-width:0"><span class="k">GitHub</span><br><span class="v">github.com/axon011</span></span>
+        </a>
+        <a class="cc" href="Aravind_Pradeep_AI_Engineer.pdf" target="_blank" rel="noopener">
+          <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></span>
+          <span style="min-width:0"><span class="k">Résumé</span><br><span class="v">Download PDF</span></span>
+        </a>
+      </div>
+    </div>
+  </section>
 
-                <div class="card rounded-lg p-6 md:col-span-3">
-                    <h3 class="font-bold mb-5" style="color: var(--text-color);">Cloud / DevOps</h3>
-                    <div class="flex flex-wrap gap-2">
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Docker</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Kubernetes</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">GitHub Actions</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">GitLab CI/CD</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Azure</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">AWS</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">Linux</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">MQTT</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">SSE Streaming</span>
-                        <span class="tag text-sm font-medium px-3 py-1.5 rounded-full">MCP (Model Context Protocol)</span>
-                    </div>
-                </div>
-            </div>
-        </section>
+</main>
 
-        <hr class="section-sep mb-20">
+<footer>
+  <p class="mono">aravind_pradeep</p>
+  <p style="margin-top:6px">AI Engineer · Cottbus, Germany · <span id="yr"></span></p>
+</footer>
 
-        <!-- GitHub Stats -->
-        <section id="github-stats" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>tool.github_activity(user="axon011")</div>
-                <h2 class="section-heading"><span class="node-glyph">◉</span><span class="node-idx">05_</span>activity</h2>
-            </div>
-            <div class="card rounded-lg p-6 text-center">
-                <p class="text-sm font-semibold mb-4" style="color: var(--text-muted);">Aravind Pradeep's Contribution Graph</p>
-                <div style="position:relative; width:100%; height:220px;">
-                    <canvas id="contribution-canvas" style="position:absolute; top:0; left:0; width:100%; height:100%;"></canvas>
-                </div>
-                <p id="github-graph-fallback" class="text-sm" style="color: var(--text-muted); display:none;"></p>
-                <a href="https://github.com/axon011" target="_blank" rel="noopener noreferrer" class="btn-secondary inline-flex mt-6">
-                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                    View on GitHub
-                </a>
-            </div>
-        </section>
-
-        <!-- Education -->
-        <section id="education" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>tool.fetch_academic_history()</div>
-                <h2 class="section-heading"><span class="node-glyph">⌘</span><span class="node-idx">06_</span>education</h2>
-            </div>
-            <div class="card rounded-lg p-6 md:p-8">
-                <div class="relative timeline space-y-8">
-                    <div class="relative timeline-item pl-10">
-                        <h3 class="text-lg font-bold" style="color: var(--text-color);">M.Sc. Artificial Intelligence (Research Profile)</h3>
-                        <p class="font-medium" style="color: var(--text-muted);">Brandenburg University of Technology | Cottbus, Germany</p>
-                        <p class="text-sm accent-color font-semibold">Oct 2022 - Est. Dec 2025</p>
-                        <p class="text-sm mt-2" style="color: var(--text-color);">Focus: Machine Learning, Computer Vision, Explainable ML, Data Mining</p>
-                        <p class="text-sm mt-1" style="color: var(--text-muted);">Thesis: Content-Aware ViT Optimization on Edge Devices &mdash; token pruning, head pruning, RL-based adaptive pruning (Multi-Agent PPO), and edge-hardware benchmarking for Vision Transformers using PyTorch.</p>
-                    </div>
-                    <div class="relative timeline-item pl-10">
-                        <h3 class="text-lg font-bold" style="color: var(--text-color);">B.Sc. Computer Application</h3>
-                        <p class="font-medium" style="color: var(--text-muted);">BVM Holy Cross College | Kottayam, India</p>
-                        <p class="text-sm accent-color font-semibold">Jul 2018 - Mar 2021</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Languages -->
-        <section id="languages" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>system.list_languages()</div>
-                <h2 class="section-heading"><span class="node-glyph">◇</span><span class="node-idx">07_</span>languages</h2>
-            </div>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <div class="card rounded-lg p-6 text-center">
-                    <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">English</div>
-                    <div class="mt-2"><span class="skill-level skill-level-expert">Fluent (C1)</span></div>
-                </div>
-                <div class="card rounded-lg p-6 text-center">
-                    <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">German</div>
-                    <div class="mt-2"><span class="skill-level skill-level-intermediate">B1 Actively Improving</span></div>
-                </div>
-                <div class="card rounded-lg p-6 text-center">
-                    <div class="text-2xl font-bold mb-1" style="color: var(--text-color);">Malayalam</div>
-                    <div class="mt-2"><span class="skill-level skill-level-expert">Native</span></div>
-                </div>
-            </div>
-        </section>
-
-
-        <hr class="section-sep mb-20">
-
-        <!-- Contact -->
-        <section id="contact" class="mb-20 scroll-target">
-            <div class="section-node mb-12">
-                <div class="node-call"><span class="nc-kw">// node_call</span>system.open_channel()</div>
-                <h2 class="section-heading"><span class="node-glyph">↔</span><span class="node-idx">08_</span>contact</h2>
-            </div>
-            <p class="mb-6" style="color: var(--text-muted);">Open to AI Engineer / ML Engineer roles in Germany &mdash; remote or hybrid. Drop a line:</p>
-            <div class="card-interactive p-6 md:p-8">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-                    <a href="mailto:aravindpradeep001@gmail.com" class="flex items-center gap-3 contact-item p-3 rounded-lg min-w-0" data-tooltip="aravindpradeep001@gmail.com">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-bg);">
-                            <svg class="w-4 h-4" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-sm font-semibold" style="color: var(--text-color);">Email</div>
-                            <div class="text-xs truncate" style="color: var(--text-muted);">aravindpradeep001@gmail.com</div>
-                        </div>
-                    </a>
-                    <a href="https://linkedin.com/in/aravind-pradeepmadathinal" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 contact-item p-3 rounded-lg min-w-0" data-tooltip="linkedin.com/in/aravind-pradeepmadathinal">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-bg);">
-                            <svg class="w-4 h-4" style="color: var(--accent-color);" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z"/></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-sm font-semibold" style="color: var(--text-color);">LinkedIn</div>
-                            <div class="text-xs truncate" style="color: var(--text-muted);">aravind-pradeepmadathinal</div>
-                        </div>
-                    </a>
-                    <a href="https://github.com/axon011" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3 contact-item p-3 rounded-lg min-w-0" data-tooltip="github.com/axon011">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-bg);">
-                            <svg class="w-4 h-4" style="color: var(--accent-color);" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/></svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-sm font-semibold" style="color: var(--text-color);">GitHub</div>
-                            <div class="text-xs truncate" style="color: var(--text-muted);">github.com/axon011</div>
-                        </div>
-                    </a>
-                    <div class="flex items-center gap-3 contact-item p-3 rounded-lg min-w-0">
-                        <div class="flex-shrink-0 w-10 h-10 rounded-full flex items-center justify-center" style="background: var(--accent-bg);">
-                            <svg class="w-4 h-4" style="color: var(--accent-color);" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                            </svg>
-                        </div>
-                        <div class="min-w-0">
-                            <div class="text-sm font-semibold" style="color: var(--text-color);">Location</div>
-                            <div class="text-xs" style="color: var(--text-muted);">Cottbus, Germany</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-    </main>
-    <footer class="text-center py-8 text-sm" style="color: var(--text-muted); border-top: 1px solid var(--glass-border);">
-        <p>Aravind Pradeep &mdash; AI &amp; ML Engineer based in Cottbus, Germany</p>
-    </footer>
-
-    <!-- Back to Top -->
-    <button id="back-to-top" class="back-to-top hidden" aria-label="Back to top">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 10l7-7m0 0l7 7m-7-7v18" />
-        </svg>
-    </button>
-
-    <script src="js/script.js?v=19"></script>
+<script>
+(function(){
+  // theme
+  var root=document.documentElement, sun=document.getElementById('i-sun'), moon=document.getElementById('i-moon');
+  function apply(t){ if(t==='dark'){root.classList.add('dark');sun.style.display='none';moon.style.display='';}
+    else{root.classList.remove('dark');sun.style.display='';moon.style.display='none';} }
+  var saved=localStorage.getItem('theme');
+  apply(saved|| (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
+  document.getElementById('theme').addEventListener('click',function(){
+    var t=root.classList.contains('dark')?'light':'dark'; localStorage.setItem('theme',t); apply(t);
+  });
+  // year
+  document.getElementById('yr').textContent=new Date().getFullYear();
+  // reveal on scroll
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+  document.querySelectorAll('.reveal').forEach(function(el){io.observe(el);});
+  // active nav
+  var links=[].slice.call(document.querySelectorAll('.nav-links a'));
+  var secs=links.map(function(a){return document.querySelector(a.getAttribute('href'));});
+  var spy=new IntersectionObserver(function(es){es.forEach(function(e){
+    if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});
+      var i=secs.indexOf(e.target); if(i>-1)links[i].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
+  secs.forEach(function(s){if(s)spy.observe(s);});
+})();
+</script>
 </body>
 </html>
