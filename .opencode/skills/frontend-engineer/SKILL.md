@@ -9,22 +9,37 @@ You are a senior frontend engineer working on a live portfolio website hosted at
 
 ## Project Context
 
-- **Stack**: Vanilla HTML + CSS + JS, Tailwind CSS (CDN), no build step
-- **Files**: `index.html`, `css/style.css`, `js/script.js`
-- **Fonts**: Inter (body), JetBrains Mono (code)
-- **Theming**: CSS custom properties in `:root` and `[data-theme="dark"]`
-- **GitHub API**: Client-side fetches for repos (no auth token, 60 req/hr limit)
-- **Contact form**: Formspree (`https://formspree.io/f/xgonengv`)
-- **GitHub username**: `axon011` (referenced in script.js, index.html, and contribution graph)
+- **Stack**: Vanilla HTML + CSS + JS, no build step, no Tailwind, no framework
+- **Files**: `index.html` ONLY. Fully self-contained — all CSS in a `<style>` block in
+  `<head>`, all JS inline at the end of `<body>`. `css/style.css` and `js/script.js`
+  were deleted on 2026-08-14 (orphaned, never loaded by the page).
+- **Fonts**: Inter (body), JetBrains Mono (code) — Google Fonts, the only remote asset
+- **Theming**: custom properties on `:root`, dark overrides on `html.dark`.
+  NOT `[data-theme="dark"]`. Persisted in `localStorage` key `theme`.
+- **Projects**: 8 hand-written static cards. No GitHub API call, no contact form.
+- **GitHub username**: `axon011` — appears only in `index.html`
 - **MCP**: Chrome DevTools MCP is configured for browser automation and testing
 
 ## Design System
 
 ### Colors (CSS Variables)
-- Light: `--accent-color: #0D47A1` (deep blue), `--bg-color: #FFFFFF`
-- Dark: `--accent-color: #38bdf8` (sky blue), `--bg-color: #0f172a`
+- Light: `--accent: #1b4de4`, `--bg: #f7f8fb`, `--ink: #15161a`
+- Dark: `--accent: #7e9bff`, `--bg: #0a0b0f`, `--ink: #ecedf0`
 - Always use `var(--variable-name)` — never hardcode colors
-- Gradient: `linear-gradient(135deg, var(--accent-color), #06b6d4, #8b5cf6)`
+- Surfaces are glass over an aurora radial-gradient field (`body::before`, `--aur1/2/3`)
+
+### Motion (added 2026-08-14, emil-design-eng ruleset)
+- `--ease-out: cubic-bezier(.23,1,.32,1)` is the ONLY easing token. Never `ease-in` on UI.
+- Durations: press 100–160ms, dropdowns 150–250ms. UI stays under 300ms.
+- Every pressable element gets `:active { transform: scale(.97) }`.
+- Never animate from `scale(0)` — start at 0.9–0.95 plus opacity.
+- **All `:hover` rules go in the one `@media (hover:hover) and (pointer:fine)` block**
+  near the end of the `<style>`; the `:active` block must follow it. A bare inline
+  `:hover` leaves touch devices with a stuck hover state after tap.
+- `prefers-reduced-motion` = gentler, not zero. Null `animation`/`transform` only —
+  never `opacity` or `display`, which would hide content.
+- Reveals use `animation-fill-mode: backwards`, so the finished element releases
+  `transform` back to the hover rule instead of pinning it.
 
 ### Components
 - **glassmorphism**: Semi-transparent cards with backdrop-filter blur
