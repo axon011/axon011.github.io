@@ -55,7 +55,12 @@
   --shadow-lift:0 2px 6px rgba(20,22,40,.06),0 26px 56px -20px rgba(20,30,80,.26);
   --blur:16px;
   --aur1:rgba(27,77,228,.16); --aur2:rgba(132,92,255,.14); --aur3:rgba(20,180,160,.10);
-  --maxw:1080px; --r:16px;
+  --maxw:1120px; --r:16px; --r-lg:20px;
+  --fs-body:17px;
+  --fs-lede:clamp(19px,2.3vw,22px);
+  --fs-h1:clamp(44px,7.2vw,84px);
+  --fs-sec:clamp(28px,3.4vw,36px);
+  --fs-card:19px;
   --ease-out:cubic-bezier(.23,1,.32,1);
 }
 html.dark{
@@ -74,7 +79,7 @@ html{scroll-behavior:smooth}
 body{
   background:var(--bg);color:var(--ink);
   font-family:Inter,system-ui,-apple-system,sans-serif;
-  font-size:16px;line-height:1.6;-webkit-font-smoothing:antialiased;
+  font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased;
   letter-spacing:-0.011em;position:relative;
 }
 /* aurora field behind the glass */
@@ -85,17 +90,19 @@ body::before{
     radial-gradient(40rem 30rem at 92% 8%, var(--aur2), transparent 62%),
     radial-gradient(44rem 36rem at 70% 100%, var(--aur3), transparent 60%);
 }
-/* frosted-glass surfaces */
-.card,.skill-card,.mini,.lang,.contact-card,.fact,.facts,.status,.icon-btn,.btn-ghost,.cc{
+.wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
+@media(max-width:560px){.wrap{padding:0 18px}}
+a{color:inherit;text-decoration:none}
+img,svg,canvas{max-width:100%}
+.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
+
+/* frosted-glass surface */
+.glass{
+  background:var(--surface);border:1px solid var(--line);
   -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);
   backdrop-filter:blur(var(--blur)) saturate(150%);
+  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-edge);
 }
-.card,.skill-card,.mini,.lang,.contact-card{
-  box-shadow:var(--shadow), inset 0 1px 0 var(--glass-edge);
-}
-.wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
-a{color:inherit;text-decoration:none}
-.mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
 /* ---- nav ---- */
 .skip{position:absolute;left:12px;top:-48px;z-index:60;background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600}
@@ -106,27 +113,30 @@ a{color:inherit;text-decoration:none}
 .nav::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;
   background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
   transform:scaleX(var(--p,0));transform-origin:left;pointer-events:none}
-.nav-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
-.brand{font-weight:800;font-size:15px;letter-spacing:-0.02em;display:flex;align-items:center;gap:9px}
+.nav-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;height:66px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+@media(max-width:560px){.nav-in{padding:0 18px}}
+.brand{font-weight:800;font-size:15px;letter-spacing:-0.02em;display:flex;align-items:center;gap:9px;white-space:nowrap}
 .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
 .nav-links{display:flex;align-items:center;gap:28px}
 .nav-links a{font-size:13.5px;color:var(--muted);font-weight:500;transition:color .15s}
 .nav-links a.on{color:var(--ink)}
 .nav-actions{display:flex;align-items:center;gap:10px}
-.icon-btn{width:36px;height:36px;border:1px solid var(--line);border-radius:9px;background:var(--surface);
+.icon-btn{width:38px;height:38px;border:1px solid var(--line);border-radius:10px;background:var(--surface);
+  -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur));
   display:grid;place-items:center;cursor:pointer;color:var(--muted);
   transition:color .15s,border-color .15s,transform 140ms var(--ease-out)}
-.btn{display:inline-flex;align-items:center;gap:7px;font-size:13.5px;font-weight:600;border-radius:9px;
-  padding:9px 15px;cursor:pointer;border:1px solid transparent;white-space:nowrap;
+.btn{display:inline-flex;align-items:center;gap:7px;font-size:14px;font-weight:600;border-radius:10px;
+  padding:10px 17px;cursor:pointer;border:1px solid transparent;white-space:nowrap;
   transition:background .16s,border-color .16s,box-shadow .16s,color .16s,transform 140ms var(--ease-out)}
 .btn-primary{background:var(--accent);color:#fff}
-.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink);
+  -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}
 .menu-btn{display:none}
 .menu-btn svg{grid-area:1/1;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
 .menu-btn svg.off{opacity:0;transform:rotate(90deg) scale(.7)}
 @media(max-width:760px){
   .menu-btn{display:grid}
-  .nav-links{position:absolute;top:60px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+  .nav-links{position:absolute;top:66px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
     padding:8px 24px 14px;background:color-mix(in srgb,var(--bg) 94%,transparent);
     backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line);
     opacity:0;transform:translateY(-6px);pointer-events:none;
@@ -137,174 +147,235 @@ a{color:inherit;text-decoration:none}
 }
 
 /* ---- hero ---- */
-.hero{padding:88px 0 60px;position:relative}
+.hero{padding:104px 0 92px;position:relative}
+@media(max-width:880px){.hero{padding:72px 0 64px}}
 .hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:-1;
-  background-image:radial-gradient(var(--line-strong) 1px,transparent 1px);background-size:24px 24px;opacity:.45;
-  -webkit-mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent);mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent)}
-.eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
-  display:inline-flex;align-items:center;gap:8px;margin-bottom:22px}
-.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--accent);
-  animation:pulse 2.4s ease-in-out infinite}
+  background-image:radial-gradient(var(--line-strong) 1px,transparent 1px);background-size:26px 26px;opacity:.45;
+  -webkit-mask-image:radial-gradient(68% 55% at 58% 26%,#000,transparent);mask-image:radial-gradient(68% 55% at 58% 26%,#000,transparent)}
+.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:40px}.hero-visual{order:-1;max-width:460px}}
+.eyebrow{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--accent-ink);display:inline-flex;align-items:center;gap:9px;margin-bottom:26px}
+.eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
-h1.title{font-size:clamp(38px,6vw,62px);line-height:1.04;font-weight:800;letter-spacing:-0.03em;max-width:14ch}
+h1.title{font-size:var(--fs-h1);line-height:1.0;font-weight:800;letter-spacing:-0.035em;max-width:13ch}
 h1.title em{font-style:normal;color:var(--accent)}
 /* one-time hero entrance: words rise in sequence, then lede → CTAs → status */
 h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 45ms)}
 @keyframes wordin{from{opacity:0;transform:translateY(.4em)}to{opacity:1;transform:none}}
-.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:fadeup .65s var(--ease-out) both}
+.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:fadeup .7s var(--ease-out) both}
 .eyebrow{animation-delay:0s}.lede{animation-delay:.32s}.hero-cta{animation-delay:.42s}.status{animation-delay:.52s}.hero-visual{animation-delay:.25s}
-@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
-.lede{margin-top:24px;font-size:clamp(16.5px,2.2vw,19px);color:var(--muted);max-width:60ch;line-height:1.6}
-.hero-cta{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
-.status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);
-  border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:7px 13px;margin-top:34px}
+@keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+.lede{margin-top:30px;font-size:var(--fs-lede);color:var(--muted);max-width:52ch;line-height:1.55}
+.hero-cta{margin-top:38px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
+.status{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;color:var(--muted);
+  border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 15px;margin-top:30px;
+  -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}
 .status .led{width:7px;height:7px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 22%,transparent)}
-.hero-meta{margin-top:40px;display:flex;flex-wrap:wrap;gap:10px 30px;font-size:13px;color:var(--faint)}
-.hero-meta b{color:var(--ink);font-weight:600}
 
-/* hero layout + live agent-pipeline visual */
-.hero-grid{display:grid;grid-template-columns:1.08fr .92fr;gap:48px;align-items:center}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero-visual{order:-1;max-width:420px}}
+/* window card + knowledge graph */
 .viz-card{background:var(--surface);-webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%);
-  border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
+  border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
   overflow:hidden;position:relative;animation:float 7s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-/* border trail — a short accent arc orbiting the card edge while the pipeline "runs" */
+/* border trail — a short accent arc orbiting the card edge */
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .viz-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
   background:conic-gradient(from var(--a),transparent 0 72%,var(--accent) 88%,transparent 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
   animation:orbit 4.5s linear infinite;opacity:.9}
 @keyframes orbit{to{--a:360deg}}
-.viz-head{display:flex;align-items:center;gap:7px;padding:12px 15px;border-bottom:1px solid var(--line)}
+.viz-head{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid var(--line)}
 .tdot{width:10px;height:10px;border-radius:50%}.tdot.r{background:#ff5f57}.tdot.y{background:#febc2e}.tdot.g{background:#28c840}
 .viz-title{font-size:12px;color:var(--muted);margin-left:6px}
 .viz-run{margin-left:auto;font-size:11px;color:var(--accent-ink);display:flex;align-items:center;gap:6px}
 .viz-run .led{width:6px;height:6px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 24%,transparent)}
-.viz-body{padding:15px}
-.vnode{display:flex;align-items:center;gap:12px;padding:10px 12px;border:1px solid var(--line);border-radius:11px;
-  background:var(--chip);opacity:0;animation:vin .5s ease forwards;animation-delay:var(--d)}
-@keyframes vin{from{opacity:0;transform:translateX(10px)}to{opacity:1;transform:none}}
-.vic{width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:var(--accent-wash);color:var(--accent);font-size:14px;flex-shrink:0}
-.vtx{display:flex;flex-direction:column;line-height:1.3;flex:1;min-width:0}
-.vtx b{font-size:13.5px;font-weight:650}.vtx i{font-style:normal;font-size:11px;color:var(--faint)}
-.vst{font-size:10.5px;color:#16a34a;background:color-mix(in srgb,#19b562 13%,transparent);padding:2px 7px;border-radius:5px}
-.vst.run{color:var(--accent-ink);background:var(--accent-wash)}
-.vflow{height:15px;margin-left:27px;width:2px;background:linear-gradient(var(--line-strong),transparent);position:relative;overflow:visible}
-.vpulse{position:absolute;top:-5px;left:-2px;width:6px;height:6px;border-radius:50%;background:var(--accent);box-shadow:0 0 8px var(--accent);animation:fall 2.7s linear infinite}
-@keyframes fall{0%{top:-5px;opacity:0}20%{opacity:1}80%{opacity:1}100%{top:16px;opacity:0}}
-.viz-foot{display:flex;justify-content:space-between;padding:11px 15px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
+/* the body owns the box, so hiding the SVG fallback can't collapse the canvas to zero height */
+.viz-body{padding:10px 12px;position:relative;aspect-ratio:42/31}
+/* live canvas graph, with the static SVG underneath as the no-JS / no-2d-context fallback */
+/* canvas and svg are replaced elements: width:auto would keep their intrinsic size,
+   so the box has to be stated explicitly rather than implied by the insets */
+#kg,#kg-fallback{position:absolute;left:12px;top:10px;display:block;width:calc(100% - 24px);height:calc(100% - 20px)}
+#kg-fallback[hidden]{display:none}
+.kg{display:block}
+.kg .edge{stroke:var(--line-strong);stroke-width:1;fill:none}
+.kg .edge.hot{stroke:var(--accent);opacity:.42}
+.kg circle{fill:var(--surface-solid);stroke:var(--line-strong);stroke-width:1.4}
+.kg circle.hot{fill:var(--accent);stroke:none}
+.kg text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--muted);text-anchor:middle}
+.kg text.hot{fill:var(--accent-ink);font-weight:600}
+.viz-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
 
 /* ---- section scaffolding ---- */
-section.block{padding:54px 0;border-top:1px solid var(--line)}
-.sec-head{display:flex;align-items:baseline;gap:14px;margin-bottom:30px}
-.sec-idx{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:600;
+section.block{padding:84px 0;border-top:1px solid var(--line)}
+@media(max-width:640px){section.block{padding:60px 0}}
+.sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;flex-wrap:wrap}
+.sec-idx{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:600;
   background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#8a5cff));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
-.sec-title{font-size:24px;font-weight:800;letter-spacing:-0.02em}
-.sec-note{margin-left:auto;font-size:13px;color:var(--faint)}
-@media(max-width:600px){.sec-note{display:none}}
+.sec-title{font-size:var(--fs-sec);font-weight:800;letter-spacing:-0.028em;line-height:1.1}
+.sec-note{margin-left:auto;font-size:13px;color:var(--faint);font-family:"JetBrains Mono",monospace}
+@media(max-width:640px){.sec-note{display:none}}
 
-/* ---- about ---- */
-.about-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:40px;align-items:start}
-@media(max-width:780px){.about-grid{grid-template-columns:1fr;gap:28px}}
-.prose p{color:var(--muted);margin-bottom:16px;font-size:16.5px}
-.prose p:last-child{margin-bottom:0}
-.prose p strong{color:var(--ink);font-weight:600}
-.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:26px 28px;
-  box-shadow:var(--shadow),inset 0 1px 0 var(--glass-edge);
-  -webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%)}
-@media(max-width:560px){.panel{padding:22px 20px}}
-.facts{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--line);border:1px solid var(--line);border-radius:var(--r);overflow:hidden}
-.fact{background:var(--surface);padding:20px 18px}
-.fact .n{font-size:22px;font-weight:800;letter-spacing:-0.02em}
-.fact .l{font-size:12.5px;color:var(--muted);margin-top:3px}
+/* ---- 01 about bento ---- */
+.bento{display:grid;gap:16px;
+  grid-template-columns:repeat(4,1fr);
+  grid-template-areas:
+    "lead lead msc yrs"
+    "lead lead perinet proj"
+    "stack stack stack stack";}
+@media(max-width:880px){
+  .bento{grid-template-columns:repeat(2,1fr);
+    grid-template-areas:"lead lead" "msc yrs" "perinet proj" "stack stack"}
+}
+@media(max-width:560px){
+  .bento{grid-template-columns:1fr;
+    grid-template-areas:"lead" "msc" "yrs" "perinet" "proj" "stack"}
+}
+.b-lead{grid-area:lead;border-radius:var(--r-lg);padding:32px}
+@media(max-width:560px){.b-lead{padding:24px 20px}}
+.b-lead p{font-size:19px;color:var(--muted);line-height:1.55;margin-bottom:18px;letter-spacing:-0.014em}
+.b-lead p strong{color:var(--ink);font-weight:700}
+.b-lead .foot{font-size:13.5px;color:var(--faint);margin:0;padding-top:16px;border-top:1px solid var(--line);line-height:1.5}
+.fact{border-radius:var(--r-lg);padding:22px;display:flex;flex-direction:column;justify-content:flex-end;min-height:118px;
+  transition:border-color .2s ease,box-shadow .2s ease,transform 140ms var(--ease-out)}
+.fact .n{font-size:34px;font-weight:800;letter-spacing:-0.035em;line-height:1}
+.fact .l{font-size:13px;color:var(--muted);margin-top:8px;line-height:1.4}
+.f-msc{grid-area:msc}.f-yrs{grid-area:yrs}.f-perinet{grid-area:perinet}.f-proj{grid-area:proj}
+.f-proj .n{color:var(--accent)}
+.b-stack{grid-area:stack;border-radius:var(--r-lg);padding:20px 0;overflow:hidden;position:relative}
+.b-stack .k{font-family:"JetBrains Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--faint);padding:0 24px;margin-bottom:14px}
+.marquee{overflow:hidden;
+  -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
+.mtrack{display:flex;width:max-content;animation:slide 40s linear infinite}
+.mgroup{display:flex;align-items:center;gap:14px;padding-right:14px;flex-shrink:0}
+.mgroup span{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--muted);white-space:nowrap}
+.mgroup span::after{content:"·";margin-left:14px;color:var(--line-strong)}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
-/* ---- timeline ---- */
-.tl{display:flex;flex-direction:column;gap:8px;position:relative;padding-left:26px}
-.tl::before{content:"";position:absolute;left:5px;top:14px;bottom:14px;width:1px;
+/* ---- 02 experience ---- */
+.tl{display:flex;flex-direction:column;position:relative;padding-left:30px}
+.tl::before{content:"";position:absolute;left:5px;top:16px;bottom:16px;width:1px;
   background:linear-gradient(var(--accent),var(--line-strong) 40%,transparent)}
-.job{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line);position:relative}
-.job::before{content:"";position:absolute;left:-26px;top:30px;width:11px;height:11px;border-radius:50%;
+.job{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:30px 0;border-top:1px solid var(--line);position:relative}
+.job::before{content:"";position:absolute;left:-30px;top:36px;width:11px;height:11px;border-radius:50%;
   background:var(--surface-solid);border:2px solid var(--line-strong)}
-.job:first-child{border-top:0;padding-top:4px}
-.job:first-child::before{top:9px;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
-@media(max-width:680px){.job{grid-template-columns:1fr;gap:8px}}
-.job .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--faint);padding-top:3px}
-.job h3{font-size:17px;font-weight:700;letter-spacing:-0.01em}
-.job .org{font-size:14px;color:var(--accent-ink);font-weight:600;margin-top:2px;margin-bottom:12px}
-.job ul{list-style:none;display:flex;flex-direction:column;gap:9px}
-.job li{position:relative;padding-left:18px;font-size:14.5px;color:var(--muted);line-height:1.55}
-.job li::before{content:"";position:absolute;left:2px;top:9px;width:5px;height:5px;border-radius:50%;background:var(--line-strong)}
-.job li strong{color:var(--ink);font-weight:600}
+.job:first-child{border-top:0;padding-top:6px}
+.job:first-child::before{top:12px;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
+@media(max-width:720px){.job{grid-template-columns:1fr;gap:10px}}
+.job .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--faint);padding-top:5px;line-height:1.5}
+.job h3{font-size:19px;font-weight:700;letter-spacing:-0.02em}
+.job .org{font-size:15px;color:var(--accent-ink);font-weight:600;margin:4px 0 16px}
+.job ul{list-style:none;display:flex;flex-direction:column;gap:11px}
+.job li{position:relative;padding-left:19px;font-size:15.5px;color:var(--muted);line-height:1.55}
+.job li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--line-strong)}
 
-/* ---- projects ---- */
-.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:720px){.proj-grid{grid-template-columns:1fr}}
-.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;position:relative;overflow:hidden;
-  display:flex;flex-direction:column;transition:transform .16s var(--ease-out),box-shadow .18s ease,border-color .18s ease;box-shadow:var(--shadow)}
-.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+/* ---- 03 projects ---- */
+/* isolate: makes .card a stacking context so the spotlight can sit at z-index:-1,
+   i.e. above the glass background but below the text, without escaping the card */
+.card{border-radius:var(--r-lg);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;isolation:isolate;
+  transition:transform .18s var(--ease-out),box-shadow .2s ease,border-color .2s ease}
+.card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:1;
   background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
-  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out)}
+  transform:scaleX(0);transform-origin:left;transition:transform .32s var(--ease-out)}
 /* cursor spotlight — --mx/--my set from JS on fine pointers only */
-.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:-1;
   background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),var(--accent-wash),transparent 65%);
   transition:opacity .25s var(--ease-out)}
-.card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-.ftag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--accent-ink);background:var(--accent-wash);border-radius:5px;padding:3px 7px;white-space:nowrap;flex-shrink:0}
-.card h3{font-size:16.5px;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px}
-.card h3 .gh{color:var(--faint);transition:color .15s}
-.card .desc{font-size:14px;color:var(--muted);margin:10px 0 14px;line-height:1.55;flex:1}
+.card>*{position:relative;z-index:2}
+/* h3 stays unpositioned so .card-link::after resolves against .card, not the title box */
+.card h3{position:static;z-index:auto;font-size:var(--fs-card);font-weight:700;letter-spacing:-0.02em}
+.card h3 .gh{color:var(--faint);transition:color .15s;flex-shrink:0}
+/* the card is an <article>; the title link is stretched over the whole card so it stays one click target */
+.card-link{color:inherit;text-decoration:none;display:inline-flex;align-items:center;gap:9px}
+.card-link::after{content:"";position:absolute;inset:0;z-index:3;border-radius:inherit}
+/* the disclosure control and its panel must sit above the stretched link to stay usable */
+.exp-btn,.more{position:relative;z-index:4}
+.card .pitch{font-size:15px;color:var(--muted);margin:10px 0 16px;line-height:1.55}
+.proj-grid .card .chips{margin-top:auto}
 .metric{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--accent-ink);
-  background:var(--accent-wash);border-radius:7px;padding:5px 9px;display:inline-block;margin-bottom:14px;align-self:flex-start}
+  background:var(--accent-wash);border-radius:8px;padding:6px 10px;display:inline-block;align-self:flex-start;margin-bottom:16px}
 .chips{display:flex;flex-wrap:wrap;gap:6px}
 .chip{font-size:11.5px;font-weight:500;color:var(--muted);background:var(--chip);border:1px solid var(--line);
   border-radius:6px;padding:3px 8px;font-family:"JetBrains Mono",monospace}
+.exp-btn{margin-top:18px;align-self:flex-start;font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;
+  letter-spacing:.04em;color:var(--muted);background:var(--chip);border:1px solid var(--line);border-radius:8px;
+  padding:6px 11px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+  transition:color .16s,border-color .16s,transform 140ms var(--ease-out)}
+.exp-btn .car{transition:transform 260ms var(--ease-out);display:inline-block}
+.exp-btn[aria-expanded="true"] .car{transform:rotate(180deg)}
+.more{display:grid;grid-template-rows:0fr;transition:grid-template-rows 260ms var(--ease-out)}
+.more>div{overflow:hidden}
+.exp-btn[aria-expanded="true"]+.more{grid-template-rows:1fr}
+.more p{font-size:14.5px;color:var(--muted);line-height:1.55;padding-top:14px;margin-top:14px;border-top:1px solid var(--line)}
 
-/* ---- skills ---- */
-.skills-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:720px){.skills-grid{grid-template-columns:1fr}}
-.skill-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
-.skill-card h4{font-size:12.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
-.skill-row{display:flex;flex-wrap:wrap;gap:7px}
+.feat{display:grid;grid-template-columns:1.35fr .65fr;gap:32px;align-items:center;margin-bottom:16px;padding:32px}
+/* unpositioned for the same reason as .card h3 — the stretch must reach the whole featured card */
+.feat>div{position:static;z-index:auto}
+@media(max-width:880px){.feat{grid-template-columns:1fr;gap:22px;padding:26px}}
+@media(max-width:560px){.feat{padding:22px 20px}}
+.feat h3{font-size:clamp(22px,2.8vw,26px)}
+.feat .pitch{font-size:16.5px;max-width:56ch}
+.ftag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+  color:var(--accent-ink);background:var(--accent-wash);border-radius:5px;padding:4px 8px;display:inline-block;margin-bottom:14px}
+.feat-metric{border-left:1px solid var(--line);padding-left:28px}
+@media(max-width:880px){.feat-metric{border-left:0;border-top:1px solid var(--line);padding-left:0;padding-top:20px}}
+.feat-metric .big{font-family:"JetBrains Mono",monospace;font-size:clamp(22px,4.4vw,32px);font-weight:600;
+  letter-spacing:-0.03em;color:var(--accent);line-height:1.1;overflow-wrap:anywhere}
+.feat-metric .sub{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint);margin-top:10px;line-height:1.6}
+.proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
+@media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
 
-/* ---- mini grids (edu / lang) ---- */
-.mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
-@media(max-width:680px){.mini-grid{grid-template-columns:1fr}}
-.mini{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:22px;box-shadow:var(--shadow)}
-.mini h3{font-size:16px;font-weight:700}
-.mini .org{font-size:13.5px;color:var(--accent-ink);font-weight:600;margin:3px 0}
+/* ---- 04 skills ---- */
+.skills-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
+.skills-bento .s1{grid-row:span 2}
+@media(max-width:760px){.skills-bento{grid-template-columns:1fr}.skills-bento .s1{grid-row:auto}}
+.skill-card{border-radius:var(--r-lg);padding:26px}
+.skill-card h4{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+.skill-row{display:flex;flex-wrap:wrap;gap:8px}
+.skill-card .chip{font-size:12.5px;padding:5px 10px}
+
+/* ---- 05 education ---- */
+.edu-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
+@media(max-width:760px){.edu-grid{grid-template-columns:1fr}}
+.mini{border-radius:var(--r-lg);padding:26px}
+.mini h3{font-size:19px;font-weight:700;letter-spacing:-0.02em}
+.mini .org{font-size:14px;color:var(--accent-ink);font-weight:600;margin:5px 0 3px}
 .mini .when{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--faint)}
-.mini p{font-size:13.5px;color:var(--muted);margin-top:9px;line-height:1.55}
-.lang-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
-@media(max-width:600px){.lang-grid{grid-template-columns:1fr}}
-.lang{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:18px 20px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
-.lang .lvl{font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--accent-ink);background:var(--accent-wash);padding:3px 8px;border-radius:6px}
+.mini p{font-size:15px;color:var(--muted);margin-top:12px;line-height:1.55}
+.langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
 
-/* ---- contact ---- */
-.contact-card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:30px;box-shadow:var(--shadow)}
-.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;margin-top:22px}
-@media(max-width:600px){.contact-grid{grid-template-columns:1fr}}
-.cc{display:flex;align-items:center;gap:13px;padding:14px;border:1px solid var(--line);border-radius:11px;
-  transition:background .16s,border-color .16s,transform 140ms var(--ease-out)}
-.cc .ico{width:38px;height:38px;border-radius:9px;background:var(--accent-wash);display:grid;place-items:center;color:var(--accent);flex-shrink:0}
-.cc .k{font-size:13.5px;font-weight:600}
-.cc .v{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.cc-wrap{position:relative}
-.cc-wrap .cc{padding-right:52px}
-.copy{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:8px;
-  border:1px solid var(--line);background:var(--chip);color:var(--muted);display:grid;place-items:center;cursor:pointer;
+/* ---- 06 contact ---- */
+.contact-card{border-radius:var(--r-lg);padding:36px}
+@media(max-width:560px){.contact-card{padding:26px 20px}}
+.mailrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.mail{font-size:clamp(19px,3.6vw,26px);font-weight:700;letter-spacing:-0.03em;overflow-wrap:anywhere}
+.copy{position:relative;width:34px;height:34px;border-radius:9px;border:1px solid var(--line);background:var(--chip);color:var(--muted);
+  display:grid;place-items:center;cursor:pointer;flex-shrink:0;
   transition:color .16s,border-color .16s,background .16s,transform 140ms var(--ease-out)}
 .copy svg{grid-area:1/1;transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out)}
 .copy svg.off{opacity:0;transform:scale(.6)}
 .copy.ok{color:#16a34a;border-color:color-mix(in srgb,#19b562 40%,transparent);background:color-mix(in srgb,#19b562 10%,transparent)}
-.copy .tip{position:absolute;right:0;bottom:calc(100% + 8px);font-size:11.5px;font-weight:600;color:var(--bg);background:var(--ink);
-  padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;
+.copy .tip{position:absolute;left:50%;bottom:calc(100% + 8px);font-size:11.5px;font-weight:600;color:var(--bg);background:var(--ink);
+  padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;transform:translate(-50%,4px);pointer-events:none;
   transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out)}
-.copy.ok .tip{opacity:1;transform:none}
+.copy.ok .tip{opacity:1;transform:translate(-50%,0)}
+.contact-line{font-size:16px;color:var(--muted);margin-top:14px;max-width:52ch}
+.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:28px}
+@media(max-width:760px){.contact-grid{grid-template-columns:1fr}}
+.cc{display:flex;align-items:center;gap:13px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--chip);
+  -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur));
+  transition:background .16s,border-color .16s,transform 140ms var(--ease-out);min-width:0}
+.cc .ico{width:38px;height:38px;border-radius:10px;background:var(--accent-wash);display:grid;place-items:center;color:var(--accent);flex-shrink:0}
+.cc .k{font-size:14px;font-weight:600;display:block}
+.cc .v{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;display:block}
 
-footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--faint);font-size:13px}
+footer{border-top:1px solid var(--line);padding:42px 0;color:var(--faint);font-size:13px}
+.foot-in{max-width:var(--maxw);margin:0 auto;padding:0 28px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;align-items:center}
+@media(max-width:560px){.foot-in{padding:0 18px}}
 footer .mono{color:var(--muted)}
 footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transition:color .15s,border-color .15s}
 
@@ -336,12 +407,15 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   .icon-btn:hover{color:var(--ink);border-color:var(--line-strong)}
   .btn-primary:hover{background:var(--accent-ink)}
   .btn-ghost:hover{border-color:var(--line-strong);box-shadow:var(--shadow)}
-  .cc:hover{border-color:var(--line-strong);background:var(--bg)}
-  .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift);border-color:var(--line-strong)}
+  .cc:hover{border-color:var(--line-strong);background:var(--surface)}
+  .fact:hover{border-color:var(--line-strong);box-shadow:var(--shadow-lift)}
+  .card:hover{transform:translateY(var(--lift,-4px));box-shadow:var(--shadow-lift);border-color:var(--line-strong)}
   .card:hover::before{transform:scaleX(1)}
   .card:hover::after{opacity:1}
   .card:hover h3 .gh{color:var(--accent)}
+  .exp-btn:hover{color:var(--ink);border-color:var(--line-strong)}
   .copy:hover{color:var(--ink);border-color:var(--line-strong)}
+  .b-stack:hover .mtrack{animation-play-state:paused}
   footer a:hover{color:var(--ink);border-color:var(--ink)}
 }
 
@@ -349,22 +423,21 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 .btn:active{transform:scale(.97)}
 .icon-btn:active{transform:scale(.94)}
 .cc:active{transform:scale(.985)}
-.card:active{transform:translateY(-4px) scale(.985)}
-.copy:active{transform:translateY(-50%) scale(.92)}
+.card:active{transform:translateY(var(--lift,-4px)) scale(.985)}
+.fact:active{transform:scale(.985)}
+.exp-btn:active{transform:scale(.97)}
+.copy:active{transform:scale(.92)}
 
 /* reduced motion: gentler, not zero — keep opacity and colour, drop movement */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .viz-card,.pip,.viz-card::after{animation:none!important}
-  .vnode{animation:none!important;opacity:1!important}
-  .vpulse{display:none}
+  .viz-card,.viz-card::after,.pip,.mtrack{animation:none!important}
   h1.title .w,.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:none}
   .sreveal.in{animation:none}
   .reveal{transform:none}
-  .nav-links{transition:opacity .18s}
-  .card:hover{transform:none}
-  .btn:active,.icon-btn:active,.cc:active,.card:active{transform:none}
-  .copy:active{transform:translateY(-50%)}
+  .card{--lift:0px}
+  .exp-btn .car{transition:none}
+  .btn:active,.icon-btn:active,.cc:active,.card:active,.fact:active,.exp-btn:active,.copy:active{transform:none}
   ::view-transition-new(root){animation:none}
 }
 </style>
@@ -404,8 +477,8 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="eyebrow"><span class="pip"></span>AI Engineer · Cottbus, Germany</div>
-        <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">are</span> <span class="w" style="--i:6">meant</span> <span class="w" style="--i:7">to</span> <span class="w" style="--i:8">be</span> <span class="w" style="--i:9"><em>used</em>.</span></h1>
-        <p class="lede">Two years building the backend and infrastructure behind an industrial-IoT AI platform at Perinet, and a set of my own projects going deep on RAG, agents and LLMOps. I care less about the latest model and more about whether a system measurably works — and can show that it does.</p>
+        <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">get</span> <span class="w" style="--i:6"><em>used</em>.</span></h1>
+        <p class="lede">Two years on the backend of an industrial-IoT AI platform at Perinet, plus my own deep work on RAG, agents and LLMOps — judged by whether it measurably works.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#projects">View projects</a>
           <a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a>
@@ -414,68 +487,109 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="status"><span class="led"></span>Available full-time from summer 2026 · open to relocate</div>
       </div>
 
-      <!-- live agent-pipeline visual -->
+      <!-- live knowledge-graph visual -->
       <div class="hero-visual" aria-hidden="true">
         <div class="viz-card">
           <div class="viz-head">
             <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
-            <span class="viz-title mono">agent_pipeline.py</span>
-            <span class="viz-run mono"><span class="led"></span>running</span>
+            <span class="viz-title mono">knowledge_graph.live</span>
+            <span class="viz-run mono"><span class="led"></span>live</span>
           </div>
           <div class="viz-body">
-            <div class="vnode" style="--d:0s"><span class="vic">◆</span><span class="vtx"><b>Planner</b><i class="mono">decompose the task</i></span><span class="vst mono">ok</span></div>
-            <div class="vflow"><span class="vpulse"></span></div>
-            <div class="vnode" style="--d:.9s"><span class="vic">◈</span><span class="vtx"><b>Researcher</b><i class="mono">gather + cite sources</i></span><span class="vst mono">ok</span></div>
-            <div class="vflow"><span class="vpulse" style="animation-delay:.9s"></span></div>
-            <div class="vnode" style="--d:1.8s"><span class="vic">▦</span><span class="vtx"><b>Writer</b><i class="mono">draft the report</i></span><span class="vst mono">ok</span></div>
-            <div class="vflow"><span class="vpulse" style="animation-delay:1.8s"></span></div>
-            <div class="vnode" style="--d:2.7s"><span class="vic">◉</span><span class="vtx"><b>Critic</b><i class="mono">verify + loop back</i></span><span class="vst run mono">…</span></div>
+            <canvas id="kg" aria-hidden="true"></canvas>
+            <svg id="kg-fallback" class="kg" viewBox="0 0 420 310" role="img" aria-hidden="true">
+              <g class="edges">
+                <path class="edge hot" d="M120 84 L60 146"/>
+                <path class="edge hot" d="M120 84 L206 52"/>
+                <path class="edge" d="M120 84 L48 46"/>
+                <path class="edge hot" d="M120 84 L124 196"/>
+                <path class="edge hot" d="M120 84 L148 142"/>
+                <path class="edge hot" d="M206 52 L288 100"/>
+                <path class="edge hot" d="M206 52 L200 158"/>
+                <path class="edge" d="M288 100 L344 142"/>
+                <path class="edge hot" d="M288 100 L200 158"/>
+                <path class="edge" d="M288 100 L268 244"/>
+                <path class="edge" d="M200 158 L300 192"/>
+                <path class="edge hot" d="M200 158 L124 196"/>
+                <path class="edge" d="M200 158 L148 142"/>
+                <path class="edge" d="M300 192 L186 250"/>
+                <path class="edge" d="M300 192 L352 238"/>
+                <path class="edge" d="M344 142 L268 244"/>
+                <path class="edge" d="M268 244 L352 238"/>
+                <path class="edge" d="M268 244 L62 240"/>
+                <path class="edge" d="M148 142 L186 250"/>
+                <path class="edge" d="M148 142 L344 142"/>
+                <path class="edge" d="M148 142 L62 240"/>
+                <path class="edge" d="M148 142 L60 146"/>
+                <path class="edge" d="M48 46 L60 146"/>
+              </g>
+              <g class="nodes">
+                <circle class="hot" cx="120" cy="84" r="7"/><text class="hot" x="120" y="72">RAG</text>
+                <circle class="hot" cx="206" cy="52" r="7"/><text class="hot" x="206" y="40">LangGraph</text>
+                <circle cx="60" cy="146" r="5"/><text x="60" y="166">Qdrant</text>
+                <circle class="hot" cx="288" cy="100" r="7"/><text class="hot" x="288" y="88">Agents</text>
+                <circle class="hot" cx="200" cy="158" r="7"/><text class="hot" x="200" y="146">LLMOps</text>
+                <circle cx="300" cy="192" r="5"/><text x="304" y="182">MLflow</text>
+                <circle cx="124" cy="196" r="5"/><text x="118" y="212">RAGAs</text>
+                <circle cx="344" cy="142" r="5"/><text x="348" y="132">FastAPI</text>
+                <circle cx="268" cy="244" r="5"/><text x="264" y="262">Docker</text>
+                <circle cx="352" cy="238" r="5"/><text x="356" y="256">K8s</text>
+                <circle cx="62" cy="240" r="5"/><text x="62" y="258">MQTT</text>
+                <circle cx="48" cy="46" r="5"/><text x="52" y="34">GraphRAG</text>
+                <circle cx="186" cy="250" r="5"/><text x="186" y="268">PyTorch</text>
+                <circle class="hot" cx="148" cy="142" r="7"/><text class="hot" x="140" y="130">Python</text>
+              </g>
+            </svg>
           </div>
-          <div class="viz-foot mono"><span>4 agents · LangGraph</span><span>p95 · 1.2s</span></div>
+          <div class="viz-foot mono"><span>18 nodes · 27 edges</span><span>hover to pull</span></div>
         </div>
       </div>
     </div>
-
-    <div class="hero-meta">
-      <span><b>Stack</b> · Python, LangGraph, FastAPI, Docker/K8s</span>
-      <span><b>M.Sc. AI</b> · BTU Cottbus</span>
-      <span><b>~3 yrs</b> · professional software</span>
-    </div>
   </header>
 
-  <!-- ABOUT -->
+  <!-- 01 ABOUT -->
   <section class="block reveal" id="about">
-    <div class="sec-head"><span class="sec-idx">01</span><span class="sec-title">About</span><span class="sec-note mono">// who & what</span></div>
-    <div class="about-grid">
-      <div class="prose panel">
-        <p>I'm an AI Engineer focused on building systems that work in the real world — reliable tools people use, not demos that impress once and break.</p>
-        <p>At <strong>Perinet</strong> (industrial IoT) I've spent two years on the backend and infrastructure side of their AI platform: <strong>Python and Go services</strong> wired into real-time MQTT sensor streams, FastAPI APIs, Docker and Kubernetes, CI/CD. I also ran the <strong>model-benchmarking</strong> that shaped the platform's design decisions.</p>
-        <p>The deeper <strong>RAG, agentic and LLMOps</strong> work I've driven through my own projects: hybrid retrieval with RAGAs and MLflow evaluation, multi-agent systems on LangGraph, and an observability dashboard that traces every model call's latency and cost.</p>
-        <p>Not all of it is LLM work. I also build <strong>simulation and optimisation</strong> systems — most recently a weather-constrained scheduler that plans a 12-turbine wind-farm build against 20 years of hourly wind, where the scheduling maths stays deterministic and the model only handles the human edges.</p>
-        <p>I'm finishing my <strong>M.Sc. in Artificial Intelligence</strong> at BTU Cottbus, with close to three years of professional software experience overall, including earlier enterprise work at Cognizant. Open to AI / ML / LLM Engineer roles across Germany.</p>
+    <div class="sec-head"><span class="sec-idx mono">01</span><span class="sec-title">About</span><span class="sec-note">// who &amp; what</span></div>
+    <div class="bento">
+      <div class="b-lead glass">
+        <p><strong>Production first.</strong> Python/Go services on real-time MQTT streams, FastAPI, Docker/K8s, CI/CD — two years at Perinet, including the model-benchmarking that shaped the platform.</p>
+        <p><strong>Depth through my own projects.</strong> Hybrid RAG with RAGAs + MLflow eval, multi-agent LangGraph systems, an LLMOps tracer, and a GraphRAG stack.</p>
+        <p><strong>Not only LLMs.</strong> A deterministic wind-farm installation scheduler over 20 years of hourly wind — the model only handles the human edges.</p>
+        <p class="foot">M.Sc. AI at BTU Cottbus (thesis phase) · open to AI/ML/LLM Engineer roles across Germany.</p>
       </div>
-      <div class="facts">
-        <div class="fact"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
-        <div class="fact"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
-        <div class="fact"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
-        <div class="fact"><div class="n">9</div><div class="l">open-source projects</div></div>
+      <div class="fact glass f-msc"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
+      <div class="fact glass f-yrs"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
+      <div class="fact glass f-perinet"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
+      <div class="fact glass f-proj"><div class="n">9</div><div class="l">open-source projects</div></div>
+      <div class="b-stack glass">
+        <div class="k">stack</div>
+        <div class="marquee">
+          <div class="mtrack">
+            <div class="mgroup">
+              <span>Python</span><span>LangGraph</span><span>FastAPI</span><span>Qdrant</span><span>Docker</span><span>Kubernetes</span><span>PyTorch</span><span>MLflow</span><span>RAGAs</span><span>Go</span><span>React</span><span>PostgreSQL</span><span>MQTT</span><span>GitHub Actions</span>
+            </div>
+            <div class="mgroup" aria-hidden="true">
+              <span>Python</span><span>LangGraph</span><span>FastAPI</span><span>Qdrant</span><span>Docker</span><span>Kubernetes</span><span>PyTorch</span><span>MLflow</span><span>RAGAs</span><span>Go</span><span>React</span><span>PostgreSQL</span><span>MQTT</span><span>GitHub Actions</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- EXPERIENCE -->
+  <!-- 02 EXPERIENCE -->
   <section class="block reveal" id="experience">
-    <div class="sec-head"><span class="sec-idx">02</span><span class="sec-title">Experience</span><span class="sec-note mono">// where I've worked</span></div>
-    <div class="panel"><div class="tl">
+    <div class="sec-head"><span class="sec-idx mono">02</span><span class="sec-title">Experience</span><span class="sec-note">// where I've worked</span></div>
+    <div class="tl">
       <div class="job">
         <div class="when">Jul 2024 — May 2026</div>
         <div>
           <h3>AI Engineer (Working Student)</h3>
-          <div class="org">Perinet GmbH · Cottbus, Germany</div>
+          <div class="org">Perinet GmbH · Cottbus</div>
           <ul>
-            <li>Built <strong>Python and Go backend services</strong> connecting LLM workflows to real-time MQTT sensor streams — versioned FastAPI REST APIs, containerized with Docker and Kubernetes, with automated GitHub Actions CI/CD for zero-touch deployments.</li>
-            <li>Led the <strong>containerization workstream</strong> for the company's AI platform — a chatbot, real-time MQTT anomaly detection, and a sensor-data exploration tool — handling profiling, QA, and deployment integration with the engineering and ML teams.</li>
-            <li>Owned the <strong>model-benchmarking workstream</strong>: evaluated retrieval speed, generation quality, and trade-offs across model variants to inform the platform's chatbot and corpus design.</li>
+            <li>Python &amp; Go services linking LLM workflows to real-time MQTT streams — FastAPI, Docker/K8s, GitHub Actions.</li>
+            <li>Led containerization of the AI platform (chatbot, anomaly detection, sensor explorer).</li>
+            <li>Owned model benchmarking — retrieval speed vs generation quality across variants.</li>
           </ul>
         </div>
       </div>
@@ -483,166 +597,181 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="when">Oct 2021 — May 2022</div>
         <div>
           <h3>Software Engineer Trainee</h3>
-          <div class="org">Cognizant Technology Solutions · India</div>
+          <div class="org">Cognizant · India</div>
           <ul>
-            <li>Built and maintained enterprise banking applications (COBOL, JCL, DB2) in agile sprints; developed structured debugging and production-deployment practices.</li>
+            <li>Enterprise banking apps (COBOL/JCL/DB2) in agile sprints.</li>
           </ul>
         </div>
       </div>
-    </div></div>
+    </div>
   </section>
 
-  <!-- PROJECTS -->
+  <!-- 03 PROJECTS -->
   <section class="block" id="projects">
-    <div class="sec-head reveal"><span class="sec-idx">03</span><span class="sec-title">Projects</span><span class="sec-note mono">// selected open source</span></div>
+    <div class="sec-head reveal"><span class="sec-idx mono">03</span><span class="sec-title">Projects</span><span class="sec-note">// selected open source</span></div>
+
+    <article class="card glass feat sreveal" style="--i:0">
+      <div>
+        <span class="ftag">Featured</span>
+        <h3><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</p>
+        <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-windfarm">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-windfarm"><div><p>Crane lifts can't be paused, have wind limits, and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p></div></div>
+      </div>
+      <div class="feat-metric">
+        <div class="big">€5.59M → €3.56M</div>
+        <div class="sub">189 → 64 days<br>19/19 weather-years</div>
+      </div>
+    </article>
+
     <div class="proj-grid">
 
-      <a class="card sreveal" style="--i:0" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">
-        <div class="top"><h3>Wind-Farm Installation Planner <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3><span class="ftag">Featured</span></div>
-        <p class="desc">A weather-aware scheduler for a 12-turbine wind-farm build — crane lifts can't be paused, have wind limits, and must fit inside working hours. It searches 48 candidate campaigns against 20 years of hourly wind and prices each as a risk distribution, keeping the scheduling maths deterministic and the LLM at the human edges.</p>
-        <span class="metric">€5.59M → €3.56M · 189 → 64 days · 19/19 weather-years</span>
-        <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div>
-      </a>
-
-      <a class="card sreveal" style="--i:1" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">
-        <div class="top"><h3>GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">Builds a knowledge graph from documents, then answers multi-hop questions by traversing the graph instead of flattening it into chunks — entity/relation extraction, k-hop subgraph retrieval, grounded answers with citations.</p>
+      <article class="card glass sreveal" style="--i:0">
+        <h3><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
         <div class="chips"><span class="chip">GraphRAG</span><span class="chip">networkx</span><span class="chip">Pydantic</span><span class="chip">LLM extraction</span><span class="chip">Python</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-graphrag-agent">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-graphrag-agent"><div><p>Entity and relation extraction builds a typed graph first, so a question that spans three documents is answered by walking edges instead of hoping one chunk contains everything.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:0" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">
-        <div class="top"><h3>GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">The full-stack app over GraphRAG Agent: upload documents, watch a typed knowledge graph build live, then chat over it with k-hop subgraph retrieval and cited answers. Next.js front end with an interactive force-graph, FastAPI back end.</p>
+      <article class="card glass sreveal" style="--i:1">
+        <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
         <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
         <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">FastAPI</span><span class="chip">GraphRAG</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-graphrag-studio">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-graphrag-studio"><div><p>An interactive force-graph front end over the GraphRAG Agent core, so the retrieval path behind every cited answer is something you can actually see.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:1" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">
-        <div class="top"><h3>Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">A 4-agent system (Planner → Researcher → Writer → Critic) built on LangGraph state machines that turns a question into a sourced report, fully automated end to end.</p>
+      <article class="card glass sreveal" style="--i:0">
+        <h3><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</p>
         <span class="metric">LangGraph · strict role boundaries · CI/CD</span>
         <div class="chips"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Docker</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-multi-agent">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-multi-agent"><div><p>Each role gets a Pydantic-typed contract and no access to the others' tools, which is what keeps a four-agent loop from collapsing into one agent doing everything badly.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:0" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">
-        <div class="top"><h3>RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">A hybrid-retrieval RAG pipeline (BM25 + dense + Reciprocal Rank Fusion) with an automated RAGAs/MLflow evaluation harness and regression alerts on retrieval quality.</p>
+      <article class="card glass sreveal" style="--i:1">
+        <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
         <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
         <div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span><span class="chip">FastAPI</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-rag-eval">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-rag-eval"><div><p>Every retrieval change runs against a fixed question set and logs to MLflow, so a quality regression shows up as a failed run rather than a complaint months later.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:1" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">
-        <div class="top"><h3>LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">A self-hosted dashboard that traces every model call's latency, token counts and per-model cost across GPT-4o, Claude, Gemini and DeepSeek — no external tracing service.</p>
+      <article class="card glass sreveal" style="--i:0">
+        <h3><a class="card-link" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Self-hosted tracing of latency, tokens and cost per model call.</p>
         <span class="metric">full-stack · multi-stage Docker · 12 tests</span>
         <div class="chips"><span class="chip">FastAPI</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-llmops">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-llmops"><div><p>Traces land in PostgreSQL rather than a third-party service, which matters when the calls being traced carry customer data.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:0" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">
-        <div class="top"><h3>Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">An end-to-end German news pipeline: Whisper ASR, cross-lingual NER, fine-tuned event classification, translation and summarization — engineered to run on a single 4 GB GPU.</p>
+      <article class="card glass sreveal" style="--i:1">
+        <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
         <div class="chips"><span class="chip">Whisper</span><span class="chip">XLM-RoBERTa</span><span class="chip">PyTorch</span><span class="chip">MLflow</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-news">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-news"><div><p>The whole German-language chain was engineered to fit one consumer GPU, which forced quantisation and batching decisions that a bigger card would have hidden.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:1" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">
-        <div class="top"><h3>LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">Fine-tuned Qwen2-0.5B with QLoRA (4-bit) to extract structured JSON from job descriptions, training ~0.44% of parameters — reliable structured output from messy text.</p>
+      <article class="card glass sreveal" style="--i:0">
+        <h3><a class="card-link" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
         <div class="chips"><span class="chip">QLoRA</span><span class="chip">Qwen2</span><span class="chip">PEFT</span><span class="chip">PyTorch</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-finetune">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-finetune"><div><p>Training roughly 0.44% of the parameters was enough to get reliable structured output from messy postings — a small tuned model beating a large prompted one on this task.</p></div></div>
+      </article>
 
-      <a class="card sreveal" style="--i:0" href="https://github.com/axon011/resume-tailor" target="_blank" rel="noopener">
-        <div class="top"><h3>Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
-        <p class="desc">A CLI tool I use daily that reads a job description, tailors a résumé and cover letter, and runs its own ATS and regression checks before producing the PDF.</p>
+      <article class="card glass sreveal" style="--i:1">
+        <h3><a class="card-link" href="https://github.com/axon011/resume-tailor" target="_blank" rel="noopener">Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">CLI that tailors résumé + cover letter and self-checks before the PDF.</p>
         <span class="metric">multi-stage LLM pipeline · self-checking</span>
         <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">LaTeX</span><span class="chip">CLI</span></div>
-      </a>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-resume"><div><p>ATS and regression checks run before LaTeX compiles, so a fabricated metric or a broken claim fails the build instead of reaching a recruiter.</p></div></div>
+      </article>
 
     </div>
   </section>
 
-  <!-- SKILLS -->
+  <!-- 04 SKILLS -->
   <section class="block reveal" id="skills">
-    <div class="sec-head"><span class="sec-idx">04</span><span class="sec-title">Skills</span><span class="sec-note mono">// toolkit</span></div>
-    <div class="skills-grid">
-      <div class="skill-card">
+    <div class="sec-head"><span class="sec-idx mono">04</span><span class="sec-title">Skills</span><span class="sec-note">// toolkit</span></div>
+    <div class="skills-bento">
+      <div class="skill-card glass s1">
         <h4>AI &amp; Agents</h4>
         <div class="skill-row"><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">CrewAI</span><span class="chip">RAG</span><span class="chip">Agentic AI</span><span class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span class="chip">MCP</span><span class="chip">Tool Use</span></div>
       </div>
-      <div class="skill-card">
+      <div class="skill-card glass">
         <h4>LLMOps &amp; Evaluation</h4>
         <div class="skill-row"><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">Langfuse</span><span class="chip">LLM-as-Judge</span><span class="chip">Hybrid Retrieval</span><span class="chip">Qdrant</span><span class="chip">ChromaDB</span><span class="chip">pgvector</span></div>
       </div>
-      <div class="skill-card">
+      <div class="skill-card glass">
         <h4>Programming &amp; Backend</h4>
         <div class="skill-row"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">FastAPI</span><span class="chip">REST / gRPC</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQL / PostgreSQL</span></div>
       </div>
-      <div class="skill-card">
+      <div class="skill-card glass" style="grid-column:1/-1">
         <h4>Infrastructure &amp; DevOps</h4>
         <div class="skill-row"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">GitLab CI/CD</span><span class="chip">MQTT</span><span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Linux</span></div>
       </div>
     </div>
   </section>
 
-  <!-- EDUCATION -->
+  <!-- 05 EDUCATION -->
   <section class="block reveal" id="education">
-    <div class="sec-head"><span class="sec-idx">05</span><span class="sec-title">Education</span><span class="sec-note mono">// academic</span></div>
-    <div class="mini-grid">
-      <div class="mini">
+    <div class="sec-head"><span class="sec-idx mono">05</span><span class="sec-title">Education</span><span class="sec-note">// academic</span></div>
+    <div class="edu-grid">
+      <div class="mini glass">
         <h3>M.Sc. Artificial Intelligence</h3>
-        <div class="org">Brandenburg University of Technology · Cottbus</div>
+        <div class="org">BTU Cottbus</div>
         <div class="when">Oct 2022 — 2026 (thesis phase)</div>
-        <p>Focus: Machine Learning, Computer Vision, Explainable ML. Thesis on content-aware Vision Transformer optimization for efficient inference on edge devices (PyTorch).</p>
+        <p>Thesis: content-aware Vision Transformer optimisation for edge inference.</p>
+        <div class="langs">
+          <span class="chip">English C1</span><span class="chip">German B1</span><span class="chip">Malayalam native</span>
+        </div>
       </div>
-      <div class="mini">
+      <div class="mini glass">
         <h3>B.Sc. Computer Application</h3>
-        <div class="org">BVM Holy Cross College · Kottayam, India</div>
-        <div class="when">Jul 2018 — Mar 2021</div>
+        <div class="org">BVM Holy Cross College, Kottayam</div>
+        <div class="when">2018 — 2021</div>
         <p>Foundations in software development, data structures, databases and systems.</p>
       </div>
     </div>
   </section>
 
-  <!-- LANGUAGES -->
-  <section class="block reveal" id="languages">
-    <div class="sec-head"><span class="sec-idx">06</span><span class="sec-title">Languages</span><span class="sec-note mono">// spoken</span></div>
-    <div class="lang-grid">
-      <div class="lang"><span>English</span><span class="lvl">Fluent · C1</span></div>
-      <div class="lang"><span>German</span><span class="lvl">B1 · improving</span></div>
-      <div class="lang"><span>Malayalam</span><span class="lvl">Native</span></div>
-    </div>
-  </section>
-
-  <!-- CONTACT -->
+  <!-- 06 CONTACT -->
   <section class="block reveal" id="contact">
-    <div class="sec-head"><span class="sec-idx">07</span><span class="sec-title">Contact</span><span class="sec-note mono">// get in touch</span></div>
-    <div class="contact-card">
-      <p style="color:var(--muted);max-width:54ch">Open to AI / ML / LLM Engineer roles across Germany — remote, hybrid or on-site, and happy to relocate. The fastest way to reach me is email.</p>
+    <div class="sec-head"><span class="sec-idx mono">06</span><span class="sec-title">Contact</span><span class="sec-note">// get in touch</span></div>
+    <div class="contact-card glass">
+      <div class="mailrow">
+        <a class="mail" href="mailto:aravindpradeep001@gmail.com">aravindpradeep001@gmail.com</a>
+        <button class="copy" id="copy-email" type="button" data-copy="aravindpradeep001@gmail.com" aria-label="Copy email address">
+          <svg id="i-copy" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path stroke-linecap="round" d="M5 15V5a1 1 0 011-1h9"/></svg>
+          <svg id="i-check" class="off" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+          <span class="tip" aria-hidden="true">Copied</span>
+        </button>
+      </div>
+      <p class="contact-line">Open to AI / ML / LLM Engineer roles across Germany — remote, hybrid or on-site.</p>
       <div class="contact-grid">
-        <div class="cc-wrap">
-          <a class="cc" href="mailto:aravindpradeep001@gmail.com">
-            <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
-            <span style="min-width:0"><span class="k">Email</span><br><span class="v">aravindpradeep001@gmail.com</span></span>
-          </a>
-          <button class="copy" id="copy-email" data-copy="aravindpradeep001@gmail.com" aria-label="Copy email address">
-            <svg id="i-copy" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path stroke-linecap="round" d="M5 15V5a1 1 0 011-1h9"/></svg>
-            <svg id="i-check" class="off" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
-            <span class="tip" aria-hidden="true">Copied</span>
-          </button>
-        </div>
         <a class="cc" href="https://linkedin.com/in/aravind-pradeepmadathinal" target="_blank" rel="noopener">
           <span class="ico"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.37-4-3.11-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg></span>
-          <span style="min-width:0"><span class="k">LinkedIn</span><br><span class="v">aravind-pradeepmadathinal</span></span>
+          <span style="min-width:0"><span class="k">LinkedIn</span><span class="v">aravind-pradeepmadathinal</span></span>
         </a>
         <a class="cc" href="https://github.com/axon011" target="_blank" rel="noopener">
           <span class="ico"><svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></span>
-          <span style="min-width:0"><span class="k">GitHub</span><br><span class="v">github.com/axon011</span></span>
+          <span style="min-width:0"><span class="k">GitHub</span><span class="v">github.com/axon011</span></span>
         </a>
         <a class="cc" href="Aravind_Pradeep_AI_Engineer.pdf" target="_blank" rel="noopener">
           <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg></span>
-          <span style="min-width:0"><span class="k">Résumé</span><br><span class="v">Download PDF</span></span>
+          <span style="min-width:0"><span class="k">Résumé</span><span class="v">Download PDF</span></span>
         </a>
       </div>
     </div>
@@ -651,9 +780,11 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 </main>
 
 <footer>
-  <p class="mono">aravind_pradeep</p>
-  <p style="margin-top:6px">AI Engineer · Cottbus, Germany · <span id="yr"></span></p>
-  <p style="margin-top:10px;font-size:12px">Hand-written HTML/CSS/JS, zero dependencies · <a href="https://github.com/axon011/axon011.github.io" target="_blank" rel="noopener">view source</a></p>
+  <div class="foot-in">
+    <span class="mono">aravind_pradeep</span>
+    <span>AI Engineer · Cottbus, Germany · <span id="yr"></span></span>
+    <span>Hand-written HTML/CSS/JS, zero dependencies · <a href="https://github.com/axon011/axon011.github.io" target="_blank" rel="noopener">view source</a></span>
+  </div>
 </footer>
 
 <script>
@@ -666,7 +797,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   var saved=localStorage.getItem('theme');
   var reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
   apply(saved|| (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
-  document.getElementById('theme').addEventListener('click',function(e){
+  document.getElementById('theme').addEventListener('click',function(){
     var t=root.classList.contains('dark')?'light':'dark'; localStorage.setItem('theme',t);
     // circular reveal from the toggle when View Transitions exist; plain swap otherwise
     if(document.startViewTransition && !reduced){
@@ -695,6 +826,13 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px');});
     });
   }
+  // project details — the card is an <article>, so the button no longer sits inside the link
+  document.querySelectorAll('.exp-btn').forEach(function(b){
+    b.addEventListener('click',function(e){
+      e.stopPropagation();
+      b.setAttribute('aria-expanded', b.getAttribute('aria-expanded')==='true' ? 'false' : 'true');
+    });
+  });
   // copy email
   var cp=document.getElementById('copy-email'), cpT;
   cp.addEventListener('click',function(){
@@ -716,6 +854,184 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});
       var i=secs.indexOf(e.target); if(i>-1)links[i].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(function(s){if(s)spy.observe(s);});
+
+  /* live knowledge graph on the hero canvas — own IIFE so its locals cannot
+     collide with the page script; exposes only window.__kg for testing */
+  (function () {
+    var cv = document.getElementById('kg');
+    if (!cv || !cv.getContext) return;
+    var ctx = null;
+    try { ctx = cv.getContext('2d'); } catch (e) { return; }
+    if (!ctx) return;
+    var fb = document.getElementById('kg-fallback');
+    // setAttribute, not .hidden — the fallback is an <svg>, and SVGElement does not
+    // reflect the hidden IDL property, so the assignment would silently do nothing
+    if (fb) fb.setAttribute('hidden', '');
+
+    var NAMES = ['RAG','LangGraph','Qdrant','Agents','LLMOps','MLflow','RAGAs','FastAPI','Docker','K8s','MQTT','PyTorch','GraphRAG','Eval','Python','Go','Whisper','QLoRA'];
+    var KEY = { RAG: 1, Agents: 1, LLMOps: 1, GraphRAG: 1, Python: 1 };
+    var PAIRS = [['RAG','Qdrant'],['RAG','RAGAs'],['RAG','Eval'],['RAGAs','Eval'],['RAG','GraphRAG'],['GraphRAG','Agents'],['Agents','LangGraph'],['Agents','Python'],['LangGraph','Python'],['LLMOps','MLflow'],['LLMOps','Eval'],['LLMOps','FastAPI'],['FastAPI','Docker'],['Docker','K8s'],['FastAPI','Python'],['MQTT','Go'],['MQTT','FastAPI'],['Go','Docker'],['PyTorch','Whisper'],['PyTorch','QLoRA'],['PyTorch','Python'],['QLoRA','Eval'],['Whisper','Python'],['MLflow','Eval'],['Qdrant','Docker'],['K8s','LLMOps'],['GraphRAG','Qdrant']];
+
+    var seed = 20260823;
+    function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
+
+    var idx = {}, nodes = [], i;
+    for (i = 0; i < NAMES.length; i++) {
+      var a = rnd() * Math.PI * 2, r = 0.18 + rnd() * 0.32;
+      nodes.push({ n: NAMES[i], key: !!KEY[NAMES[i]], x: 0.5 + Math.cos(a) * r, y: 0.5 + Math.sin(a) * r * 0.86, vx: 0, vy: 0, ph: rnd() * Math.PI * 2, hot: 0 });
+      idx[NAMES[i]] = i;
+    }
+    var edges = [];
+    for (i = 0; i < PAIRS.length; i++) edges.push({ a: idx[PAIRS[i][0]], b: idx[PAIRS[i][1]] });
+
+    var W = 0, H = 0, PAD = 34, S = 1, dpr = 1;
+    var C = { ink: '#111', muted: '#777', accent: '#5b8cff', bg: '#fff', line: '#ddd', edge: '#ddd' };
+    var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
+    var fine = matchMedia('(hover:hover) and (pointer:fine)').matches && !reduce;
+    var mx = -1e4, my = -1e4, packets = [], nextPk = 0, t0 = 0, running = false, visible = false, raf = 0, last = 0;
+
+    function readColors() {
+      var cs = getComputedStyle(document.documentElement);
+      function g(k, d) { var v = cs.getPropertyValue(k); return v && v.trim() ? v.trim() : d; }
+      C.ink = g('--ink', '#111'); C.muted = g('--muted', '#777'); C.accent = g('--accent', '#5b8cff');
+      C.bg = g('--bg', '#fff'); C.line = g('--line', '#ddd');
+      // the static SVG fallback strokes its edges with --line-strong; match it so the
+      // canvas carries the same weight (plain --line is too faint under the glass)
+      C.edge = g('--line-strong', C.line);
+    }
+
+    function resize() {
+      var w = cv.clientWidth, h = cv.clientHeight;
+      if (!w || !h) { var p = cv.parentNode; if (p) { w = p.clientWidth; h = p.clientHeight; } }
+      if (!w || !h) return;
+      dpr = Math.min(window.devicePixelRatio || 1, 2);
+      W = w; H = h; S = Math.min(W, H) / 390;
+      cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      draw(0);
+    }
+
+    function step() {
+      var rest = 70 * S, k = 0.0016, n = nodes.length, i, j, d, dx, dy, f;
+      for (i = 0; i < edges.length; i++) {
+        var A = nodes[edges[i].a], B = nodes[edges[i].b];
+        dx = (B.x - A.x) * W; dy = (B.y - A.y) * H; d = Math.sqrt(dx * dx + dy * dy) || 1;
+        f = (d - rest) * k / d;
+        A.vx += dx * f / W; A.vy += dy * f / H; B.vx -= dx * f / W; B.vy -= dy * f / H;
+      }
+      for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
+        var P = nodes[i], Q = nodes[j];
+        dx = (Q.x - P.x) * W; dy = (Q.y - P.y) * H; var d2 = dx * dx + dy * dy; d = Math.sqrt(d2) || 1;
+        if (d > 300 * S) continue;
+        f = -3200 * S * S / (d2 + 140) / d;
+        P.vx += dx * f / W; P.vy += dy * f / H; Q.vx -= dx * f / W; Q.vy -= dy * f / H;
+      }
+      var px = PAD / W, py = PAD / H;
+      for (i = 0; i < n; i++) {
+        var N = nodes[i];
+        N.vx += (0.5 - N.x) * 0.0032; N.vy += (0.5 - N.y) * 0.0045;
+        if (fine && mx > -1e3) {
+          dx = mx - N.x * W; dy = my - N.y * H; d = Math.sqrt(dx * dx + dy * dy);
+          if (d < 120 && d > 0.5) { f = (1 - d / 120) * 0.10 / d; N.vx += dx * f / W * 8; N.vy += dy * f / H * 8; }
+        }
+        N.vx *= 0.85; N.vy *= 0.85;
+        N.x += N.vx; N.y += N.vy;
+        if (N.x < px) { N.x = px; N.vx = 0; } if (N.x > 1 - px) { N.x = 1 - px; N.vx = 0; }
+        if (N.y < py) { N.y = py; N.vy = 0; } if (N.y > 1 - py) { N.y = 1 - py; N.vy = 0; }
+      }
+    }
+
+    function px_(N, t) { return N.x * W + (reduce ? 0 : Math.sin(t * 0.00021 + N.ph) * 3.5 * S); }
+    function py_(N, t) { return N.y * H + (reduce ? 0 : Math.cos(t * 0.00017 + N.ph * 1.7) * 3.5 * S); }
+
+    function draw(t) {
+      if (!W || !H) return;
+      ctx.clearRect(0, 0, W, H);
+      var n = nodes.length, hot = -1, i;
+      if (fine && mx > -1e3) {
+        var best = 24 * 24;
+        for (i = 0; i < n; i++) { var ddx = px_(nodes[i], t) - mx, ddy = py_(nodes[i], t) - my, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; hot = i; } }
+      }
+      for (i = 0; i < n; i++) nodes[i].hot += ((i === hot ? 1 : 0) - nodes[i].hot) * (reduce ? 1 : 0.18);
+
+      ctx.lineWidth = 1;
+      for (i = 0; i < edges.length; i++) {
+        var e = edges[i], A = nodes[e.a], B = nodes[e.b];
+        var live = Math.max(A.hot, B.hot);
+        var op = reduce ? 0.62 : 0.45 + 0.175 * (1 + Math.sin(t * 0.002094 + i * 0.7));
+        ctx.globalAlpha = op * (1 - live) + live * 0.95;
+        ctx.strokeStyle = live > 0.02 ? C.accent : C.edge;
+        ctx.beginPath(); ctx.moveTo(px_(A, t), py_(A, t)); ctx.lineTo(px_(B, t), py_(B, t)); ctx.stroke();
+      }
+      ctx.globalAlpha = 1;
+
+      if (!reduce) for (i = 0; i < packets.length; i++) {
+        var p = packets[i], E = edges[p.e], PA = nodes[E.a], PB = nodes[E.b], u = p.u;
+        var x = px_(PA, t) + (px_(PB, t) - px_(PA, t)) * u, y = py_(PA, t) + (py_(PB, t) - py_(PA, t)) * u;
+        ctx.save(); ctx.globalAlpha = 0.9; ctx.shadowColor = C.accent; ctx.shadowBlur = 8;
+        ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(x, y, 3, 0, 6.2832); ctx.fill(); ctx.restore();
+      }
+
+      ctx.font = '11px "JetBrains Mono",ui-monospace,monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+      for (i = 0; i < n; i++) {
+        var N = nodes[i], X = px_(N, t), Y = py_(N, t);
+        var r = (N.key ? 5.5 : 3.6) * (1 + N.hot * 0.55);
+        ctx.beginPath(); ctx.arc(X, Y, r, 0, 6.2832);
+        if (N.key || N.hot > 0.5) { ctx.fillStyle = C.accent; ctx.fill(); }
+        else { ctx.fillStyle = C.bg; ctx.fill(); ctx.strokeStyle = N.hot > 0.02 ? C.accent : C.muted; ctx.lineWidth = 1.2; ctx.stroke(); }
+        var ly = Y + r + 4;
+        ctx.lineWidth = 2; ctx.strokeStyle = C.bg; ctx.lineJoin = 'round';
+        ctx.strokeText(N.n, X, ly);
+        ctx.fillStyle = (N.key || N.hot > 0.4) ? C.ink : C.muted;
+        ctx.fillText(N.n, X, ly);
+      }
+    }
+
+    function frame(t) {
+      var i;
+      raf = 0;
+      if (!running) return;
+      if (!t0) t0 = t;
+      if (t - last >= 15.5) {
+        var dt = last ? Math.min(t - last, 120) : 16;
+        last = t;
+        step();
+        if (t - nextPk > 0 && packets.length < 4) { nextPk = t + 1200; packets.push({ e: (Math.random() * edges.length) | 0, u: 0 }); }
+        for (i = packets.length - 1; i >= 0; i--) { packets[i].u += dt / 1100; if (packets[i].u > 1) packets.splice(i, 1); }
+        draw(t - t0);
+      }
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start() { if (running || reduce) return; running = true; last = 0; nextPk = 0; if (!raf) raf = requestAnimationFrame(frame); }
+    function stop() { running = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } }
+    function sync() { if (visible && !document.hidden) start(); else stop(); }
+
+    readColors();
+    resize();
+    if (reduce) { for (var s0 = 0; s0 < 120; s0++) step(); draw(0); }
+
+    if (window.ResizeObserver) { try { new ResizeObserver(resize).observe(cv); } catch (e2) {} }
+    window.addEventListener('resize', resize);
+    new MutationObserver(function () { readColors(); if (!running) draw(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+
+    if (window.IntersectionObserver) {
+      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; sync(); }, { threshold: 0 }).observe(cv);
+    } else { visible = true; sync(); }
+    document.addEventListener('visibilitychange', sync);
+
+    if (fine) {
+      cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; });
+      cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; });
+    }
+
+    window.__kg = {
+      pause: stop,
+      resume: function () { sync(); },
+      _n: nodes.length, _e: edges.length, _p: function () { return packets.length; }
+    };
+  })();
 })();
 </script>
 </body>
