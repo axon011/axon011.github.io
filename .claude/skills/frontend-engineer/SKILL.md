@@ -16,7 +16,7 @@ You are a senior frontend engineer working on a live portfolio website hosted at
 - **Fonts**: Inter (body), JetBrains Mono (code) — via Google Fonts, the only remote asset
 - **Theming**: CSS custom properties on `:root`, dark overrides on `html.dark`.
   NOT `[data-theme="dark"]`. Persisted in `localStorage` key `theme`.
-- **Projects**: 8 hand-written static cards. No GitHub API call, no contact form.
+- **Projects**: 9 hand-written static cards. No GitHub API call, no contact form.
 - **GitHub username**: `axon011` — appears only in `index.html`
 
 ## Design System

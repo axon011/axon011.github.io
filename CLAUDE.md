@@ -45,7 +45,8 @@ axon011.github.io/
 - **Two fonts**: Inter (body) + JetBrains Mono (code snippets)
 - **CSS variables** for theming - light/dark mode via `html.dark` (NOT `[data-theme]`),
   persisted in `localStorage` under key `theme`
-- **Static project cards** - hand-written in HTML. The GitHub API is no longer called;
+- **Static project cards** - hand-written in HTML. The GitHub mark is a single
+  `<symbol id="gh">` sprite at the top of `<body>`, referenced via `<use href="#gh">`. The GitHub API is no longer called;
   there is no rate-limit or 404-probe risk any more.
 - **No contact form** - the contact section is a set of direct links (email, LinkedIn,
   GitHub, résumé). Formspree is gone.
@@ -66,17 +67,24 @@ axon011.github.io/
 
 | Feature | Location | How it works |
 |---------|----------|-------------|
+| Hero entrance | `h1.title .w`, `.eyebrow/.lede/.hero-cta/.status/.hero-visual` | One-time on load: headline words rise on a 45ms `--i` stagger (`wordin`), then the rest fades up in sequence (`fadeup`, 0–.52s delays). `both` fill is safe here — nothing hovers on these |
 | Agent pipeline visual | Hero right column (`.viz-card`) | Static mock of a LangGraph run: 4 `.vnode` rows fading in on a 0/.9/1.8/2.7s stagger, `.vpulse` dots falling between them, whole card on a 7s `float` |
+| Border trail | `.viz-card::after` | motion-primitives BorderTrail, CSS-only: `@property --a` angle + conic-gradient masked to a 1.5px ring, 4.5s linear `orbit` |
 | Live-status pip | Hero eyebrow (`.pip`) | 2.4s opacity `pulse` |
+| Scroll progress | `.nav::after` | 2px gradient bar, `scaleX(var(--p))`; `--p` set from a rAF-throttled passive scroll listener |
+| Mobile menu | `#menu` + `.nav-links` (≤760px) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
 | Scroll reveal | Sections with `.reveal` | Fade + 14px rise via IntersectionObserver adding `.in` |
 | Staggered card reveal | `#projects` cards (`.sreveal`) | Same observer; per-card `cardin` keyframe, `--i` sets a 60ms column offset. Uses `backwards` fill ONLY, so the finished state releases `transform` back to the hover rule |
-| Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card` | `:active` scale, 140ms `--ease-out` |
+| Card spotlight | `.card::after` | motion-primitives Spotlight: radial `--accent-wash` at `--mx/--my`, fades in on hover. JS binds `pointermove` only when `(hover:hover) and (pointer:fine)` matches |
+| Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card`, `.copy` | `:active` scale, 140ms `--ease-out` |
 | Card hover lift | `#projects` cards | `translateY(-4px)` + gradient bar wipes in via `::before scaleX` |
+| Timeline rail | `#experience .tl` | 1px gradient rail + 11px dots per `.job`; first job gets the accent ring |
+| Copy email | `#copy-email` in the contact grid | Clipboard API; copy→check icon cross-fade, tooltip "Copied", resets after 1.4s |
 | Active nav | Navbar links | `.on` class via IntersectionObserver, `-45%/-50%` rootMargin |
-| Dark/light toggle | Navbar `#theme` | Both SVGs stacked in one grid cell; `.off` class cross-fades + rotates 90° over 180ms |
+| Dark/light toggle | Navbar `#theme` | Both SVGs stacked in one grid cell; `.off` class cross-fades + rotates 90° over 180ms. When `document.startViewTransition` exists (and no reduced-motion), the theme swap is a circular clip-path reveal from the toggle (`--tx/--ty`) |
 
-There is no typing effect, particle canvas, filter pills, contribution graph, scroll
-progress bar, mobile menu, or back-to-top button. Those existed in an older version of
+There is no typing effect, particle canvas, filter pills, contribution graph, or
+back-to-top button. Those existed in an older version of
 the site and were removed in the rewrite.
 
 ---
@@ -88,13 +96,13 @@ Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`.
 | Section ID | Description |
 |-----------|-------------|
 | `.hero` (`#top`) | Two-column: headline + lede + 3 CTAs + availability status, beside the `.viz-card` agent-pipeline visual. No section index. |
-| `#about` | 01 — prose panel + 2×2 `.facts` grid (M.Sc., ~3 yrs, 2 yrs, 8 projects) |
-| `#experience` | 02 — timeline, two positions (Perinet, Cognizant) |
-| `#projects` | 03 — **8 hand-written** `.card` links, 2-col grid. Not API-driven. |
+| `#about` | 01 — prose panel + 2×2 `.facts` grid (M.Sc., ~3 yrs, 2 yrs, 9 projects) |
+| `#experience` | 02 — timeline with rail + dots, two positions (Perinet, Cognizant) |
+| `#projects` | 03 — **9 hand-written** `.card` links, 2-col grid. Not API-driven. First card carries a `.ftag` "Featured" badge. |
 | `#skills` | 04 — 4 `.skill-card`s of `.chip` tags (AI & Agents, LLMOps, Programming, Infra) |
 | `#education` | 05 — 2 `.mini` cards (M.Sc. BTU, B.Sc. BVM) |
 | `#languages` | 06 — 3 `.lang` rows (English C1, German B1, Malayalam native) |
-| `#contact` | 07 — prose + 4 `.cc` link tiles (email, LinkedIn, GitHub, résumé PDF) |
+| `#contact` | 07 — prose + 4 `.cc` link tiles (email w/ copy button, LinkedIn, GitHub, résumé PDF) |
 
 There is no `#github-stats` section.
 
@@ -103,8 +111,8 @@ There is no `#github-stats` section.
 ## GitHub Username
 
 The GitHub username `axon011` appears only in `index.html` now — the JSON-LD `sameAs`
-block, the OG image URL, the hero GitHub button, the 8 project card `href`s, and the
-contact tile. If the username changes, a single find-and-replace in `index.html` covers it.
+block, the OG image URL, the hero GitHub button, the 9 project card `href`s, the
+contact tile, and the footer source link. If the username changes, a single find-and-replace in `index.html` covers it.
 
 ---
 
