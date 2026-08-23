@@ -43,6 +43,16 @@ You are a senior frontend engineer working on a live portfolio website hosted at
 - Reveal animations use `animation-fill-mode: backwards` (not `both`/`forwards`), so the
   finished element releases `transform` back to the hover rule instead of pinning it.
 
+### Type scale & layout (2026-08-23 redesign)
+- Tokens: `--fs-body:17px`, `--fs-lede:clamp(19px,2.3vw,22px)`, `--fs-h1:clamp(44px,7.2vw,84px)`,
+  `--fs-sec:clamp(28px,3.4vw,36px)`, `--fs-card:19px`, `--maxw:1120px`; sections `84px 0`.
+- Copy stays terse: one-sentence lede, three-statement About bento, one-line project pitches;
+  long text goes behind the card's "Details ▾" (`.exp-btn` + `.more`).
+- Project cards are `<article class="card">` with a stretched `.card-link::after` — never put a
+  `<button>` inside an `<a>`.
+- Hero visual is the live `<canvas id="kg">` knowledge graph with `#kg-fallback` SVG; it must
+  pause offscreen and draw a single static frame under reduced-motion.
+
 ### Components
 - **glassmorphism**: Semi-transparent cards with backdrop-filter blur
 - **tags**: Pill-shaped badges with accent background/border

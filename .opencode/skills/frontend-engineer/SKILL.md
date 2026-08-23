@@ -41,6 +41,13 @@ You are a senior frontend engineer working on a live portfolio website hosted at
 - Reveals use `animation-fill-mode: backwards`, so the finished element releases
   `transform` back to the hover rule instead of pinning it.
 
+### Type scale & layout (2026-08-23 redesign)
+- Tokens: `--fs-body:17px`, `--fs-lede`, `--fs-h1:clamp(44px,7.2vw,84px)`, `--fs-sec`,
+  `--fs-card:19px`, `--maxw:1120px`; sections `84px 0`. Copy stays terse; long project text
+  lives behind "Details ▾". Cards are `<article>` + stretched `.card-link` (no button-in-anchor).
+- Hero visual: live `<canvas id="kg">` knowledge graph, `#kg-fallback` SVG, pauses offscreen,
+  static frame under reduced-motion.
+
 ### Components
 - **glassmorphism**: Semi-transparent cards with backdrop-filter blur
 - **tags**: Pill-shaped badges with accent background/border
