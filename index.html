@@ -98,8 +98,14 @@ a{color:inherit;text-decoration:none}
 .mono{font-family:"JetBrains Mono",ui-monospace,monospace}
 
 /* ---- nav ---- */
+.skip{position:absolute;left:12px;top:-48px;z-index:60;background:var(--accent);color:#fff;padding:8px 12px;border-radius:8px;font-size:13px;font-weight:600}
+.skip:focus{top:12px}
 .nav{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 82%,transparent);
   backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line)}
+/* scroll progress — --p set from JS */
+.nav::after{content:"";position:absolute;left:0;bottom:-1px;height:2px;width:100%;
+  background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
+  transform:scaleX(var(--p,0));transform-origin:left;pointer-events:none}
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:0 24px;height:60px;display:flex;align-items:center;justify-content:space-between}
 .brand{font-weight:800;font-size:15px;letter-spacing:-0.02em;display:flex;align-items:center;gap:9px}
 .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
@@ -115,11 +121,24 @@ a{color:inherit;text-decoration:none}
   transition:background .16s,border-color .16s,box-shadow .16s,color .16s,transform 140ms var(--ease-out)}
 .btn-primary{background:var(--accent);color:#fff}
 .btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
-@media(max-width:760px){.nav-links{display:none}}
+.menu-btn{display:none}
+.menu-btn svg{grid-area:1/1;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
+.menu-btn svg.off{opacity:0;transform:rotate(90deg) scale(.7)}
+@media(max-width:760px){
+  .menu-btn{display:grid}
+  .nav-links{position:absolute;top:60px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
+    padding:8px 24px 14px;background:color-mix(in srgb,var(--bg) 94%,transparent);
+    backdrop-filter:saturate(140%) blur(12px);border-bottom:1px solid var(--line);
+    opacity:0;transform:translateY(-6px);pointer-events:none;
+    transition:opacity .18s var(--ease-out),transform .22s var(--ease-out)}
+  .nav-links a{font-size:15px;padding:11px 0;border-top:1px solid var(--line)}
+  .nav-links a:first-child{border-top:0}
+  .nav.open .nav-links{opacity:1;transform:none;pointer-events:auto}
+}
 
 /* ---- hero ---- */
 .hero{padding:88px 0 60px;position:relative}
-.hero::before{content:"";position:absolute;inset:-60px -40px 0;z-index:-1;
+.hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:-1;
   background-image:radial-gradient(var(--line-strong) 1px,transparent 1px);background-size:24px 24px;opacity:.45;
   -webkit-mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent);mask-image:radial-gradient(70% 55% at 60% 28%,#000,transparent)}
 .eyebrow{font-size:12.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--accent-ink);
@@ -129,6 +148,12 @@ a{color:inherit;text-decoration:none}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 h1.title{font-size:clamp(38px,6vw,62px);line-height:1.04;font-weight:800;letter-spacing:-0.03em;max-width:14ch}
 h1.title em{font-style:normal;color:var(--accent)}
+/* one-time hero entrance: words rise in sequence, then lede → CTAs → status */
+h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 45ms)}
+@keyframes wordin{from{opacity:0;transform:translateY(.4em)}to{opacity:1;transform:none}}
+.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:fadeup .65s var(--ease-out) both}
+.eyebrow{animation-delay:0s}.lede{animation-delay:.32s}.hero-cta{animation-delay:.42s}.status{animation-delay:.52s}.hero-visual{animation-delay:.25s}
+@keyframes fadeup{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 .lede{margin-top:24px;font-size:clamp(16.5px,2.2vw,19px);color:var(--muted);max-width:60ch;line-height:1.6}
 .hero-cta{margin-top:34px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
 .status{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);
@@ -142,8 +167,15 @@ h1.title em{font-style:normal;color:var(--accent)}
 @media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:34px}.hero-visual{order:-1;max-width:420px}}
 .viz-card{background:var(--surface);-webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%);
   border:1px solid var(--line);border-radius:18px;box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
-  overflow:hidden;animation:float 7s ease-in-out infinite}
+  overflow:hidden;position:relative;animation:float 7s ease-in-out infinite}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+/* border trail — a short accent arc orbiting the card edge while the pipeline "runs" */
+@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
+.viz-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
+  background:conic-gradient(from var(--a),transparent 0 72%,var(--accent) 88%,transparent 100%);
+  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
+  animation:orbit 4.5s linear infinite;opacity:.9}
+@keyframes orbit{to{--a:360deg}}
 .viz-head{display:flex;align-items:center;gap:7px;padding:12px 15px;border-bottom:1px solid var(--line)}
 .tdot{width:10px;height:10px;border-radius:50%}.tdot.r{background:#ff5f57}.tdot.y{background:#febc2e}.tdot.g{background:#28c840}
 .viz-title{font-size:12px;color:var(--muted);margin-left:6px}
@@ -189,9 +221,14 @@ section.block{padding:54px 0;border-top:1px solid var(--line)}
 .fact .l{font-size:12.5px;color:var(--muted);margin-top:3px}
 
 /* ---- timeline ---- */
-.tl{display:flex;flex-direction:column;gap:8px}
-.job{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line)}
+.tl{display:flex;flex-direction:column;gap:8px;position:relative;padding-left:26px}
+.tl::before{content:"";position:absolute;left:5px;top:14px;bottom:14px;width:1px;
+  background:linear-gradient(var(--accent),var(--line-strong) 40%,transparent)}
+.job{display:grid;grid-template-columns:160px 1fr;gap:24px;padding:24px 0;border-top:1px solid var(--line);position:relative}
+.job::before{content:"";position:absolute;left:-26px;top:30px;width:11px;height:11px;border-radius:50%;
+  background:var(--surface-solid);border:2px solid var(--line-strong)}
 .job:first-child{border-top:0;padding-top:4px}
+.job:first-child::before{top:9px;border-color:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
 @media(max-width:680px){.job{grid-template-columns:1fr;gap:8px}}
 .job .when{font-family:"JetBrains Mono",monospace;font-size:12.5px;color:var(--faint);padding-top:3px}
 .job h3{font-size:17px;font-weight:700;letter-spacing:-0.01em}
@@ -208,8 +245,14 @@ section.block{padding:54px 0;border-top:1px solid var(--line)}
   display:flex;flex-direction:column;transition:transform .16s var(--ease-out),box-shadow .18s ease,border-color .18s ease;box-shadow:var(--shadow)}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
   background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
-  transform:scaleX(0);transform-origin:left;transition:transform .3s ease}
+  transform:scaleX(0);transform-origin:left;transition:transform .3s var(--ease-out)}
+/* cursor spotlight — --mx/--my set from JS on fine pointers only */
+.card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),var(--accent-wash),transparent 65%);
+  transition:opacity .25s var(--ease-out)}
 .card .top{display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+.ftag{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--accent-ink);background:var(--accent-wash);border-radius:5px;padding:3px 7px;white-space:nowrap;flex-shrink:0}
 .card h3{font-size:16.5px;font-weight:700;letter-spacing:-0.01em;display:flex;align-items:center;gap:9px}
 .card h3 .gh{color:var(--faint);transition:color .15s}
 .card .desc{font-size:14px;color:var(--muted);margin:10px 0 14px;line-height:1.55;flex:1}
@@ -248,12 +291,25 @@ section.block{padding:54px 0;border-top:1px solid var(--line)}
 .cc .ico{width:38px;height:38px;border-radius:9px;background:var(--accent-wash);display:grid;place-items:center;color:var(--accent);flex-shrink:0}
 .cc .k{font-size:13.5px;font-weight:600}
 .cc .v{font-size:12.5px;color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cc-wrap{position:relative}
+.cc-wrap .cc{padding-right:52px}
+.copy{position:absolute;right:12px;top:50%;transform:translateY(-50%);width:32px;height:32px;border-radius:8px;
+  border:1px solid var(--line);background:var(--chip);color:var(--muted);display:grid;place-items:center;cursor:pointer;
+  transition:color .16s,border-color .16s,background .16s,transform 140ms var(--ease-out)}
+.copy svg{grid-area:1/1;transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out)}
+.copy svg.off{opacity:0;transform:scale(.6)}
+.copy.ok{color:#16a34a;border-color:color-mix(in srgb,#19b562 40%,transparent);background:color-mix(in srgb,#19b562 10%,transparent)}
+.copy .tip{position:absolute;right:0;bottom:calc(100% + 8px);font-size:11.5px;font-weight:600;color:var(--bg);background:var(--ink);
+  padding:4px 8px;border-radius:6px;white-space:nowrap;opacity:0;transform:translateY(4px);pointer-events:none;
+  transition:opacity 160ms var(--ease-out),transform 160ms var(--ease-out)}
+.copy.ok .tip{opacity:1;transform:none}
 
 footer{border-top:1px solid var(--line);padding:34px 0;text-align:center;color:var(--faint);font-size:13px}
 footer .mono{color:var(--muted)}
+footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transition:color .15s,border-color .15s}
 
 /* reveal */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s ease,transform .6s ease}
+.reveal{opacity:0;transform:translateY(14px);transition:opacity .6s var(--ease-out),transform .6s var(--ease-out)}
 .reveal.in{opacity:1;transform:none}
 
 /* staggered card reveal — `backwards` fill only, so the finished state releases
@@ -265,6 +321,11 @@ footer .mono{color:var(--muted)}
 /* theme icons share one grid cell and cross-fade */
 #theme svg{grid-area:1/1;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
 #theme svg.off{opacity:0;transform:rotate(-90deg) scale(.7)}
+
+/* theme switch: circular reveal from the toggle via View Transitions (progressive enhancement) */
+::view-transition-old(root),::view-transition-new(root){animation:none;mix-blend-mode:normal}
+::view-transition-new(root){clip-path:circle(0 at var(--tx,100%) var(--ty,0));animation:vt-reveal .5s var(--ease-out) forwards}
+@keyframes vt-reveal{to{clip-path:circle(160vmax at var(--tx,100%) var(--ty,0))}}
 
 ::selection{background:var(--accent);color:#fff}
 :focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:4px}
@@ -278,7 +339,10 @@ footer .mono{color:var(--muted)}
   .cc:hover{border-color:var(--line-strong);background:var(--bg)}
   .card:hover{transform:translateY(-4px);box-shadow:var(--shadow-lift);border-color:var(--line-strong)}
   .card:hover::before{transform:scaleX(1)}
+  .card:hover::after{opacity:1}
   .card:hover h3 .gh{color:var(--accent)}
+  .copy:hover{color:var(--ink);border-color:var(--line-strong)}
+  footer a:hover{color:var(--ink);border-color:var(--ink)}
 }
 
 /* press feedback — after the hover block so :active wins the transform */
@@ -286,26 +350,33 @@ footer .mono{color:var(--muted)}
 .icon-btn:active{transform:scale(.94)}
 .cc:active{transform:scale(.985)}
 .card:active{transform:translateY(-4px) scale(.985)}
+.copy:active{transform:translateY(-50%) scale(.92)}
 
 /* reduced motion: gentler, not zero — keep opacity and colour, drop movement */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .viz-card,.pip{animation:none!important}
+  .viz-card,.pip,.viz-card::after{animation:none!important}
   .vnode{animation:none!important;opacity:1!important}
   .vpulse{display:none}
+  h1.title .w,.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:none}
   .sreveal.in{animation:none}
   .reveal{transform:none}
+  .nav-links{transition:opacity .18s}
   .card:hover{transform:none}
   .btn:active,.icon-btn:active,.cc:active,.card:active{transform:none}
+  .copy:active{transform:translateY(-50%)}
+  ::view-transition-new(root){animation:none}
 }
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><symbol id="gh" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></symbol></svg>
+<a class="skip" href="#about">Skip to content</a>
 
-<nav class="nav">
+<nav class="nav" id="nav">
   <div class="nav-in">
     <a href="#top" class="brand"><span class="dot"></span>Aravind Pradeep</a>
-    <div class="nav-links">
+    <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
       <a href="#projects">Projects</a>
@@ -313,6 +384,10 @@ footer .mono{color:var(--muted)}
       <a href="#contact">Contact</a>
     </div>
     <div class="nav-actions">
+      <button class="icon-btn menu-btn" id="menu" aria-label="Open menu" aria-expanded="false" aria-controls="nav-links">
+        <svg id="i-bars" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" d="M4 7h16M4 12h16M4 17h16"/></svg>
+        <svg id="i-x" class="off" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><path stroke-linecap="round" d="M6 6l12 12M18 6L6 18"/></svg>
+      </button>
       <button class="icon-btn" id="theme" aria-label="Toggle theme">
         <svg id="i-sun" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path stroke-linecap="round" d="M12 2v2m0 16v2M2 12h2m16 0h2M4.9 4.9l1.4 1.4m11.4 11.4l1.4 1.4M19.1 4.9l-1.4 1.4M6.3 17.7l-1.4 1.4"/></svg>
         <svg id="i-moon" class="off" width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>
@@ -329,7 +404,7 @@ footer .mono{color:var(--muted)}
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="eyebrow"><span class="pip"></span>AI Engineer · Cottbus, Germany</div>
-        <h1 class="title">I build AI systems that are meant to be <em>used</em>.</h1>
+        <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">are</span> <span class="w" style="--i:6">meant</span> <span class="w" style="--i:7">to</span> <span class="w" style="--i:8">be</span> <span class="w" style="--i:9"><em>used</em>.</span></h1>
         <p class="lede">Two years building the backend and infrastructure behind an industrial-IoT AI platform at Perinet, and a set of my own projects going deep on RAG, agents and LLMOps. I care less about the latest model and more about whether a system measurably works — and can show that it does.</p>
         <div class="hero-cta">
           <a class="btn btn-primary" href="#projects">View projects</a>
@@ -423,63 +498,63 @@ footer .mono{color:var(--muted)}
     <div class="proj-grid">
 
       <a class="card sreveal" style="--i:0" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">
-        <div class="top"><h3>Wind-Farm Installation Planner <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>Wind-Farm Installation Planner <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3><span class="ftag">Featured</span></div>
         <p class="desc">A weather-aware scheduler for a 12-turbine wind-farm build — crane lifts can't be paused, have wind limits, and must fit inside working hours. It searches 48 candidate campaigns against 20 years of hourly wind and prices each as a risk distribution, keeping the scheduling maths deterministic and the LLM at the human edges.</p>
         <span class="metric">€5.59M → €3.56M · 189 → 64 days · 19/19 weather-years</span>
         <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div>
       </a>
 
       <a class="card sreveal" style="--i:1" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">
-        <div class="top"><h3>GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">Builds a knowledge graph from documents, then answers multi-hop questions by traversing the graph instead of flattening it into chunks — entity/relation extraction, k-hop subgraph retrieval, grounded answers with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
         <div class="chips"><span class="chip">GraphRAG</span><span class="chip">networkx</span><span class="chip">Pydantic</span><span class="chip">LLM extraction</span><span class="chip">Python</span></div>
       </a>
 
       <a class="card sreveal" style="--i:0" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">
-        <div class="top"><h3>GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">The full-stack app over GraphRAG Agent: upload documents, watch a typed knowledge graph build live, then chat over it with k-hop subgraph retrieval and cited answers. Next.js front end with an interactive force-graph, FastAPI back end.</p>
         <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
         <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">React</span><span class="chip">FastAPI</span><span class="chip">GraphRAG</span></div>
       </a>
 
       <a class="card sreveal" style="--i:1" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">
-        <div class="top"><h3>Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">A 4-agent system (Planner → Researcher → Writer → Critic) built on LangGraph state machines that turns a question into a sourced report, fully automated end to end.</p>
         <span class="metric">LangGraph · strict role boundaries · CI/CD</span>
         <div class="chips"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Docker</span></div>
       </a>
 
       <a class="card sreveal" style="--i:0" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">
-        <div class="top"><h3>RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">A hybrid-retrieval RAG pipeline (BM25 + dense + Reciprocal Rank Fusion) with an automated RAGAs/MLflow evaluation harness and regression alerts on retrieval quality.</p>
         <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
         <div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span><span class="chip">FastAPI</span></div>
       </a>
 
       <a class="card sreveal" style="--i:1" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">
-        <div class="top"><h3>LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">A self-hosted dashboard that traces every model call's latency, token counts and per-model cost across GPT-4o, Claude, Gemini and DeepSeek — no external tracing service.</p>
         <span class="metric">full-stack · multi-stage Docker · 12 tests</span>
         <div class="chips"><span class="chip">FastAPI</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span></div>
       </a>
 
       <a class="card sreveal" style="--i:0" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">
-        <div class="top"><h3>Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">An end-to-end German news pipeline: Whisper ASR, cross-lingual NER, fine-tuned event classification, translation and summarization — engineered to run on a single 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
         <div class="chips"><span class="chip">Whisper</span><span class="chip">XLM-RoBERTa</span><span class="chip">PyTorch</span><span class="chip">MLflow</span></div>
       </a>
 
       <a class="card sreveal" style="--i:1" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">
-        <div class="top"><h3>LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">Fine-tuned Qwen2-0.5B with QLoRA (4-bit) to extract structured JSON from job descriptions, training ~0.44% of parameters — reliable structured output from messy text.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
         <div class="chips"><span class="chip">QLoRA</span><span class="chip">Qwen2</span><span class="chip">PEFT</span><span class="chip">PyTorch</span></div>
       </a>
 
       <a class="card sreveal" style="--i:0" href="https://github.com/axon011/resume-tailor" target="_blank" rel="noopener">
-        <div class="top"><h3>Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></h3></div>
+        <div class="top"><h3>Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></h3></div>
         <p class="desc">A CLI tool I use daily that reads a job description, tailors a résumé and cover letter, and runs its own ATS and regression checks before producing the PDF.</p>
         <span class="metric">multi-stage LLM pipeline · self-checking</span>
         <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">LaTeX</span><span class="chip">CLI</span></div>
@@ -546,16 +621,23 @@ footer .mono{color:var(--muted)}
     <div class="contact-card">
       <p style="color:var(--muted);max-width:54ch">Open to AI / ML / LLM Engineer roles across Germany — remote, hybrid or on-site, and happy to relocate. The fastest way to reach me is email.</p>
       <div class="contact-grid">
-        <a class="cc" href="mailto:aravindpradeep001@gmail.com">
-          <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
-          <span style="min-width:0"><span class="k">Email</span><br><span class="v">aravindpradeep001@gmail.com</span></span>
-        </a>
+        <div class="cc-wrap">
+          <a class="cc" href="mailto:aravindpradeep001@gmail.com">
+            <span class="ico"><svg width="17" height="17" fill="none" stroke="currentColor" stroke-width="1.7" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 8l9 6 9-6M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg></span>
+            <span style="min-width:0"><span class="k">Email</span><br><span class="v">aravindpradeep001@gmail.com</span></span>
+          </a>
+          <button class="copy" id="copy-email" data-copy="aravindpradeep001@gmail.com" aria-label="Copy email address">
+            <svg id="i-copy" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24"><rect x="9" y="9" width="11" height="11" rx="2"/><path stroke-linecap="round" d="M5 15V5a1 1 0 011-1h9"/></svg>
+            <svg id="i-check" class="off" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12.5l4.5 4.5L19 7.5"/></svg>
+            <span class="tip" aria-hidden="true">Copied</span>
+          </button>
+        </div>
         <a class="cc" href="https://linkedin.com/in/aravind-pradeepmadathinal" target="_blank" rel="noopener">
           <span class="ico"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M19 0h-14c-2.76 0-5 2.24-5 5v14c0 2.76 2.24 5 5 5h14c2.76 0 5-2.24 5-5v-14c0-2.76-2.24-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.27c-.97 0-1.75-.79-1.75-1.76s.78-1.76 1.75-1.76 1.75.79 1.75 1.76-.78 1.76-1.75 1.76zm13.5 12.27h-3v-5.6c0-3.37-4-3.11-4 0v5.6h-3v-11h3v1.77c1.4-2.59 7-2.78 7 2.48v6.75z"/></svg></span>
           <span style="min-width:0"><span class="k">LinkedIn</span><br><span class="v">aravind-pradeepmadathinal</span></span>
         </a>
         <a class="cc" href="https://github.com/axon011" target="_blank" rel="noopener">
-          <span class="ico"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12a12 12 0 008.21 11.4c.6.11.82-.26.82-.58v-2c-3.34.73-4.04-1.6-4.04-1.6-.55-1.39-1.34-1.76-1.34-1.76-1.09-.75.08-.73.08-.73 1.2.08 1.84 1.24 1.84 1.24 1.07 1.83 2.81 1.3 3.5.99.1-.78.42-1.3.76-1.6-2.67-.3-5.47-1.33-5.47-5.93 0-1.31.47-2.38 1.24-3.22-.13-.3-.54-1.52.12-3.18 0 0 1-.32 3.3 1.23a11.5 11.5 0 016 0c2.3-1.55 3.3-1.23 3.3-1.23.66 1.66.25 2.88.12 3.18.77.84 1.23 1.91 1.23 3.22 0 4.61-2.8 5.63-5.48 5.92.43.37.81 1.1.81 2.22v3.29c0 .32.22.7.82.58A12 12 0 0024 12c0-6.63-5.37-12-12-12z"/></svg></span>
+          <span class="ico"><svg width="16" height="16" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></span>
           <span style="min-width:0"><span class="k">GitHub</span><br><span class="v">github.com/axon011</span></span>
         </a>
         <a class="cc" href="Aravind_Pradeep_AI_Engineer.pdf" target="_blank" rel="noopener">
@@ -571,6 +653,7 @@ footer .mono{color:var(--muted)}
 <footer>
   <p class="mono">aravind_pradeep</p>
   <p style="margin-top:6px">AI Engineer · Cottbus, Germany · <span id="yr"></span></p>
+  <p style="margin-top:10px;font-size:12px">Hand-written HTML/CSS/JS, zero dependencies · <a href="https://github.com/axon011/axon011.github.io" target="_blank" rel="noopener">view source</a></p>
 </footer>
 
 <script>
@@ -581,9 +664,45 @@ footer .mono{color:var(--muted)}
     root.classList.toggle('dark',dark);
     sun.classList.toggle('off',dark); moon.classList.toggle('off',!dark); }
   var saved=localStorage.getItem('theme');
+  var reduced=matchMedia('(prefers-reduced-motion:reduce)').matches;
   apply(saved|| (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
-  document.getElementById('theme').addEventListener('click',function(){
-    var t=root.classList.contains('dark')?'light':'dark'; localStorage.setItem('theme',t); apply(t);
+  document.getElementById('theme').addEventListener('click',function(e){
+    var t=root.classList.contains('dark')?'light':'dark'; localStorage.setItem('theme',t);
+    // circular reveal from the toggle when View Transitions exist; plain swap otherwise
+    if(document.startViewTransition && !reduced){
+      var r=this.getBoundingClientRect();
+      root.style.setProperty('--tx',(r.left+r.width/2)+'px'); root.style.setProperty('--ty',(r.top+r.height/2)+'px');
+      document.startViewTransition(function(){apply(t);});
+    } else apply(t);
+  });
+  // mobile menu
+  var nav=document.getElementById('nav'), menu=document.getElementById('menu'),
+      bars=document.getElementById('i-bars'), x=document.getElementById('i-x');
+  function setMenu(open){ nav.classList.toggle('open',open); menu.setAttribute('aria-expanded',open);
+    menu.setAttribute('aria-label',open?'Close menu':'Open menu'); bars.classList.toggle('off',open); x.classList.toggle('off',!open); }
+  menu.addEventListener('click',function(){setMenu(!nav.classList.contains('open'));});
+  document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
+  // scroll progress
+  var ticking=false;
+  function prog(){ var h=document.documentElement, max=h.scrollHeight-h.clientHeight;
+    nav.style.setProperty('--p',max>0?(h.scrollTop/max).toFixed(4):0); ticking=false; }
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(prog);}},{passive:true}); prog();
+  // card spotlight — fine pointers only; touch never sees it
+  if(matchMedia('(hover:hover) and (pointer:fine)').matches){
+    document.querySelectorAll('.card').forEach(function(c){
+      c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();
+        c.style.setProperty('--mx',(e.clientX-r.left)+'px'); c.style.setProperty('--my',(e.clientY-r.top)+'px');});
+    });
+  }
+  // copy email
+  var cp=document.getElementById('copy-email'), cpT;
+  cp.addEventListener('click',function(){
+    var v=cp.getAttribute('data-copy'), done=function(){ cp.classList.add('ok');
+      document.getElementById('i-copy').classList.add('off'); document.getElementById('i-check').classList.remove('off');
+      clearTimeout(cpT); cpT=setTimeout(function(){ cp.classList.remove('ok');
+        document.getElementById('i-copy').classList.remove('off'); document.getElementById('i-check').classList.add('off'); },1400); };
+    if(navigator.clipboard) navigator.clipboard.writeText(v).then(done,done); else done();
   });
   // year
   document.getElementById('yr').textContent=new Date().getFullYear();
