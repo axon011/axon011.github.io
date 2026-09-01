@@ -72,7 +72,7 @@ axon011.github.io/
 | Border trail | `.viz-card::after` | motion-primitives BorderTrail, CSS-only: `@property --a` angle + conic-gradient masked to a 1.5px ring, 4.5s linear `orbit` |
 | Live-status pip | Hero eyebrow (`.pip`) | 2.4s opacity `pulse` |
 | Scroll progress | `.nav::after` | 2px gradient bar, `scaleX(var(--p))`; `--p` set from a rAF-throttled passive scroll listener |
-| Mobile menu | `#menu` + `.nav-links` (≤760px) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
+| Mobile menu | `#menu` + `.nav-links` (≤860px) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
 | Scroll reveal | Sections with `.reveal` | Fade + rise via IntersectionObserver adding `.in` |
 | Staggered card reveal | `#projects` cards (`.sreveal`) | Same observer; per-card `cardin` keyframe, `--i` sets a 60ms column offset. `backwards` fill ONLY, so the finished state releases `transform` back to the hover rule |
 | Card spotlight | `.card::after` | motion-primitives Spotlight: radial `--accent-wash` at `--mx/--my`, fades in on hover. JS binds `pointermove` only when `(hover:hover) and (pointer:fine)` matches |
@@ -145,6 +145,8 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 
 ## Known Issues (2026-08-14)
 
+- [ ] Navbar overflows ~36px at a 320px viewport (pre-dates the Publications nav link;
+      affects only very small devices). Not a regression — fix opportunistically
 - [ ] Google Fonts is the only remote dependency; the page renders fine on the system
       font fallback if it's blocked, but headings reflow slightly
 - [ ] `reports/` still cites `css/style.css` and `js/script.js` line numbers. Those
