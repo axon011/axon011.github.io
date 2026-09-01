@@ -97,7 +97,12 @@ lede, three-statement About, one-line project pitches — long text lives behind
 
 ## Section Map
 
-Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`.
+Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`. Alternating sections
+(02 Experience, 04 Projects, 06 Education) carry `class="band"` — a full-bleed `--band`
+tint via `::before{inset:0 calc(50% - 50vw)}` with its own 1px top/bottom rules (the
+banded section and its follower drop `border-top` to avoid doubling). `body` has
+`overflow-x:clip` (NOT hidden) to trim the half-scrollbar overhang without breaking the
+sticky nav.
 
 | Section ID | Description |
 |-----------|-------------|
@@ -106,7 +111,7 @@ Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`.
 | `#experience` | 02 — timeline with rail + dots, two positions (Perinet, Cognizant) |
 | `#publications` | 03 — one glass panel: First-author `.ftag`, arXiv:2607.02612 meta line, linked title (Fusion), authors, one-paragraph summary, `.metric` chip (48% energy · 4× calibration), Read-on-arXiv button |
 | `#projects` | 04 — **9 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 8 in the 2-col `.proj-grid`. Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
-| `#skills` | 05 — 2×2 bento of `.skill-card`s, first spans 2 rows (AI & Agents, LLMOps, Programming, Infra) |
+| `#skills` | 05 — symmetric 2×2 of equal `.skill-card`s (AI & Agents, LLMOps, Programming, Infra) |
 | `#education` | 06 — 2 `.mini` cards (M.Sc. BTU with language chips English C1 · German B1 · Malayalam, B.Sc. BVM) |
 | `#contact` | 07 — email as 24–28px headline + inline copy button, then 3 `.cc` tiles (LinkedIn, GitHub, résumé PDF) |
 

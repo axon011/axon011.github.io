@@ -55,6 +55,7 @@
   --shadow-lift:0 2px 6px rgba(20,22,40,.06),0 26px 56px -20px rgba(20,30,80,.26);
   --blur:16px;
   --aur1:rgba(27,77,228,.16); --aur2:rgba(132,92,255,.14); --aur3:rgba(20,180,160,.10);
+  --band:color-mix(in srgb,var(--surface-solid) 55%,transparent);
   --maxw:1120px; --r:16px; --r-lg:20px;
   --fs-body:17px;
   --fs-lede:clamp(19px,2.3vw,22px);
@@ -71,16 +72,20 @@ html.dark{
   --accent-wash:rgba(126,155,255,.14); --chip:rgba(255,255,255,.05);
   --shadow:0 1px 2px rgba(0,0,0,.4),0 14px 36px -16px rgba(0,0,0,.7);
   --shadow-lift:0 2px 8px rgba(0,0,0,.5),0 30px 60px -22px rgba(0,0,0,.8);
+  --band:color-mix(in srgb,var(--surface-solid) 70%,transparent);
   --blur:18px;
   --aur1:rgba(70,110,255,.20); --aur2:rgba(150,90,255,.16); --aur3:rgba(20,170,180,.12);
 }
 *{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
+/* clip, NOT hidden: the full-bleed section bands overhang by half a scrollbar width and
+   must be trimmed. `clip` does not create a scroll container, so the sticky nav survives.
+   It has to sit on html — on body alone the overflow still reaches the viewport. */
+html{scroll-behavior:smooth;overflow-x:clip}
 body{
   background:var(--bg);color:var(--ink);
   font-family:Inter,system-ui,-apple-system,sans-serif;
   font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased;
-  letter-spacing:-0.011em;position:relative;
+  letter-spacing:-0.011em;position:relative;overflow-x:clip;
 }
 /* aurora field behind the glass */
 body::before{
@@ -209,8 +214,16 @@ h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;anima
 .viz-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
 
 /* ---- section scaffolding ---- */
-section.block{padding:84px 0;border-top:1px solid var(--line)}
+section.block{padding:84px 0;border-top:1px solid var(--line);position:relative}
 @media(max-width:640px){section.block{padding:60px 0}}
+/* alternating full-bleed tint bands so each numbered section reads as its own block.
+   The band supplies its own top/bottom rules, so the section it sits on and the one
+   that follows drop theirs — otherwise the edges double up to 2px. */
+section.block.band{border-top:0}
+section.block.band+.block{border-top:0}
+section.block.band::before{
+  content:"";position:absolute;inset:0 calc(50% - 50vw);z-index:-1;pointer-events:none;
+  background:var(--band);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;flex-wrap:wrap}
 .sec-idx{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:600;
   background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#8a5cff));
@@ -346,9 +359,9 @@ section.block{padding:84px 0;border-top:1px solid var(--line)}
 @media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
 
 /* ---- 05 skills ---- */
-.skills-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
-.skills-bento .s1{grid-row:span 2}
-@media(max-width:760px){.skills-bento{grid-template-columns:1fr}.skills-bento .s1{grid-row:auto}}
+/* symmetric 2x2 — stretched rows, so both cards in a row match height */
+.skills-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:760px){.skills-bento{grid-template-columns:1fr}}
 .skill-card{border-radius:var(--r-lg);padding:26px}
 .skill-card h4{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.1em;
   text-transform:uppercase;color:var(--faint);margin-bottom:16px}
@@ -597,7 +610,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   </section>
 
   <!-- 02 EXPERIENCE -->
-  <section class="block reveal" id="experience">
+  <section class="block band reveal" id="experience">
     <div class="sec-head"><span class="sec-idx mono">02</span><span class="sec-title">Experience</span><span class="sec-note">// where I've worked</span></div>
     <div class="tl">
       <div class="job">
@@ -644,7 +657,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   </section>
 
   <!-- 04 PROJECTS -->
-  <section class="block" id="projects">
+  <section class="block band" id="projects">
     <div class="sec-head reveal"><span class="sec-idx mono">04</span><span class="sec-title">Projects</span><span class="sec-note">// selected open source</span></div>
 
     <article class="card glass feat sreveal" style="--i:0">
@@ -743,7 +756,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   <section class="block reveal" id="skills">
     <div class="sec-head"><span class="sec-idx mono">05</span><span class="sec-title">Skills</span><span class="sec-note">// toolkit</span></div>
     <div class="skills-bento">
-      <div class="skill-card glass s1">
+      <div class="skill-card glass">
         <h4>AI &amp; Agents</h4>
         <div class="skill-row"><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">CrewAI</span><span class="chip">RAG</span><span class="chip">Agentic AI</span><span class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span class="chip">MCP</span><span class="chip">Tool Use</span></div>
       </div>
@@ -755,7 +768,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <h4>Programming &amp; Backend</h4>
         <div class="skill-row"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">FastAPI</span><span class="chip">REST / gRPC</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQL / PostgreSQL</span></div>
       </div>
-      <div class="skill-card glass" style="grid-column:1/-1">
+      <div class="skill-card glass">
         <h4>Infrastructure &amp; DevOps</h4>
         <div class="skill-row"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">GitLab CI/CD</span><span class="chip">MQTT</span><span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Linux</span></div>
       </div>
@@ -763,7 +776,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   </section>
 
   <!-- 06 EDUCATION -->
-  <section class="block reveal" id="education">
+  <section class="block band reveal" id="education">
     <div class="sec-head"><span class="sec-idx mono">06</span><span class="sec-title">Education</span><span class="sec-note">// academic</span></div>
     <div class="edu-grid">
       <div class="mini glass">
