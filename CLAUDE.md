@@ -97,17 +97,18 @@ lede, three-statement About, one-line project pitches — long text lives behind
 
 ## Section Map
 
-Sections are numbered 01-06 via `.sec-idx` in each `.sec-head`.
+Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`.
 
 | Section ID | Description |
 |-----------|-------------|
 | `.hero` (`#top`) | Two-column: headline + lede + 3 CTAs + availability status, beside the `.viz-card` agent-pipeline visual. No section index. |
 | `#about` | 01 — bento: `lead` panel (3 bold-lead statements + footer line), 4 glass `.fact` tiles (M.Sc., ~3 yrs, 2 yrs, 9), full-width `.marquee` of the stack. `grid-template-areas`, 4→2→1 cols at 880/560 |
 | `#experience` | 02 — timeline with rail + dots, two positions (Perinet, Cognizant) |
-| `#projects` | 03 — **9 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 8 in the 2-col `.proj-grid`. Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
-| `#skills` | 04 — 2×2 bento of `.skill-card`s, first spans 2 rows (AI & Agents, LLMOps, Programming, Infra) |
-| `#education` | 05 — 2 `.mini` cards (M.Sc. BTU with language chips English C1 · German B1 · Malayalam, B.Sc. BVM) |
-| `#contact` | 06 — email as 24–28px headline + inline copy button, then 3 `.cc` tiles (LinkedIn, GitHub, résumé PDF) |
+| `#publications` | 03 — one glass panel: First-author `.ftag`, arXiv:2607.02612 meta line, linked title (Fusion), authors, one-paragraph summary, `.metric` chip (48% energy · 4× calibration), Read-on-arXiv button |
+| `#projects` | 04 — **9 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 8 in the 2-col `.proj-grid`. Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
+| `#skills` | 05 — 2×2 bento of `.skill-card`s, first spans 2 rows (AI & Agents, LLMOps, Programming, Infra) |
+| `#education` | 06 — 2 `.mini` cards (M.Sc. BTU with language chips English C1 · German B1 · Malayalam, B.Sc. BVM) |
+| `#contact` | 07 — email as 24–28px headline + inline copy button, then 3 `.cc` tiles (LinkedIn, GitHub, résumé PDF) |
 
 There is no `#github-stats` or `#languages` section (languages moved into Education).
 
