@@ -134,7 +134,9 @@ img,svg,canvas{max-width:100%}
 .menu-btn{display:none}
 .menu-btn svg{grid-area:1/1;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
 .menu-btn svg.off{opacity:0;transform:rotate(90deg) scale(.7)}
-@media(max-width:760px){
+/* 860, not 760: six nav links + brand + three actions stop fitting on one row
+   below ~880px, so the collapsed menu has to take over before they collide */
+@media(max-width:860px){
   .menu-btn{display:grid}
   .nav-links{position:absolute;top:66px;left:0;right:0;flex-direction:column;align-items:stretch;gap:0;
     padding:8px 24px 14px;background:color-mix(in srgb,var(--bg) 94%,transparent);
@@ -272,7 +274,22 @@ section.block{padding:84px 0;border-top:1px solid var(--line)}
 .job li{position:relative;padding-left:19px;font-size:15.5px;color:var(--muted);line-height:1.55}
 .job li::before{content:"";position:absolute;left:2px;top:10px;width:5px;height:5px;border-radius:50%;background:var(--line-strong)}
 
-/* ---- 03 projects ---- */
+/* ---- 03 publications ---- */
+.pub{border-radius:var(--r-lg);padding:32px;display:flex;flex-direction:column;align-items:flex-start}
+@media(max-width:560px){.pub{padding:24px 20px}}
+.pub-badges{display:flex;align-items:center;flex-wrap:wrap;gap:12px;margin-bottom:16px}
+.pub-badges .ftag{margin-bottom:0}
+.pub-meta{font-size:12px;color:var(--faint);overflow-wrap:anywhere}
+.pub-title{font-size:var(--fs-card);font-weight:700;letter-spacing:-0.022em;line-height:1.35;max-width:48ch}
+.pub-title a{border-bottom:1px solid transparent;transition:color .16s,border-color .16s}
+.pub-authors{font-size:14px;color:var(--muted);margin-top:12px;line-height:1.55}
+.pub-authors strong{color:var(--ink);font-weight:600}
+.pub-summary{font-size:15px;color:var(--muted);margin-top:16px;line-height:1.6;max-width:60ch}
+.pub .metric{margin:20px 0 0}
+.pub-links{margin-top:22px}
+.pub-links .btn{padding:9px 15px;font-size:13.5px}
+
+/* ---- 04 projects ---- */
 /* isolate: makes .card a stacking context so the spotlight can sit at z-index:-1,
    i.e. above the glass background but below the text, without escaping the card */
 .card{border-radius:var(--r-lg);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;isolation:isolate;
@@ -328,7 +345,7 @@ section.block{padding:84px 0;border-top:1px solid var(--line)}
 .proj-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:stretch}
 @media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
 
-/* ---- 04 skills ---- */
+/* ---- 05 skills ---- */
 .skills-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:start}
 .skills-bento .s1{grid-row:span 2}
 @media(max-width:760px){.skills-bento{grid-template-columns:1fr}.skills-bento .s1{grid-row:auto}}
@@ -338,7 +355,7 @@ section.block{padding:84px 0;border-top:1px solid var(--line)}
 .skill-row{display:flex;flex-wrap:wrap;gap:8px}
 .skill-card .chip{font-size:12.5px;padding:5px 10px}
 
-/* ---- 05 education ---- */
+/* ---- 06 education ---- */
 .edu-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:16px;align-items:start}
 @media(max-width:760px){.edu-grid{grid-template-columns:1fr}}
 .mini{border-radius:var(--r-lg);padding:26px}
@@ -348,7 +365,7 @@ section.block{padding:84px 0;border-top:1px solid var(--line)}
 .mini p{font-size:15px;color:var(--muted);margin-top:12px;line-height:1.55}
 .langs{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px;padding-top:18px;border-top:1px solid var(--line)}
 
-/* ---- 06 contact ---- */
+/* ---- 07 contact ---- */
 .contact-card{border-radius:var(--r-lg);padding:36px}
 @media(max-width:560px){.contact-card{padding:26px 20px}}
 .mailrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
@@ -414,6 +431,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   .card:hover::after{opacity:1}
   .card:hover h3 .gh{color:var(--accent)}
   .exp-btn:hover{color:var(--ink);border-color:var(--line-strong)}
+  .pub-title a:hover{color:var(--accent);border-color:var(--accent)}
   .copy:hover{color:var(--ink);border-color:var(--line-strong)}
   .b-stack:hover .mtrack{animation-play-state:paused}
   footer a:hover{color:var(--ink);border-color:var(--ink)}
@@ -452,6 +470,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
+      <a href="#publications">Publications</a>
       <a href="#projects">Projects</a>
       <a href="#skills">Skills</a>
       <a href="#contact">Contact</a>
@@ -606,9 +625,27 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     </div>
   </section>
 
-  <!-- 03 PROJECTS -->
+  <!-- 03 PUBLICATIONS -->
+  <section class="block reveal" id="publications">
+    <div class="sec-head"><span class="sec-idx mono">03</span><span class="sec-title">Publications</span><span class="sec-note">// peer-reviewed &amp; preprints</span></div>
+    <article class="pub glass">
+      <div class="pub-badges">
+        <span class="ftag">First author</span>
+        <span class="pub-meta mono">arXiv:2607.02612 [cs.CV] · July 2026</span>
+      </div>
+      <h3 class="pub-title"><a href="https://arxiv.org/abs/2607.02612" target="_blank" rel="noopener">Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers</a></h3>
+      <p class="pub-authors"><strong>Aravind Pradeep</strong>, Samira Nazari, Mahdi Taheri, Christian Herglotz</p>
+      <p class="pub-summary">Token merging, early exiting and token pruning each cut a Vision Transformer's inference cost alone, but combined they destabilise the intermediate representations. Fusion stages them so they cooperate — merge first, check confidence, prune only what continues — with routing modules that adapt compression per input and expose the accuracy/latency trade-off at inference time, no retraining.</p>
+      <span class="metric">48% less inference energy · up to 4× lower calibration error · ImageNet-1k, DeiT-S</span>
+      <div class="pub-links">
+        <a class="btn btn-ghost" href="https://arxiv.org/abs/2607.02612" target="_blank" rel="noopener">Read on arXiv ↗</a>
+      </div>
+    </article>
+  </section>
+
+  <!-- 04 PROJECTS -->
   <section class="block" id="projects">
-    <div class="sec-head reveal"><span class="sec-idx mono">03</span><span class="sec-title">Projects</span><span class="sec-note">// selected open source</span></div>
+    <div class="sec-head reveal"><span class="sec-idx mono">04</span><span class="sec-title">Projects</span><span class="sec-note">// selected open source</span></div>
 
     <article class="card glass feat sreveal" style="--i:0">
       <div>
@@ -702,9 +739,9 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     </div>
   </section>
 
-  <!-- 04 SKILLS -->
+  <!-- 05 SKILLS -->
   <section class="block reveal" id="skills">
-    <div class="sec-head"><span class="sec-idx mono">04</span><span class="sec-title">Skills</span><span class="sec-note">// toolkit</span></div>
+    <div class="sec-head"><span class="sec-idx mono">05</span><span class="sec-title">Skills</span><span class="sec-note">// toolkit</span></div>
     <div class="skills-bento">
       <div class="skill-card glass s1">
         <h4>AI &amp; Agents</h4>
@@ -725,9 +762,9 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     </div>
   </section>
 
-  <!-- 05 EDUCATION -->
+  <!-- 06 EDUCATION -->
   <section class="block reveal" id="education">
-    <div class="sec-head"><span class="sec-idx mono">05</span><span class="sec-title">Education</span><span class="sec-note">// academic</span></div>
+    <div class="sec-head"><span class="sec-idx mono">06</span><span class="sec-title">Education</span><span class="sec-note">// academic</span></div>
     <div class="edu-grid">
       <div class="mini glass">
         <h3>M.Sc. Artificial Intelligence</h3>
@@ -747,9 +784,9 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     </div>
   </section>
 
-  <!-- 06 CONTACT -->
+  <!-- 07 CONTACT -->
   <section class="block reveal" id="contact">
-    <div class="sec-head"><span class="sec-idx mono">06</span><span class="sec-title">Contact</span><span class="sec-note">// get in touch</span></div>
+    <div class="sec-head"><span class="sec-idx mono">07</span><span class="sec-title">Contact</span><span class="sec-note">// get in touch</span></div>
     <div class="contact-card glass">
       <div class="mailrow">
         <a class="mail" href="mailto:aravindpradeep001@gmail.com">aravindpradeep001@gmail.com</a>
