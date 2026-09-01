@@ -138,6 +138,8 @@ img,svg,canvas{max-width:100%}
   padding:10px 17px;cursor:pointer;border:1px solid transparent;white-space:nowrap;
   transition:background .16s,border-color .16s,box-shadow .16s,color .16s,transform 140ms var(--ease-out)}
 .btn-primary{background:var(--accent);color:#fff}
+/* dark accent is light (#7e9bff): white text fails WCAG at ~2.6:1, ink passes at ~7.6:1 */
+html.dark .btn-primary{color:#0a0b0f}
 .btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink);
   -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}
 .cv-short{display:none}
