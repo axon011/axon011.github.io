@@ -70,7 +70,7 @@
 }
 html.dark{
   --bg:#0a0b0f; --surface:rgba(28,30,38,.46); --surface-solid:#16171b;
-  --ink:#ecedf0; --muted:#9b9ea8; --faint:#6e7079;
+  --ink:#ecedf0; --muted:#9b9ea8; --faint:#7a7d87;
   --line:rgba(255,255,255,.08); --line-strong:rgba(255,255,255,.15); --glass-edge:rgba(255,255,255,.10);
   --accent:#7e9bff; --accent-ink:#a9bcff;
   --accent-wash:rgba(126,155,255,.14); --chip:rgba(255,255,255,.05);
@@ -384,7 +384,7 @@ section.block.band::before{
 .skills-bento{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 @media(max-width:760px){.skills-bento{grid-template-columns:1fr}}
 .skill-card{border-radius:var(--r-lg);padding:26px}
-.skill-card h4{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.1em;
+.skill-card h3{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.1em;
   text-transform:uppercase;color:var(--faint);margin-bottom:16px}
 .skill-row{display:flex;flex-wrap:wrap;gap:8px}
 .skill-card .chip{font-size:12.5px;padding:5px 10px}
@@ -602,7 +602,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 01 ABOUT -->
   <section class="block reveal" id="about">
-    <div class="sec-head"><span class="sec-idx mono">01</span><span class="sec-title">About</span><span class="sec-note">// who &amp; what</span></div>
+    <div class="sec-head"><span class="sec-idx mono">01</span><h2 class="sec-title">About</h2><span class="sec-note">// who &amp; what</span></div>
     <div class="bento">
       <div class="b-lead glass">
         <p><strong>Production first.</strong> Python/Go services on real-time MQTT streams, FastAPI, Docker/K8s, CI/CD — two years at Perinet, including the model-benchmarking that shaped the platform.</p>
@@ -632,7 +632,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 02 EXPERIENCE -->
   <section class="block band reveal" id="experience">
-    <div class="sec-head"><span class="sec-idx mono">02</span><span class="sec-title">Experience</span><span class="sec-note">// where I've worked</span></div>
+    <div class="sec-head"><span class="sec-idx mono">02</span><h2 class="sec-title">Experience</h2><span class="sec-note">// where I've worked</span></div>
     <div class="tl">
       <div class="job">
         <div class="when">Jul 2024 — May 2026</div>
@@ -661,7 +661,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 03 PUBLICATIONS -->
   <section class="block reveal" id="publications">
-    <div class="sec-head"><span class="sec-idx mono">03</span><span class="sec-title">Publications</span><span class="sec-note">// peer-reviewed &amp; preprints</span></div>
+    <div class="sec-head"><span class="sec-idx mono">03</span><h2 class="sec-title">Publications</h2><span class="sec-note">// peer-reviewed &amp; preprints</span></div>
     <article class="pub glass">
       <div class="pub-badges">
         <span class="ftag">First author</span>
@@ -680,7 +680,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 04 PROJECTS -->
   <section class="block band" id="projects">
-    <div class="sec-head reveal"><span class="sec-idx mono">04</span><span class="sec-title">Projects</span><span class="sec-note">// selected open source</span></div>
+    <div class="sec-head reveal"><span class="sec-idx mono">04</span><h2 class="sec-title">Projects</h2><span class="sec-note">// selected open source</span></div>
 
     <article class="card glass feat sreveal" style="--i:0">
       <div>
@@ -776,22 +776,22 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 05 SKILLS -->
   <section class="block reveal" id="skills">
-    <div class="sec-head"><span class="sec-idx mono">05</span><span class="sec-title">Skills</span><span class="sec-note">// toolkit</span></div>
+    <div class="sec-head"><span class="sec-idx mono">05</span><h2 class="sec-title">Skills</h2><span class="sec-note">// toolkit</span></div>
     <div class="skills-bento">
       <div class="skill-card glass">
-        <h4>AI &amp; Agents</h4>
+        <h3>AI &amp; Agents</h3>
         <div class="skill-row"><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">CrewAI</span><span class="chip">RAG</span><span class="chip">Agentic AI</span><span class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span class="chip">MCP</span><span class="chip">Tool Use</span></div>
       </div>
       <div class="skill-card glass">
-        <h4>LLMOps &amp; Evaluation</h4>
+        <h3>LLMOps &amp; Evaluation</h3>
         <div class="skill-row"><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">Langfuse</span><span class="chip">LLM-as-Judge</span><span class="chip">Hybrid Retrieval</span><span class="chip">Qdrant</span><span class="chip">ChromaDB</span><span class="chip">pgvector</span></div>
       </div>
       <div class="skill-card glass">
-        <h4>Programming &amp; Backend</h4>
+        <h3>Programming &amp; Backend</h3>
         <div class="skill-row"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">FastAPI</span><span class="chip">REST / gRPC</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQL / PostgreSQL</span></div>
       </div>
       <div class="skill-card glass">
-        <h4>Infrastructure &amp; DevOps</h4>
+        <h3>Infrastructure &amp; DevOps</h3>
         <div class="skill-row"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">GitLab CI/CD</span><span class="chip">MQTT</span><span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Linux</span></div>
       </div>
     </div>
@@ -799,7 +799,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 06 EDUCATION -->
   <section class="block band reveal" id="education">
-    <div class="sec-head"><span class="sec-idx mono">06</span><span class="sec-title">Education</span><span class="sec-note">// academic</span></div>
+    <div class="sec-head"><span class="sec-idx mono">06</span><h2 class="sec-title">Education</h2><span class="sec-note">// academic</span></div>
     <div class="edu-grid">
       <div class="mini glass">
         <h3>M.Sc. Artificial Intelligence</h3>
@@ -821,7 +821,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- 07 CONTACT -->
   <section class="block reveal" id="contact">
-    <div class="sec-head"><span class="sec-idx mono">07</span><span class="sec-title">Contact</span><span class="sec-note">// get in touch</span></div>
+    <div class="sec-head"><span class="sec-idx mono">07</span><h2 class="sec-title">Contact</h2><span class="sec-note">// get in touch</span></div>
     <div class="contact-card glass">
       <div class="mailrow">
         <a class="mail" href="mailto:aravindpradeep001@gmail.com">aravindpradeep001@gmail.com</a>
