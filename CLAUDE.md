@@ -100,9 +100,9 @@ lede, three-statement About, one-line project pitches — long text lives behind
 Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`. Alternating sections
 (02 Experience, 04 Projects, 06 Education) carry `class="band"` — a full-bleed `--band`
 tint via `::before{inset:0 calc(50% - 50vw)}` with its own 1px top/bottom rules (the
-banded section and its follower drop `border-top` to avoid doubling). `body` has
-`overflow-x:clip` (NOT hidden) to trim the half-scrollbar overhang without breaking the
-sticky nav.
+banded section and its follower drop `border-top` to avoid doubling). `html` carries
+`overflow-x:clip` (NOT hidden — hidden would break the sticky nav; and on `body` alone
+clip does not reach the viewport) to trim the band's half-scrollbar overhang.
 
 | Section ID | Description |
 |-----------|-------------|
