@@ -150,8 +150,14 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 
 ## Known Issues (2026-08-14)
 
-- [ ] Navbar overflows ~36px at a 320px viewport (pre-dates the Publications nav link;
-      affects only very small devices). Not a regression — fix opportunistically
+- [x] ~~Navbar overflows ~36px at a 320px viewport~~ — fixed 2026-09-01. The brand plus
+      three actions needed 374px of a 320px row, and `html{overflow-x:clip}` cut the
+      Résumé button in half with no scrollbar to reveal it. Two media queries after the
+      860px block reclaim it: `≤380px` tightens `.nav-in` padding (18→14) and gap (16→10),
+      `.brand` (15→14px), `.nav-actions` gap (10→8) and the Résumé button (13px type,
+      9/12 padding); `≤359px` swaps the visible label to "CV" via `.cv-long`/`.cv-short`,
+      with `aria-label="Résumé (PDF)"` on the anchor keeping the accessible name intact.
+      Verified zero overflow at 320/360/375/768/1440 in both themes
 - [ ] Google Fonts is the only remote dependency; the page renders fine on the system
       font fallback if it's blocked, but headings reflow slightly
 - [ ] `reports/` still cites `css/style.css` and `js/script.js` line numbers. Those
@@ -162,5 +168,10 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 ## TODO
 
 - [ ] Add favicon
-- [ ] Add Open Graph image for social sharing previews
+- [x] ~~Add Open Graph image for social sharing previews~~ — `og.png` added 2026-09-01
+      (1200×630, 73KB indexed PNG). Wired to `og:image` + `twitter:image`, with
+      `twitter:card` raised to `summary_large_image`. It is a rendered artwork, not a
+      source file: regenerate by re-rendering the throwaway `og-src.html` recipe rather
+      than editing the PNG. The JSON-LD `"image"` stays the GitHub avatar — schema.org
+      wants a photo of the person there, not a share card
 - [ ] Consider adding a blog section
