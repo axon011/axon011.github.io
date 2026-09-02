@@ -45,10 +45,22 @@
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<!-- The Google Fonts stylesheet blocks first paint for ~1.4s on a throttled phone, and it
+     only gates two @font-face rules. media="print" drops it out of the render-blocking set;
+     onload promotes it back to all. The fallback face below keeps the pre-swap layout the
+     same size, so nothing reflows when Inter arrives. -->
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='22' fill='%231b4de4'/><text x='50' y='69' font-family='Inter,Arial' font-size='44' font-weight='800' fill='white' text-anchor='middle'>A</text></svg>">
 
 <style>
+/* Arial re-scaled to Inter's metrics. First paint uses this, so the swap to real Inter
+   moves nothing — without it, making the font stylesheet async trades FCP for layout shift. */
+@font-face{
+  font-family:"Inter Fallback";
+  src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");
+  ascent-override:90.49%;descent-override:22.56%;line-gap-override:0%;size-adjust:107.06%;
+}
 :root{
   --bg:#f7f8fb; --surface:rgba(255,255,255,.58); --surface-solid:#ffffff;
   --ink:#15161a; --muted:#565a64; --faint:#82858f;
@@ -87,7 +99,7 @@ html.dark{
 html{scroll-behavior:smooth;overflow-x:clip}
 body{
   background:var(--bg);color:var(--ink);
-  font-family:Inter,system-ui,-apple-system,sans-serif;
+  font-family:Inter,"Inter Fallback",system-ui,-apple-system,sans-serif;
   font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased;
   letter-spacing:-0.011em;position:relative;overflow-x:clip;
 }
@@ -204,15 +216,20 @@ h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;anima
 /* window card + knowledge graph */
 .viz-card{background:var(--surface);-webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%);
   border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
-  overflow:hidden;position:relative;animation:float 7s ease-in-out infinite}
+  overflow:hidden;position:relative}
 @keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 /* border trail — a short accent arc orbiting the card edge */
 @property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
 .viz-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
   background:conic-gradient(from var(--a),transparent 0 72%,var(--accent) 88%,transparent 100%);
   -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
-  animation:orbit 4.5s linear infinite;opacity:.9}
+  opacity:.9}
 @keyframes orbit{to{--a:360deg}}
+/* Ambient loops start at load, not first paint. Floating a backdrop-filtered card re-blurs
+   it every frame and the trail repaints a masked conic gradient — both were competing with
+   the initial render. Each keyframe begins at its rest state, so switching on is seamless. */
+html.ready .viz-card{animation:float 7s ease-in-out infinite}
+html.ready .viz-card::after{animation:orbit 4.5s linear infinite}
 .viz-head{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid var(--line)}
 .tdot{width:10px;height:10px;border-radius:50%}.tdot.r{background:#ff5f57}.tdot.y{background:#febc2e}.tdot.g{background:#28c840}
 .viz-title{font-size:12px;color:var(--muted);margin-left:6px}
@@ -285,7 +302,8 @@ section.block.band::before{
 .marquee{overflow:hidden;
   -webkit-mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent);
   mask-image:linear-gradient(90deg,transparent,#000 8%,#000 92%,transparent)}
-.mtrack{display:flex;width:max-content;animation:slide 40s linear infinite}
+.mtrack{display:flex;width:max-content}
+html.ready .mtrack{animation:slide 40s linear infinite}
 .mgroup{display:flex;align-items:center;gap:14px;padding-right:14px;flex-shrink:0}
 .mgroup span{font-family:"JetBrains Mono",monospace;font-size:14px;color:var(--muted);white-space:nowrap}
 .mgroup span::after{content:"·";margin-left:14px;color:var(--line-strong)}
@@ -886,11 +904,15 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   menu.addEventListener('click',function(){setMenu(!nav.classList.contains('open'));});
   document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
-  // scroll progress
-  var ticking=false;
-  function prog(){ var h=document.documentElement, max=h.scrollHeight-h.clientHeight;
-    nav.style.setProperty('--p',max>0?(h.scrollTop/max).toFixed(4):0); ticking=false; }
-  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(prog);}},{passive:true}); prog();
+  // scroll progress — scrollHeight is cached, because reading it per scroll frame
+  // flushes layout for the whole document
+  var ticking=false, smax=0;
+  function measure(){ var h=document.documentElement; smax=h.scrollHeight-h.clientHeight; }
+  // measured lazily on the first scroll frame, never at parse time — reading scrollHeight
+  // before the browser has laid out forces the whole document's layout early
+  function prog(){ if(!smax)measure(); nav.style.setProperty('--p',smax>0?(scrollY/smax).toFixed(4):0); ticking=false; }
+  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(prog);}},{passive:true});
+  addEventListener('resize',function(){measure();prog();},{passive:true});
   // card spotlight — fine pointers only; touch never sees it
   if(matchMedia('(hover:hover) and (pointer:fine)').matches){
     document.querySelectorAll('.card').forEach(function(c){
@@ -903,6 +925,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     b.addEventListener('click',function(e){
       e.stopPropagation();
       b.setAttribute('aria-expanded', b.getAttribute('aria-expanded')==='true' ? 'false' : 'true');
+      setTimeout(measure,300); // the panel grows over 260ms; the page got taller
     });
   });
   // copy email
@@ -926,6 +949,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});
       var i=secs.indexOf(e.target); if(i>-1)links[i].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(function(s){if(s)spy.observe(s);});
+  // html.ready releases the ambient loops (card float, border trail, stack marquee) once
+  // the critical render is done. Also a good moment to re-measure: fonts have swapped in.
+  function ready(){ root.classList.add('ready'); measure(); prog(); }
+  if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
 
   /* live knowledge graph on the hero canvas — own IIFE so its locals cannot
      collide with the page script; exposes only window.__kg for testing */
@@ -936,9 +963,6 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     try { ctx = cv.getContext('2d'); } catch (e) { return; }
     if (!ctx) return;
     var fb = document.getElementById('kg-fallback');
-    // setAttribute, not .hidden — the fallback is an <svg>, and SVGElement does not
-    // reflect the hidden IDL property, so the assignment would silently do nothing
-    if (fb) fb.setAttribute('hidden', '');
 
     var NAMES = ['RAG','LangGraph','Qdrant','Agents','LLMOps','MLflow','RAGAs','FastAPI','Docker','K8s','MQTT','PyTorch','GraphRAG','Eval','Python','Go','Whisper','QLoRA'];
     var KEY = { RAG: 1, Agents: 1, LLMOps: 1, GraphRAG: 1, Python: 1 };
@@ -980,7 +1004,43 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       W = w; H = h; S = Math.min(W, H) / 390;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      setFont();
+      buildLabels();
       draw(0);
+    }
+
+    /* Assigning ctx.font re-resolves the family against the document's font set, which is a
+       forced style recalc. Per frame that cost ~210ms of the load; setting a canvas's width
+       resets context state, so resize() is the only place it actually has to happen. */
+    function setFont() {
+      ctx.font = '11px "JetBrains Mono",ui-monospace,monospace';
+      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
+    }
+
+    /* Labels are rasterised once into small offscreen canvases and blitted per frame.
+       Stroking a 2px halo behind 18 labels every frame was the most expensive thing on the
+       page by a wide margin; drawImage of a cached bitmap costs almost nothing. Depends on
+       dpr and on the theme colours, so it is rebuilt from resize() and on a theme change. */
+    var LPAD = 3, LH_ = 17;
+    function tile(text, w, fill) {
+      var c = document.createElement('canvas');
+      c.width = Math.round(w * dpr); c.height = Math.round(LH_ * dpr);
+      var x = c.getContext('2d');
+      if (!x) return null;
+      x.setTransform(dpr, 0, 0, dpr, 0, 0);
+      x.font = '11px "JetBrains Mono",ui-monospace,monospace';
+      x.textAlign = 'center'; x.textBaseline = 'top';
+      x.lineWidth = 2; x.strokeStyle = C.bg; x.lineJoin = 'round';
+      x.strokeText(text, w / 2, LPAD);
+      x.fillStyle = fill; x.fillText(text, w / 2, LPAD);
+      return c;
+    }
+    function buildLabels() {
+      for (var i = 0; i < nodes.length; i++) {
+        var N = nodes[i], w = Math.ceil(ctx.measureText(N.n).width) + LPAD * 2;
+        N.lw = w;
+        N.lab = [tile(N.n, w, C.muted), tile(N.n, w, C.ink)];
+      }
     }
 
     function step() {
@@ -1044,19 +1104,14 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(x, y, 3, 0, 6.2832); ctx.fill(); ctx.restore();
       }
 
-      ctx.font = '11px "JetBrains Mono",ui-monospace,monospace';
-      ctx.textAlign = 'center'; ctx.textBaseline = 'top';
       for (i = 0; i < n; i++) {
         var N = nodes[i], X = px_(N, t), Y = py_(N, t);
         var r = (N.key ? 5.5 : 3.6) * (1 + N.hot * 0.55);
         ctx.beginPath(); ctx.arc(X, Y, r, 0, 6.2832);
         if (N.key || N.hot > 0.5) { ctx.fillStyle = C.accent; ctx.fill(); }
         else { ctx.fillStyle = C.bg; ctx.fill(); ctx.strokeStyle = N.hot > 0.02 ? C.accent : C.muted; ctx.lineWidth = 1.2; ctx.stroke(); }
-        var ly = Y + r + 4;
-        ctx.lineWidth = 2; ctx.strokeStyle = C.bg; ctx.lineJoin = 'round';
-        ctx.strokeText(N.n, X, ly);
-        ctx.fillStyle = (N.key || N.hot > 0.4) ? C.ink : C.muted;
-        ctx.fillText(N.n, X, ly);
+        var lab = N.lab && N.lab[(N.key || N.hot > 0.4) ? 1 : 0];
+        if (lab) ctx.drawImage(lab, X - N.lw / 2, Y + r + 4 - LPAD, N.lw, LH_);
       }
     }
 
@@ -1080,27 +1135,47 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     function stop() { running = false; if (raf) { cancelAnimationFrame(raf); raf = 0; } }
     function sync() { if (visible && !document.hidden) start(); else stop(); }
 
-    readColors();
-    resize();
-    if (reduce) { for (var s0 = 0; s0 < 120; s0++) step(); draw(0); }
+    var booted = false;
+    function boot() {
+      if (booted) return; booted = true;
+      // canvas takes over only now that it can draw. setAttribute, not .hidden — the
+      // fallback is an <svg>, and SVGElement does not reflect the hidden IDL property,
+      // so the assignment would silently do nothing
+      if (fb) fb.setAttribute('hidden', '');
+      readColors();
+      resize();
+      if (reduce) { for (var s0 = 0; s0 < 120; s0++) step(); draw(0); }
 
-    if (window.ResizeObserver) { try { new ResizeObserver(resize).observe(cv); } catch (e2) {} }
-    window.addEventListener('resize', resize);
-    new MutationObserver(function () { readColors(); if (!running) draw(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      if (window.ResizeObserver) { try { new ResizeObserver(resize).observe(cv); } catch (e2) {} }
+      window.addEventListener('resize', resize);
+      new MutationObserver(function () { readColors(); buildLabels(); if (!running) draw(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
+      // the font stylesheet is async now, so JetBrains Mono can land after the first frame
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setFont(); buildLabels(); if (!running) draw(0); });
 
-    if (window.IntersectionObserver) {
-      new IntersectionObserver(function (en) { visible = en[0].isIntersecting; sync(); }, { threshold: 0 }).observe(cv);
-    } else { visible = true; sync(); }
-    document.addEventListener('visibilitychange', sync);
+      if (window.IntersectionObserver) {
+        new IntersectionObserver(function (en) { visible = en[0].isIntersecting; sync(); }, { threshold: 0 }).observe(cv);
+      } else { visible = true; sync(); }
+      document.addEventListener('visibilitychange', sync);
 
-    if (fine) {
-      cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; });
-      cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; });
+      if (fine) {
+        cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; });
+        cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; });
+      }
     }
+
+    /* The graph is decoration, so it stays off the critical path completely: the static SVG
+       holds the frame until the page has loaded and the main thread is actually idle. */
+    function schedule() {
+      if (window.requestIdleCallback) requestIdleCallback(boot, { timeout: 2000 });
+      else setTimeout(boot, 200);
+    }
+    if (document.readyState === 'complete') schedule();
+    else window.addEventListener('load', schedule, { once: true });
 
     window.__kg = {
       pause: stop,
-      resume: function () { sync(); },
+      resume: function () { boot(); sync(); },
+      boot: boot,
       _n: nodes.length, _e: edges.length, _p: function () { return packets.length; }
     };
   })();
