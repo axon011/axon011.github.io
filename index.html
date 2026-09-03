@@ -250,6 +250,9 @@ html.ready .viz-card::after{animation:orbit 4.5s linear infinite}
 .kg text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--muted);text-anchor:middle}
 .kg text.hot{fill:var(--accent-ink);font-weight:600}
 .viz-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
+/* the interaction hint matches the input: "hover" on fine pointers, "tap" on touch */
+.pull-tap{display:none}
+@media (hover:none){.pull-hover{display:none}.pull-tap{display:inline}}
 
 /* ---- section scaffolding ---- */
 section.block{padding:84px 0;border-top:1px solid var(--line);position:relative}
@@ -612,7 +615,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
               </g>
             </svg>
           </div>
-          <div class="viz-foot mono"><span>18 nodes · 27 edges</span><span>hover to pull</span></div>
+          <div class="viz-foot mono"><span>18 nodes · 27 edges</span><span><span class="pull-hover">hover</span><span class="pull-tap">tap</span> to pull</span></div>
         </div>
       </div>
     </div>
@@ -1071,7 +1074,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       for (i = 0; i < n; i++) {
         var N = nodes[i];
         N.vx += (0.5 - N.x) * 0.0032; N.vy += (0.5 - N.y) * 0.0045;
-        if (fine && mx > -1e3) {
+        if (mx > -1e3) {
           dx = mx - N.x * W; dy = my - N.y * H; d = Math.sqrt(dx * dx + dy * dy);
           if (d < 120 && d > 0.5) { f = (1 - d / 120) * 0.10 / d; N.vx += dx * f / W * 8; N.vy += dy * f / H * 8; }
         }
@@ -1089,7 +1092,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       if (!W || !H) return;
       ctx.clearRect(0, 0, W, H);
       var n = nodes.length, hot = -1, i;
-      if (fine && mx > -1e3) {
+      if (mx > -1e3) {
         var best = 24 * 24;
         for (i = 0; i < n; i++) { var ddx = px_(nodes[i], t) - mx, ddy = py_(nodes[i], t) - my, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; hot = i; } }
       }
@@ -1169,6 +1172,17 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       if (fine) {
         cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; });
         cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; });
+      } else if (!reduce) {
+        // touch: a tap (or a drag with the finger down) pulls nodes toward the touch
+        // point; the pull releases 700ms after lift-off. Scrolling is untouched — no
+        // preventDefault and no touch-action override, so a pan over the card still pans.
+        var tmr = 0;
+        var tset = function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; clearTimeout(tmr); };
+        cv.addEventListener('pointerdown', tset);
+        cv.addEventListener('pointermove', function (ev) { if (ev.pressure > 0 || (ev.buttons | 0) > 0) tset(ev); });
+        var trel = function () { tmr = setTimeout(function () { mx = -1e4; my = -1e4; }, 700); };
+        cv.addEventListener('pointerup', trel);
+        cv.addEventListener('pointercancel', trel);
       }
     }
 
