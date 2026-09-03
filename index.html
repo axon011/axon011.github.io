@@ -721,6 +721,15 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     <div class="proj-grid">
 
       <article class="card glass sreveal" style="--i:0">
+        <h3><a class="card-link" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">Deutsch-Tutor <span aria-hidden="true">↗</span></a></h3>
+        <p class="pitch">AI German tutor that builds your curriculum from your own mistakes.</p>
+        <span class="metric">32 CEFR lessons · error-driven drills · live app</span>
+        <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">SSE streaming</span><span class="chip">Zod</span><span class="chip">Tailwind</span></div>
+        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-tutor">Details <span class="car" aria-hidden="true">▾</span></button>
+        <div class="more" id="more-tutor"><div><p>Every error you make in live conversation is logged and turned into drills: the reply streams immediately while a parallel corrector marks exact error spans, and a decay-weighted formula — not an LLM — picks what you practice next.</p></div></div>
+      </article>
+
+      <article class="card glass sreveal" style="--i:1">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
@@ -729,7 +738,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-graphrag-agent"><div><p>Entity and relation extraction builds a typed graph first, so a question that spans three documents is answered by walking edges instead of hoping one chunk contains everything.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:0">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
         <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
@@ -738,7 +747,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-graphrag-studio"><div><p>An interactive force-graph front end over the GraphRAG Agent core, so the retrieval path behind every cited answer is something you can actually see.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:1">
         <h3><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</p>
         <span class="metric">LangGraph · strict role boundaries · CI/CD</span>
@@ -747,7 +756,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-multi-agent"><div><p>Each role gets a Pydantic-typed contract and no access to the others' tools, which is what keeps a four-agent loop from collapsing into one agent doing everything badly.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:0">
         <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
         <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
@@ -756,7 +765,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-rag-eval"><div><p>Every retrieval change runs against a fixed question set and logs to MLflow, so a quality regression shows up as a failed run rather than a complaint months later.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:1">
         <h3><a class="card-link" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Self-hosted tracing of latency, tokens and cost per model call.</p>
         <span class="metric">full-stack · multi-stage Docker · 12 tests</span>
@@ -765,7 +774,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-llmops"><div><p>Traces land in PostgreSQL rather than a third-party service, which matters when the calls being traced carry customer data.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:0">
         <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
@@ -774,7 +783,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-news"><div><p>The whole German-language chain was engineered to fit one consumer GPU, which forced quantisation and batching decisions that a bigger card would have hidden.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:1">
         <h3><a class="card-link" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
@@ -783,22 +792,13 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-finetune"><div><p>Training roughly 0.44% of the parameters was enough to get reliable structured output from messy postings — a small tuned model beating a large prompted one on this task.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:0">
         <h3>Resume Tailor</h3>
         <p class="pitch">CLI that tailors résumé + cover letter and self-checks before the PDF.</p>
         <span class="metric">multi-stage LLM pipeline · self-checking · private repo</span>
         <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">LaTeX</span><span class="chip">CLI</span></div>
         <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button>
         <div class="more" id="more-resume"><div><p>ATS and regression checks run before LaTeX compiles, so a fabricated metric or a broken claim fails the build instead of reaching a recruiter.</p></div></div>
-      </article>
-
-      <article class="card glass sreveal" style="--i:0">
-        <h3><a class="card-link" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">Deutsch-Tutor <span aria-hidden="true">↗</span></a></h3>
-        <p class="pitch">AI German tutor that builds your curriculum from your own mistakes.</p>
-        <span class="metric">32 CEFR lessons · error-driven drills · live app</span>
-        <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">SSE streaming</span><span class="chip">Zod</span><span class="chip">Tailwind</span></div>
-        <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-tutor">Details <span class="car" aria-hidden="true">▾</span></button>
-        <div class="more" id="more-tutor"><div><p>Every error you make in live conversation is logged and turned into drills: the reply streams immediately while a parallel corrector marks exact error spans, and a decay-weighted formula — not an LLM — picks what you practice next.</p></div></div>
       </article>
 
     </div>
