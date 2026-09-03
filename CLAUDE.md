@@ -167,7 +167,13 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 
 ## TODO
 
-- [ ] Add favicon
+- [x] ~~Add favicon~~ — `favicon.svg` + `favicon.ico` (16/32/48) + `apple-touch-icon.png`
+      (180×180, full-bleed, iOS rounds the corners itself) added 2026-09-04, replacing the
+      inline data-URI icon that depended on an installed Inter/Arial. The mark is a white
+      "A" drawn as paths (no font dependency) on an accent-gradient rounded tile — chosen
+      over a 3-node graph motif because only the letterform stays legible at 16px.
+      `favicon.svg` is the source: regenerate the raster pair by rendering it at 16/32/48
+      and 180 in headless Chromium, then assembling the .ico with Pillow
 - [x] ~~Add Open Graph image for social sharing previews~~ — `og.png` added 2026-09-01
       (1200×630, 73KB indexed PNG). Wired to `og:image` + `twitter:image`, with
       `twitter:card` raised to `summary_large_image`. It is a rendered artwork, not a
