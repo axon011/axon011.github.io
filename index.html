@@ -384,6 +384,7 @@ html.ready .mtrack{animation:slide 40s linear infinite}
 .more>div{overflow:hidden}
 .exp-btn[aria-expanded="true"]+.more{grid-template-rows:1fr}
 .more p{font-size:14.5px;color:var(--muted);line-height:1.55;padding-top:14px;margin-top:14px;border-top:1px solid var(--line)}
+.more p a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line)}
 
 .feat{display:grid;grid-template-columns:1.35fr .65fr;gap:32px;align-items:center;margin-bottom:16px;padding:32px}
 /* unpositioned for the same reason as .card h3 — the stretch must reach the whole featured card */
@@ -795,12 +796,12 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       </article>
 
       <article class="card glass sreveal" style="--i:0">
-        <h3>Resume Tailor</h3>
-        <p class="pitch">CLI that tailors résumé + cover letter and self-checks before the PDF.</p>
-        <span class="metric">multi-stage LLM pipeline · self-checking · private repo</span>
-        <div class="chips"><span class="chip">Python</span><span class="chip">LLM agents</span><span class="chip">LaTeX</span><span class="chip">CLI</span></div>
+        <h3><a class="card-link" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
+        <p class="pitch">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</p>
+        <span class="metric">3 gates before pdflatex · 106 tests · profile-driven, no personal data in code</span>
+        <div class="chips"><span class="chip">Python</span><span class="chip">LLM</span><span class="chip">LaTeX</span><span class="chip">Jinja2</span><span class="chip">pytest</span></div>
         <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button>
-        <div class="more" id="more-resume"><div><p>ATS and regression checks run before LaTeX compiles, so a fabricated metric or a broken claim fails the build instead of reaching a recruiter.</p></div></div>
+        <div class="more" id="more-resume"><div><p>A tailoring LLM moves personal-project work under the employer's heading, invents numbers, and adds whatever the posting asks for. Three mechanical gates run on the rendered LaTeX: a regression gate for banned claims and attribution slips, a claim-backing gate that traces every number, skill and tool name to the base CV, and an omission gate that reports what tailoring dropped. Nothing compiles until every artifact is clean. Pairs with <a href="https://github.com/axon011/job-search-toolkit" target="_blank" rel="noopener">job-search-toolkit</a>, which scans boards, filters roles and hands the cached JD straight to the tailor.</p></div></div>
       </article>
 
     </div>
