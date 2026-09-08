@@ -969,7 +969,18 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
        projected to the nearest edge, so no node or label can be drawn over a word. Both are
        in canvas pixels and are re-measured on every resize of the canvas or the copy. */
     var R = { x0: 0, y0: 0, x1: 0, y1: 0 }, RH = { x0: 0, y0: 0, x1: 0, y1: 0 };
+    /* the caption (#kg-cap) is a second keep-out zone. Its text swaps between the short node
+       count and a longer info line, so the zone is measured at the caption's MAXIMUM possible
+       width (its CSS max-width) rather than the current text width: the box never changes when
+       the text does, and a hover can never trigger a relayout. */
+    var CR = { x0: -1e4, y0: -1e4, x1: -1e4, y1: -1e4 }, CRH = { x0: -1e4, y0: -1e4, x1: -1e4, y1: -1e4 };
+    // every zone: R soft rect + range for keepOut, RH hard rect for hardClamp / inRH.
+    // The copy is always zones[0] so _zone().R and .RH keep meaning what they meant.
+    var zones = [{ R: R, RH: RH, range: 120 }];
     var KO_RANGE = 120, HARD_X = 44, HARD_Y = 32;
+    // CAP_HT: a label hangs ~29px below its node centre and the idle drift adds ~3.5 more,
+    // so the caption's hard rect has to reach that much further up than sideways
+    var CAP_SOFT = 24, CAP_RANGE = 60, CAP_HX = 12, CAP_HT = 34, CAP_HB = 8;
     var C = { ink: '#111', muted: '#777', accent: '#5b8cff', bg: '#fff', line: '#ddd', edge: '#ddd' };
     var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
     var canHover = matchMedia('(hover:hover) and (pointer:fine)').matches;
@@ -983,20 +994,60 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       C.edge = g('--line-strong', C.line);
     }
 
-    function measureCopy() {
-      if (!copy) { R.x0 = R.y0 = R.x1 = R.y1 = RH.x0 = RH.y0 = RH.x1 = RH.y1 = -1e4; return; }
-      var cb = cv.getBoundingClientRect(), b = copy.getBoundingClientRect();
-      var x0 = b.left - cb.left, y0 = b.top - cb.top, x1 = x0 + b.width, y1 = y0 + b.height;
-      var p = MOBILE ? 28 : 48;
-      KO_RANGE = MOBILE ? 60 : 120;
-      R.x0 = x0 - p; R.y0 = y0 - p; R.x1 = x1 + p; R.y1 = y1 + p;
-      RH.x0 = x0 - HARD_X; RH.y0 = y0 - HARD_Y; RH.x1 = x1 + HARD_X; RH.y1 = y1 + HARD_Y;
+    /* the caption's widest possible box. A percentage max-width comes back from getComputedStyle
+       unresolved, so it is resolved against the containing block here; anything unreadable falls
+       back to the desktop rule. Never wider than the canvas. */
+    function capMax(q) {
+      var fb = Math.min(0.58 * W, 560), v = fb;
+      try {
+        var s = getComputedStyle(capWrap).maxWidth;
+        if (s && s.indexOf('%') > 0) {
+          var pp = capWrap.offsetParent ? capWrap.offsetParent.getBoundingClientRect().width : W;
+          v = parseFloat(s) / 100 * pp;
+        } else if (s && s.indexOf('px') > 0) v = parseFloat(s);
+      } catch (e3) {}
+      if (!(v > 0)) v = fb;
+      return Math.min(Math.max(v, q.width), W);
+    }
+    function measureZones() {
+      var cb = cv.getBoundingClientRect();
+      // -- the copy zone, unchanged --
+      if (!copy) { R.x0 = R.y0 = R.x1 = R.y1 = RH.x0 = RH.y0 = RH.x1 = RH.y1 = -1e4; }
+      else {
+        var b = copy.getBoundingClientRect();
+        var x0 = b.left - cb.left, y0 = b.top - cb.top, x1 = x0 + b.width, y1 = y0 + b.height;
+        var p = MOBILE ? 28 : 48;
+        KO_RANGE = MOBILE ? 60 : 120;
+        R.x0 = x0 - p; R.y0 = y0 - p; R.x1 = x1 + p; R.y1 = y1 + p;
+        RH.x0 = x0 - HARD_X; RH.y0 = y0 - HARD_Y; RH.x1 = x1 + HARD_X; RH.y1 = y1 + HARD_Y;
+      }
+      zones.length = 0;
+      zones.push({ R: R, RH: RH, range: KO_RANGE });
+      // -- the caption zone --
+      var q = capWrap ? capWrap.getBoundingClientRect() : null;
+      if (q && q.height > 0) {
+        // the right edge is fixed; the left edge is the widest the caption is allowed to grow,
+        // read off its CSS max-width (min(58%,560px) on desktop, 100% in one column) so the
+        // zone covers the long info line as well as the short count
+        var cx1 = q.right - cb.left, cx0 = cx1 - capMax(q);
+        var cy0 = q.top - cb.top, cy1 = q.bottom - cb.top;
+        CR.x0 = cx0 - CAP_SOFT; CR.y0 = cy0 - CAP_SOFT; CR.x1 = cx1 + CAP_SOFT; CR.y1 = cy1 + CAP_SOFT;
+        // a node sitting just above the caption hangs its label 17px down into it, so the hard
+        // rect reaches further up than it does in any other direction
+        CRH.x0 = cx0 - CAP_HX; CRH.y0 = cy0 - CAP_HT; CRH.x1 = cx1 + CAP_HX; CRH.y1 = cy1 + CAP_HB;
+        zones.push({ R: CR, RH: CRH, range: CAP_RANGE });
+      }
     }
 
     /* homes: one seeded target point per node, spread over the free region (right of the copy
        on desktop, the bands above and below it on one column) with a best-of-ten candidate pick
        so the nodes read as a constellation. Each node springs gently to its home; the keep-out,
        repulsion and link springs do the rest. Deterministic for a given canvas size. */
+    // a candidate home inside any zone's soft rect is unusable
+    function inSoft(x, y) {
+      for (var z = 0; z < zones.length; z++) { var Z = zones[z].R; if (x > Z.x0 && x < Z.x1 && y > Z.y0 && y < Z.y1) return true; }
+      return false;
+    }
     function layout() {
       var n = nodes.length, i, j, k;
       act.length = 0; aedges.length = 0;
@@ -1018,12 +1069,17 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       for (j = 0; j < order.length; j++) {
         var share = (Math.min(j, act.length - 1) + 0.5) / act.length, acc = 0, rg = regs[regs.length - 1];
         for (k = 0; k < regs.length; k++) { acc += areas[k] / tot; if (share <= acc) { rg = regs[k]; break; } }
-        var best = null, bd = -1, c, q;
+        var best = null, bd = -1, fall = null, fd = -1, c, q;
         for (c = 0; c < 10; c++) {
           var cx = rg[0] + rnd() * (rg[2] - rg[0]), cy = rg[1] + rnd() * (rg[3] - rg[1]), md = 1e12;
           for (q = 0; q < pts.length; q++) { var ddx = pts[q][0] - cx, ddy = pts[q][1] - cy, dd = ddx * ddx + ddy * ddy; if (dd < md) md = dd; }
+          if (md > fd) { fd = md; fall = [cx, cy]; }
+          if (inSoft(cx, cy)) continue;
           if (md > bd) { bd = md; best = [cx, cy]; }
         }
+        // all ten candidates landed in a keep-out zone: keep the best of them anyway, so every
+        // node still gets a home and the loop cannot fail
+        if (!best) best = fall;
         pts.push(best);
         var N = nodes[order[j]];
         N.hx = best[0] / W; N.hy = best[1] / H;
@@ -1043,7 +1099,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       setFont();
       buildLabels();
-      measureCopy();
+      measureZones();
       layout();
       // nothing animates under reduced motion, so a resize has to re-settle the layout itself
       if (reduce) settle(60);
@@ -1083,33 +1139,40 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       }
     }
 
-    // soft keep-out: push away from the nearest edge of R, strong inside, zero KO_RANGE out
-    function keepOut(N) {
+    // soft keep-out: for every zone, push away from the nearest edge of its soft rect,
+    // strong inside, fading to zero the zone's range out
+    function keepOutOne(N, Z, range) {
       var x = N.x * W, y = N.y * H;
-      var ox = x < R.x0 ? x - R.x0 : (x > R.x1 ? x - R.x1 : 0);
-      var oy = y < R.y0 ? y - R.y0 : (y > R.y1 ? y - R.y1 : 0);
+      var ox = x < Z.x0 ? x - Z.x0 : (x > Z.x1 ? x - Z.x1 : 0);
+      var oy = y < Z.y0 ? y - Z.y0 : (y > Z.y1 ? y - Z.y1 : 0);
       if (ox === 0 && oy === 0) {
         // inside: leave through the nearest edge that still lies on the canvas
-        var dl = R.x0 > PAD ? x - R.x0 : 1e9, dr = R.x1 < W - PAD ? R.x1 - x : 1e9;
-        var dt = R.y0 > PADT ? y - R.y0 : 1e9, db = R.y1 < H - PAD ? R.y1 - y : 1e9;
+        var dl = Z.x0 > PAD ? x - Z.x0 : 1e9, dr = Z.x1 < W - PAD ? Z.x1 - x : 1e9;
+        var dt = Z.y0 > PADT ? y - Z.y0 : 1e9, db = Z.y1 < H - PAD ? Z.y1 - y : 1e9;
         var m = Math.min(dl, dr, dt, db), s = 1.4;
+        if (m >= 1e9) return;
         if (m === dl) N.vx -= s / W; else if (m === dr) N.vx += s / W; else if (m === dt) N.vy -= s / H; else N.vy += s / H;
         return;
       }
       var d = Math.sqrt(ox * ox + oy * oy);
-      if (d >= KO_RANGE) return;
-      var s2 = 1 - d / KO_RANGE; s2 = s2 * s2 * 0.9 / d;
+      if (d >= range) return;
+      var s2 = 1 - d / range; s2 = s2 * s2 * 0.9 / d;
       N.vx += ox * s2 / W; N.vy += oy * s2 / H;
     }
-    // hard clamp: a node inside RH (label-sized padding) is projected to its nearest edge
+    function keepOut(N) { for (var z = 0; z < zones.length; z++) keepOutOne(N, zones[z].R, zones[z].range); }
+    // hard clamp: a node inside a zone's hard rect (label-sized padding) is projected to that
+    // zone's nearest edge, one zone at a time
     function hardClamp(N) {
-      var x = N.x * W, y = N.y * H;
-      if (x <= RH.x0 || x >= RH.x1 || y <= RH.y0 || y >= RH.y1) return;
-      var dl = RH.x0 > PAD ? x - RH.x0 : 1e9, dr = RH.x1 < W - PAD ? RH.x1 - x : 1e9;
-      var dt = RH.y0 > PADT ? y - RH.y0 : 1e9, db = RH.y1 < H - PAD ? RH.y1 - y : 1e9;
-      var m = Math.min(dl, dr, dt, db);
-      if (m === dl) x = RH.x0; else if (m === dr) x = RH.x1; else if (m === dt) y = RH.y0; else y = RH.y1;
-      N.x = x / W; N.y = y / H; N.vx = 0; N.vy = 0;
+      for (var z = 0; z < zones.length; z++) {
+        var Z = zones[z].RH, x = N.x * W, y = N.y * H;
+        if (x <= Z.x0 || x >= Z.x1 || y <= Z.y0 || y >= Z.y1) continue;
+        var dl = Z.x0 > PAD ? x - Z.x0 : 1e9, dr = Z.x1 < W - PAD ? Z.x1 - x : 1e9;
+        var dt = Z.y0 > PADT ? y - Z.y0 : 1e9, db = Z.y1 < H - PAD ? Z.y1 - y : 1e9;
+        var m = Math.min(dl, dr, dt, db);
+        if (m >= 1e9) continue;
+        if (m === dl) x = Z.x0; else if (m === dr) x = Z.x1; else if (m === dt) y = Z.y0; else y = Z.y1;
+        N.x = x / W; N.y = y / H; N.vx = 0; N.vy = 0;
+      }
     }
 
     function step() {
@@ -1127,9 +1190,11 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         f = -3200 * S * S / (d2 + 140) / d;
         P.vx += dx * f / W; P.vy += dy * f / H; Q.vx -= dx * f / W; Q.vy -= dy * f / H;
       }
-      var px = PAD / W, py = PAD / H, pyt = PADT / H;
+      var py = PAD / H, pyt = PADT / H;
       for (i = 0; i < n; i++) {
         var N = nodes[act[i]];
+        // the side walls back off by half the label, so a label is never clipped by the edge
+        var px = Math.max(PAD, (N.lw || 0) / 2 + 6) / W;
         N.vx += (N.hx - N.x) * 0.0045; N.vy += (N.hy - N.y) * 0.0055;
         keepOut(N);
         if (mx > -1e3) {
@@ -1157,7 +1222,11 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       capEl.textContent = f >= 0 ? (NODE_INFO[nodes[f].n] || nodes[f].n) : 'knowledge_graph.live · ' + act.length + ' nodes';
       if (capWrap) capWrap.classList.toggle('info', f >= 0);
     }
-    function inRH(x, y) { return x > RH.x0 && x < RH.x1 && y > RH.y0 && y < RH.y1; }
+    // true inside ANY zone's hard rect, so edges and packets fade behind the caption too
+    function inRH(x, y) {
+      for (var z = 0; z < zones.length; z++) { var Z = zones[z].RH; if (x > Z.x0 && x < Z.x1 && y > Z.y0 && y < Z.y1) return true; }
+      return false;
+    }
 
     function draw(t) {
       if (!W || !H) return;
@@ -1300,7 +1369,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       _focus: function () { return focus; }, _pinned: function () { return pinned; }, _running: function () { return running; },
       _hot: function () { var o = {}; for (var q = 0; q < nodes.length; q++) o[nodes[q].n] = Math.round(nodes[q].hot * 100) / 100; return o; },
       _pos: function () { var o = {}; for (var q = 0; q < act.length; q++) { var N = nodes[act[q]]; o[N.n] = [Math.round(px_(N, lastT)), Math.round(py_(N, lastT)), N.lw]; } return o; },
-      _zone: function () { return { R: R, RH: RH, W: W, H: H, mobile: MOBILE }; }
+      _zone: function () { return { zones: zones, R: R, RH: RH, W: W, H: H, mobile: MOBILE }; }
     };
   })();
 })();
