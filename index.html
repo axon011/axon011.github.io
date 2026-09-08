@@ -254,6 +254,14 @@ html.ready .viz-card::after{animation:orbit 4.5s linear infinite}
 .viz-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
 /* the interaction hint matches the input: "hover" on fine pointers, "tap" on touch */
 .pull-tap{display:none}
+/* the left slot swaps between the node count and a NODE_INFO line; it must never wrap or the hero reflows */
+/* contain:inline-size (plus width:0 on the slot for older engines) keeps the footer from widening the hero
+   grid column: without it a long info line grew the card from 479px to 598px on hover */
+.viz-foot{contain:inline-size}
+#kg-count{flex:1 1 0;width:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kg-hint{flex-shrink:0;white-space:nowrap}
+/* the hint is for the resting state; while a node is lit the info line gets the whole row */
+.viz-foot.info .kg-hint{display:none}
 @media (hover:none){.pull-hover{display:none}.pull-tap{display:inline}}
 
 /* ---- section scaffolding ---- */
@@ -619,7 +627,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
               </g>
             </svg>
           </div>
-          <div class="viz-foot mono"><span>18 nodes · 27 edges</span><span><span class="pull-hover">hover</span><span class="pull-tap">tap</span> to pull</span></div>
+          <div class="viz-foot mono"><span id="kg-count">18 nodes · 27 edges</span><span class="kg-hint"><span class="pull-hover">hover to explore · click to pin</span><span class="pull-tap">tap a node to pin</span></span></div>
         </div>
       </div>
     </div>
@@ -982,9 +990,40 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     if (!ctx) return;
     var fb = document.getElementById('kg-fallback');
 
-    var NAMES = ['RAG','LangGraph','Qdrant','Agents','LLMOps','MLflow','RAGAs','FastAPI','Docker','K8s','MQTT','PyTorch','GraphRAG','Eval','Python','Go','Whisper','QLoRA'];
-    var KEY = { RAG: 1, Agents: 1, LLMOps: 1, GraphRAG: 1, Python: 1 };
-    var PAIRS = [['RAG','Qdrant'],['RAG','RAGAs'],['RAG','Eval'],['RAGAs','Eval'],['RAG','GraphRAG'],['GraphRAG','Agents'],['Agents','LangGraph'],['Agents','Python'],['LangGraph','Python'],['LLMOps','MLflow'],['LLMOps','Eval'],['LLMOps','FastAPI'],['FastAPI','Docker'],['Docker','K8s'],['FastAPI','Python'],['MQTT','Go'],['MQTT','FastAPI'],['Go','Docker'],['PyTorch','Whisper'],['PyTorch','QLoRA'],['PyTorch','Python'],['QLoRA','Eval'],['Whisper','Python'],['MLflow','Eval'],['Qdrant','Docker'],['K8s','LLMOps'],['GraphRAG','Qdrant']];
+    var NAMES = ['RAG','LangGraph','Qdrant','Agents','LLMOps','MLflow','RAGAs','FastAPI','Docker','K8s','MQTT','PyTorch','GraphRAG','Eval','Python','Go','Whisper','QLoRA','ViT','Pruning','Next.js','TypeScript','SSE','PostgreSQL'];
+    var KEY = { RAG: 1, Agents: 1, LLMOps: 1, GraphRAG: 1, Python: 1, ViT: 1 };
+    var PAIRS = [['RAG','Qdrant'],['RAG','RAGAs'],['RAG','Eval'],['RAGAs','Eval'],['RAG','GraphRAG'],['GraphRAG','Agents'],['Agents','LangGraph'],['Agents','Python'],['LangGraph','Python'],['LLMOps','MLflow'],['LLMOps','Eval'],['LLMOps','FastAPI'],['FastAPI','Docker'],['Docker','K8s'],['FastAPI','Python'],['MQTT','Go'],['MQTT','FastAPI'],['Go','Docker'],['PyTorch','Whisper'],['PyTorch','QLoRA'],['PyTorch','Python'],['QLoRA','Eval'],['Whisper','Python'],['MLflow','Eval'],['Qdrant','Docker'],['K8s','LLMOps'],['GraphRAG','Qdrant'],['ViT','PyTorch'],['Pruning','ViT'],['Pruning','Eval'],['Next.js','TypeScript'],['Next.js','FastAPI'],['SSE','Next.js'],['SSE','Agents'],['PostgreSQL','FastAPI'],['PostgreSQL','LLMOps']];
+    /* what each node backs: shown in the footer's left slot while a node is hot or pinned */
+    var NODE_INFO = {
+      RAG: 'rag-eval-system · hybrid BM25 + dense + RRF, 0.94 hit@5',
+      GraphRAG: 'graphrag-agent, graphrag-studio · k-hop subgraph retrieval',
+      Agents: 'multi-agent-pipeline · Planner, Researcher, Writer, Critic',
+      LangGraph: 'multi-agent-pipeline · state-machine orchestration',
+      LLMOps: 'llmops-dashboard · latency, tokens, cost per call',
+      MLflow: 'rag-eval-system · experiment tracking with regression alerts',
+      RAGAs: 'rag-eval-system · faithfulness, relevance, context recall',
+      Eval: 'every project ships an evaluation harness',
+      Qdrant: 'rag-eval-system, graphrag-studio · vector store',
+      FastAPI: 'Perinet services, four personal projects',
+      Docker: 'Perinet · containerised AI services',
+      K8s: 'Perinet · Kubernetes deployments',
+      MQTT: 'Perinet · live sensor streams',
+      Go: 'Perinet · backend services',
+      Python: 'everything',
+      PyTorch: 'FUSION (fusion-vit), llm-fine-tuning',
+      QLoRA: 'llm-fine-tuning · Qwen2-0.5B, 100% JSON validity',
+      Whisper: 'Multilingual News NLP pipeline',
+      ViT: 'FUSION · DSD 2026, 31.8% FLOPs saved on DeiT-S',
+      Pruning: 'FUSION · token merging, early exit, token pruning',
+      'Next.js': 'Deutsch-Tutor (live), graphrag-studio',
+      TypeScript: 'Deutsch-Tutor, graphrag-studio, llmops-dashboard',
+      SSE: 'Deutsch-Tutor · streaming two-agent turn',
+      PostgreSQL: 'llmops-dashboard · per-call tracing'
+    };
+    // the footer count comes from the data, so it cannot go stale again
+    var countEl = document.getElementById('kg-count'), footEl = countEl ? countEl.parentNode : null;
+    var COUNT = NAMES.length + ' nodes · ' + PAIRS.length + ' edges';
+    if (countEl) countEl.textContent = COUNT;
 
     var seed = 20260823;
     function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
@@ -997,11 +1036,22 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     }
     var edges = [];
     for (i = 0; i < PAIRS.length; i++) edges.push({ a: idx[PAIRS[i][0]], b: idx[PAIRS[i][1]] });
+    // adjacency, built once: hovering or pinning a node lights its direct neighbourhood
+    var adj = [], TGT = [];
+    for (i = 0; i < nodes.length; i++) { adj.push([]); TGT.push(0); }
+    for (i = 0; i < edges.length; i++) { adj[edges[i].a].push(edges[i].b); adj[edges[i].b].push(edges[i].a); }
+    // pinned: node kept hot after the pointer leaves; focus: the hot node, else the pinned one;
+    // shown: the focus the footer currently reflects; glow: eased 0..1 'something is hot'
+    var pinned = -1, focus = -1, shown = -1, curHot = -1, glow = 0, lastT = 0;
 
     var W = 0, H = 0, PAD = 34, S = 1, dpr = 1;
+    // SMALL: the phone-sized card (min side under ~280px). 24 labels cannot fit there, so only key,
+    // hot and neighbour labels draw and the repulsion eases so the cluster sits off the walls
+    var SMALL = false, REP = 1;
     var C = { ink: '#111', muted: '#777', accent: '#5b8cff', bg: '#fff', line: '#ddd', edge: '#ddd' };
     var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
-    var fine = matchMedia('(hover:hover) and (pointer:fine)').matches && !reduce;
+    var canHover = matchMedia('(hover:hover) and (pointer:fine)').matches;
+    var fine = canHover && !reduce;
     var mx = -1e4, my = -1e4, packets = [], nextPk = 0, t0 = 0, running = false, visible = false, raf = 0, last = 0;
 
     function readColors() {
@@ -1020,6 +1070,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       if (!w || !h) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
       W = w; H = h; S = Math.min(W, H) / 390;
+      SMALL = S < 0.72; REP = SMALL ? 0.75 : 1;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       setFont();
@@ -1073,7 +1124,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         var P = nodes[i], Q = nodes[j];
         dx = (Q.x - P.x) * W; dy = (Q.y - P.y) * H; var d2 = dx * dx + dy * dy; d = Math.sqrt(d2) || 1;
         if (d > 300 * S) continue;
-        f = -3200 * S * S / (d2 + 140) / d;
+        f = -3200 * S * S * REP / (d2 + 140) / d;
         P.vx += dx * f / W; P.vy += dy * f / H; Q.vx -= dx * f / W; Q.vy -= dy * f / H;
       }
       var px = PAD / W, py = PAD / H;
@@ -1094,22 +1145,41 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     function px_(N, t) { return N.x * W + (reduce ? 0 : Math.sin(t * 0.00021 + N.ph) * 3.5 * S); }
     function py_(N, t) { return N.y * H + (reduce ? 0 : Math.cos(t * 0.00017 + N.ph * 1.7) * 3.5 * S); }
 
+    function nearest(x, y, t) {
+      var best = 24 * 24, h = -1, i;
+      for (i = 0; i < nodes.length; i++) { var ddx = px_(nodes[i], t) - x, ddy = py_(nodes[i], t) - y, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; h = i; } }
+      return h;
+    }
+    function setInfo(f) {
+      if (!countEl) return;
+      countEl.textContent = f >= 0 ? (NODE_INFO[nodes[f].n] || nodes[f].n) : COUNT;
+      if (footEl) footEl.classList.toggle('info', f >= 0);
+    }
+
     function draw(t) {
       if (!W || !H) return;
+      lastT = t;
       ctx.clearRect(0, 0, W, H);
-      var n = nodes.length, hot = -1, i;
-      if (mx > -1e3) {
-        var best = 24 * 24;
-        for (i = 0; i < n; i++) { var ddx = px_(nodes[i], t) - mx, ddy = py_(nodes[i], t) - my, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; hot = i; } }
-      }
-      for (i = 0; i < n; i++) nodes[i].hot += ((i === hot ? 1 : 0) - nodes[i].hot) * (reduce ? 1 : 0.18);
+      var n = nodes.length, hot = -1, i, j, k = reduce ? 1 : 0.18;
+      if (mx > -1e3) hot = nearest(mx, my, t);
+      if (canHover && hot !== curHot) { curHot = hot; cv.style.cursor = hot >= 0 ? 'pointer' : ''; }
+      focus = hot >= 0 ? hot : pinned;
+      // targets: the focus node goes to 1, its direct neighbours to 0.5, everything else to 0
+      for (i = 0; i < n; i++) TGT[i] = 0;
+      if (focus >= 0) { TGT[focus] = 1; var nb = adj[focus]; for (j = 0; j < nb.length; j++) TGT[nb[j]] = 0.5; }
+      for (i = 0; i < n; i++) nodes[i].hot += (TGT[i] - nodes[i].hot) * k;
+      glow += ((focus >= 0 ? 1 : 0) - glow) * k;
+      if (focus !== shown) { shown = focus; setInfo(focus); }
 
       ctx.lineWidth = 1;
       for (i = 0; i < edges.length; i++) {
         var e = edges[i], A = nodes[e.a], B = nodes[e.b];
         var live = Math.max(A.hot, B.hot);
         var op = reduce ? 0.62 : 0.45 + 0.175 * (1 + Math.sin(t * 0.002094 + i * 0.7));
-        ctx.globalAlpha = op * (1 - live) + live * 0.95;
+        var al = op * (1 - live) + live * 0.95;
+        // edges touching neither the focus node nor a neighbour fade to ~40% while something is hot
+        if (live < 0.05) al *= 1 - 0.6 * glow;
+        ctx.globalAlpha = al;
         ctx.strokeStyle = live > 0.02 ? C.accent : C.edge;
         ctx.beginPath(); ctx.moveTo(px_(A, t), py_(A, t)); ctx.lineTo(px_(B, t), py_(B, t)); ctx.stroke();
       }
@@ -1128,7 +1198,8 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         ctx.beginPath(); ctx.arc(X, Y, r, 0, 6.2832);
         if (N.key || N.hot > 0.5) { ctx.fillStyle = C.accent; ctx.fill(); }
         else { ctx.fillStyle = C.bg; ctx.fill(); ctx.strokeStyle = N.hot > 0.02 ? C.accent : C.muted; ctx.lineWidth = 1.2; ctx.stroke(); }
-        var lab = N.lab && N.lab[(N.key || N.hot > 0.4) ? 1 : 0];
+        var lit = N.key || N.hot > 0.4;
+        var lab = N.lab && (lit || !SMALL) ? N.lab[lit ? 1 : 0] : null;
         if (lab) ctx.drawImage(lab, X - N.lw / 2, Y + r + 4 - LPAD, N.lw, LH_);
       }
     }
@@ -1175,9 +1246,18 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       } else { visible = true; sync(); }
       document.addEventListener('visibilitychange', sync);
 
-      if (fine) {
-        cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; });
-        cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; });
+      // click or tap pins the nearest node (its neighbourhood stays lit after the pointer
+      // leaves); the same node or empty canvas unpins. Works on fine, touch and reduced motion
+      cv.addEventListener('click', function (ev) {
+        var b = cv.getBoundingClientRect(), h = nearest(ev.clientX - b.left, ev.clientY - b.top, lastT);
+        pinned = (h < 0 || h === pinned) ? -1 : h;
+        if (!running) draw(lastT);
+      });
+
+      if (canHover) {
+        // under reduced motion nothing animates, so the hover state is redrawn on the event itself
+        cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; if (!running) draw(lastT); });
+        cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; if (!running) draw(lastT); });
       } else if (!reduce) {
         // touch: a tap (or a drag with the finger down) pulls nodes toward the touch
         // point; the pull releases 700ms after lift-off. Scrolling is untouched — no
@@ -1205,7 +1285,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       pause: stop,
       resume: function () { boot(); sync(); },
       boot: boot,
-      _n: nodes.length, _e: edges.length, _p: function () { return packets.length; }
+      pin: function (i) { pinned = i; if (!running) draw(lastT); },
+      _n: nodes.length, _e: edges.length, _p: function () { return packets.length; },
+      _focus: function () { return focus; }, _pinned: function () { return pinned; },
+      _hot: function () { var o = {}; for (var q = 0; q < nodes.length; q++) o[nodes[q].n] = Math.round(nodes[q].hot * 100) / 100; return o; }
     };
   })();
 })();
