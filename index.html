@@ -190,12 +190,15 @@ html.dark .btn-primary{color:#0a0b0f}
 
 /* ---- hero ---- */
 .hero{padding:104px 0 92px;position:relative}
-@media(max-width:880px){.hero{padding:72px 0 64px}}
+/* one column: the extra padding is the band above and below the copy where the graph lives */
+@media(max-width:880px){.hero{padding:160px 0 128px}}
 .hero::before{content:"";position:absolute;inset:-60px 0 0;z-index:-1;
   background-image:radial-gradient(var(--line-strong) 1px,transparent 1px);background-size:26px 26px;opacity:.45;
   -webkit-mask-image:radial-gradient(68% 55% at 58% 26%,#000,transparent);mask-image:radial-gradient(68% 55% at 58% 26%,#000,transparent)}
 .hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:56px;align-items:center}
-@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:40px}.hero-visual{order:-1;max-width:460px}}
+/* two columns stay so the copy keeps its width; the right column is empty and the graph settles into it */
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr;gap:40px}}
+.hero-copy{position:relative;z-index:1}
 .eyebrow{font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:600;letter-spacing:.12em;
   text-transform:uppercase;color:var(--accent-ink);display:inline-flex;align-items:center;gap:9px;margin-bottom:26px}
 .eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s ease-in-out infinite}
@@ -205,8 +208,8 @@ h1.title em{font-style:normal;color:var(--accent)}
 /* one-time hero entrance: words rise in sequence, then lede → CTAs → status */
 h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 45ms)}
 @keyframes wordin{from{opacity:0;transform:translateY(.4em)}to{opacity:1;transform:none}}
-.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:fadeup .7s var(--ease-out) both}
-.eyebrow{animation-delay:0s}.lede{animation-delay:.32s}.hero-cta{animation-delay:.42s}.status{animation-delay:.52s}.hero-visual{animation-delay:.25s}
+.eyebrow,.lede,.hero-cta,.status{animation:fadeup .7s var(--ease-out) both}
+.eyebrow{animation-delay:0s}.lede{animation-delay:.32s}.hero-cta{animation-delay:.42s}.status{animation-delay:.52s}
 @keyframes fadeup{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 .lede{margin-top:30px;font-size:var(--fs-lede);color:var(--muted);max-width:52ch;line-height:1.55}
 .hero-cta{margin-top:38px;display:flex;flex-wrap:wrap;gap:12px;align-items:center}
@@ -215,54 +218,21 @@ h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;anima
   -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}
 .status .led{width:7px;height:7px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 22%,transparent)}
 
-/* window card + knowledge graph */
-.viz-card{background:var(--surface);-webkit-backdrop-filter:blur(var(--blur)) saturate(150%);backdrop-filter:blur(var(--blur)) saturate(150%);
-  border:1px solid var(--line);border-radius:var(--r-lg);box-shadow:var(--shadow-lift),inset 0 1px 0 var(--glass-edge);
-  overflow:hidden;position:relative}
-@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
-/* border trail — a short accent arc orbiting the card edge */
-@property --a{syntax:'<angle>';inherits:false;initial-value:0deg}
-.viz-card::after{content:"";position:absolute;inset:0;border-radius:inherit;padding:1.5px;pointer-events:none;
-  background:conic-gradient(from var(--a),transparent 0 72%,var(--accent) 88%,transparent 100%);
-  -webkit-mask:linear-gradient(#000 0 0) content-box,linear-gradient(#000 0 0);-webkit-mask-composite:xor;mask-composite:exclude;
-  opacity:.9}
-@keyframes orbit{to{--a:360deg}}
-/* Ambient loops start at load, not first paint. Floating a backdrop-filtered card re-blurs
-   it every frame and the trail repaints a masked conic gradient — both were competing with
-   the initial render. Each keyframe begins at its rest state, so switching on is seamless. */
-html.ready .viz-card{animation:float 7s ease-in-out infinite}
-html.ready .viz-card::after{animation:orbit 4.5s linear infinite}
-.viz-head{display:flex;align-items:center;gap:7px;padding:13px 16px;border-bottom:1px solid var(--line)}
-.tdot{width:10px;height:10px;border-radius:50%}.tdot.r{background:#ff5f57}.tdot.y{background:#febc2e}.tdot.g{background:#28c840}
-.viz-title{font-size:12px;color:var(--muted);margin-left:6px}
-.viz-run{margin-left:auto;font-size:11px;color:var(--accent-ink);display:flex;align-items:center;gap:6px}
-.viz-run .led{width:6px;height:6px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 24%,transparent)}
-/* the body owns the box, so hiding the SVG fallback can't collapse the canvas to zero height */
-.viz-body{padding:10px 12px;position:relative;aspect-ratio:42/31}
-/* live canvas graph, with the static SVG underneath as the no-JS / no-2d-context fallback */
-/* canvas and svg are replaced elements: width:auto would keep their intrinsic size,
-   so the box has to be stated explicitly rather than implied by the insets */
-#kg,#kg-fallback{position:absolute;left:12px;top:10px;display:block;width:calc(100% - 24px);height:calc(100% - 20px)}
-#kg-fallback[hidden]{display:none}
-.kg{display:block}
-.kg .edge{stroke:var(--line-strong);stroke-width:1;fill:none}
-.kg .edge.hot{stroke:var(--accent);opacity:.42}
-.kg circle{fill:var(--surface-solid);stroke:var(--line-strong);stroke-width:1.4}
-.kg circle.hot{fill:var(--accent);stroke:none}
-.kg text{font-family:"JetBrains Mono",monospace;font-size:11px;fill:var(--muted);text-anchor:middle}
-.kg text.hot{fill:var(--accent-ink);font-weight:600}
-.viz-foot{display:flex;justify-content:space-between;gap:12px;padding:12px 16px;border-top:1px solid var(--line);font-size:11px;color:var(--faint)}
-/* the interaction hint matches the input: "hover" on fine pointers, "tap" on touch */
-.pull-tap{display:none}
-/* the left slot swaps between the node count and a NODE_INFO line; it must never wrap or the hero reflows */
-/* contain:inline-size (plus width:0 on the slot for older engines) keeps the footer from widening the hero
-   grid column: without it a long info line grew the card from 479px to 598px on hover */
-.viz-foot{contain:inline-size}
-#kg-count{flex:1 1 0;width:0;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.kg-hint{flex-shrink:0;white-space:nowrap}
-/* the hint is for the resting state; while a node is lit the info line gets the whole row */
-.viz-foot.info .kg-hint{display:none}
-@media (hover:none){.pull-hover{display:none}.pull-tap{display:inline}}
+/* knowledge graph: a full-bleed canvas layer behind the hero copy. It reaches 60px above the
+   hero like the aurora dots so it does not look cropped under the nav. A replaced element keeps
+   its intrinsic size under width:auto, so the box is stated explicitly. */
+#kg{position:absolute;left:0;top:-60px;width:100%;height:calc(100% + 60px);display:block;z-index:0;
+  opacity:0;transition:opacity .9s var(--ease-out)}
+#kg.on{opacity:1}
+/* caption at the hero's bottom-right: the node count at rest (plus the hint on fine pointers),
+   the NODE_INFO line while a node is hot or pinned */
+.kg-cap{position:absolute;right:0;bottom:26px;z-index:1;font-size:11px;color:var(--muted);pointer-events:none;
+  max-width:min(58%,560px);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  opacity:0;transition:opacity .9s var(--ease-out)}
+.kg-cap.on{opacity:1}
+.kg-cap.info .pull-hover{display:none}
+@media (hover:none){.pull-hover{display:none}}
+@media(max-width:880px){.kg-cap{bottom:14px;max-width:100%}}
 
 /* ---- section scaffolding ---- */
 section.block{padding:84px 0;border-top:1px solid var(--line);position:relative}
@@ -516,8 +486,8 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 /* reduced motion: gentler, not zero — keep opacity and colour, drop movement */
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
-  .viz-card,.viz-card::after,.pip,.mtrack{animation:none!important}
-  h1.title .w,.eyebrow,.lede,.hero-cta,.status,.hero-visual{animation:none}
+  .pip,.mtrack{animation:none!important}
+  h1.title .w,.eyebrow,.lede,.hero-cta,.status{animation:none}
   .sreveal.in{animation:none}
   .reveal{transform:none}
   .card{--lift:0px}
@@ -560,9 +530,12 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 
   <!-- HERO -->
   <header class="hero">
+    <!-- live knowledge graph: a full-bleed layer behind the copy. Decoration only; without JS
+         or a 2d context the copy simply stands alone -->
+    <canvas id="kg" aria-hidden="true"></canvas>
     <div class="hero-grid">
       <div class="hero-copy">
-        <div class="eyebrow"><span class="pip"></span>AI Engineer · Cottbus, Germany</div>
+        <div class="eyebrow"><span class="pip"></span>AI Engineer · Berlin, Germany</div>
         <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">get</span> <span class="w" style="--i:6"><em>used</em>.</span></h1>
         <p class="lede">Two years on the backend of an industrial-IoT AI platform at Perinet, plus my own deep work on RAG, agents and LLMOps — judged by whether it measurably works.</p>
         <div class="hero-cta">
@@ -570,67 +543,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
           <a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a>
           <a class="btn btn-ghost" href="mailto:aravindpradeep001@gmail.com">Email</a>
         </div>
-        <div class="status"><span class="led"></span>Available full-time from summer 2026 · open to relocate</div>
-      </div>
-
-      <!-- live knowledge-graph visual -->
-      <div class="hero-visual" aria-hidden="true">
-        <div class="viz-card">
-          <div class="viz-head">
-            <span class="tdot r"></span><span class="tdot y"></span><span class="tdot g"></span>
-            <span class="viz-title mono">knowledge_graph.live</span>
-            <span class="viz-run mono"><span class="led"></span>live</span>
-          </div>
-          <div class="viz-body">
-            <canvas id="kg" aria-hidden="true"></canvas>
-            <svg id="kg-fallback" class="kg" viewBox="0 0 420 310" role="img" aria-hidden="true">
-              <g class="edges">
-                <path class="edge hot" d="M120 84 L60 146"/>
-                <path class="edge hot" d="M120 84 L206 52"/>
-                <path class="edge" d="M120 84 L48 46"/>
-                <path class="edge hot" d="M120 84 L124 196"/>
-                <path class="edge hot" d="M120 84 L148 142"/>
-                <path class="edge hot" d="M206 52 L288 100"/>
-                <path class="edge hot" d="M206 52 L200 158"/>
-                <path class="edge" d="M288 100 L344 142"/>
-                <path class="edge hot" d="M288 100 L200 158"/>
-                <path class="edge" d="M288 100 L268 244"/>
-                <path class="edge" d="M200 158 L300 192"/>
-                <path class="edge hot" d="M200 158 L124 196"/>
-                <path class="edge" d="M200 158 L148 142"/>
-                <path class="edge" d="M300 192 L186 250"/>
-                <path class="edge" d="M300 192 L352 238"/>
-                <path class="edge" d="M344 142 L268 244"/>
-                <path class="edge" d="M268 244 L352 238"/>
-                <path class="edge" d="M268 244 L62 240"/>
-                <path class="edge" d="M148 142 L186 250"/>
-                <path class="edge" d="M148 142 L344 142"/>
-                <path class="edge" d="M148 142 L62 240"/>
-                <path class="edge" d="M148 142 L60 146"/>
-                <path class="edge" d="M48 46 L60 146"/>
-              </g>
-              <g class="nodes">
-                <circle class="hot" cx="120" cy="84" r="7"/><text class="hot" x="120" y="72">RAG</text>
-                <circle class="hot" cx="206" cy="52" r="7"/><text class="hot" x="206" y="40">LangGraph</text>
-                <circle cx="60" cy="146" r="5"/><text x="60" y="166">Qdrant</text>
-                <circle class="hot" cx="288" cy="100" r="7"/><text class="hot" x="288" y="88">Agents</text>
-                <circle class="hot" cx="200" cy="158" r="7"/><text class="hot" x="200" y="146">LLMOps</text>
-                <circle cx="300" cy="192" r="5"/><text x="304" y="182">MLflow</text>
-                <circle cx="124" cy="196" r="5"/><text x="118" y="212">RAGAs</text>
-                <circle cx="344" cy="142" r="5"/><text x="348" y="132">FastAPI</text>
-                <circle cx="268" cy="244" r="5"/><text x="264" y="262">Docker</text>
-                <circle cx="352" cy="238" r="5"/><text x="356" y="256">K8s</text>
-                <circle cx="62" cy="240" r="5"/><text x="62" y="258">MQTT</text>
-                <circle cx="48" cy="46" r="5"/><text x="52" y="34">GraphRAG</text>
-                <circle cx="186" cy="250" r="5"/><text x="186" y="268">PyTorch</text>
-                <circle class="hot" cx="148" cy="142" r="7"/><text class="hot" x="140" y="130">Python</text>
-              </g>
-            </svg>
-          </div>
-          <div class="viz-foot mono"><span id="kg-count">18 nodes · 27 edges</span><span class="kg-hint"><span class="pull-hover">hover to explore · click to pin</span><span class="pull-tap">tap a node to pin</span></span></div>
-        </div>
+        <div class="status"><span class="led"></span>Available full-time from November 2026 · open to relocate</div>
       </div>
     </div>
+    <div class="kg-cap mono" id="kg-cap" aria-hidden="true"><span id="kg-count">knowledge_graph.live · 24 nodes</span><span class="pull-hover"> · hover to explore · click to pin</span></div>
   </header>
 
   <!-- 01 ABOUT -->
@@ -975,25 +891,26 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});
       var i=secs.indexOf(e.target); if(i>-1)links[i].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(function(s){if(s)spy.observe(s);});
-  // html.ready releases the ambient loops (card float, border trail, stack marquee) once
+  // html.ready releases the ambient loop (stack marquee) once
   // the critical render is done. Also a good moment to re-measure: fonts have swapped in.
   function ready(){ root.classList.add('ready'); measure(); prog(); }
   if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
 
-  /* live knowledge graph on the hero canvas — own IIFE so its locals cannot
-     collide with the page script; exposes only window.__kg for testing */
+  /* live knowledge graph: a full-bleed layer behind the hero copy. Own IIFE so its locals
+     cannot collide with the page script; exposes only window.__kg for testing */
   (function () {
     var cv = document.getElementById('kg');
     if (!cv || !cv.getContext) return;
     var ctx = null;
     try { ctx = cv.getContext('2d'); } catch (e) { return; }
     if (!ctx) return;
-    var fb = document.getElementById('kg-fallback');
+    var copy = document.querySelector('.hero-copy');
+    var capEl = document.getElementById('kg-count'), capWrap = document.getElementById('kg-cap');
 
     var NAMES = ['RAG','LangGraph','Qdrant','Agents','LLMOps','MLflow','RAGAs','FastAPI','Docker','K8s','MQTT','PyTorch','GraphRAG','Eval','Python','Go','Whisper','QLoRA','ViT','Pruning','Next.js','TypeScript','SSE','PostgreSQL'];
     var KEY = { RAG: 1, Agents: 1, LLMOps: 1, GraphRAG: 1, Python: 1, ViT: 1 };
     var PAIRS = [['RAG','Qdrant'],['RAG','RAGAs'],['RAG','Eval'],['RAGAs','Eval'],['RAG','GraphRAG'],['GraphRAG','Agents'],['Agents','LangGraph'],['Agents','Python'],['LangGraph','Python'],['LLMOps','MLflow'],['LLMOps','Eval'],['LLMOps','FastAPI'],['FastAPI','Docker'],['Docker','K8s'],['FastAPI','Python'],['MQTT','Go'],['MQTT','FastAPI'],['Go','Docker'],['PyTorch','Whisper'],['PyTorch','QLoRA'],['PyTorch','Python'],['QLoRA','Eval'],['Whisper','Python'],['MLflow','Eval'],['Qdrant','Docker'],['K8s','LLMOps'],['GraphRAG','Qdrant'],['ViT','PyTorch'],['Pruning','ViT'],['Pruning','Eval'],['Next.js','TypeScript'],['Next.js','FastAPI'],['SSE','Next.js'],['SSE','Agents'],['PostgreSQL','FastAPI'],['PostgreSQL','LLMOps']];
-    /* what each node backs: shown in the footer's left slot while a node is hot or pinned */
+    /* what each node backs: shown as the caption while a node is hot or pinned */
     var NODE_INFO = {
       RAG: 'rag-eval-system · hybrid BM25 + dense + RRF, 0.94 hit@5',
       GraphRAG: 'graphrag-agent, graphrag-studio · k-hop subgraph retrieval',
@@ -1020,18 +937,16 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       SSE: 'Deutsch-Tutor · streaming two-agent turn',
       PostgreSQL: 'llmops-dashboard · per-call tracing'
     };
-    // the footer count comes from the data, so it cannot go stale again
-    var countEl = document.getElementById('kg-count'), footEl = countEl ? countEl.parentNode : null;
-    var COUNT = NAMES.length + ' nodes · ' + PAIRS.length + ' edges';
-    if (countEl) countEl.textContent = COUNT;
+    // one-column layout (≤880px): the copy spans the width and the graph lives in the bands
+    // above and below it, so only the key nodes and their closest neighbours draw
+    var MOBILE_SET = { RAG: 1, GraphRAG: 1, Agents: 1, LLMOps: 1, Python: 1, ViT: 1, Qdrant: 1, Eval: 1, LangGraph: 1, FastAPI: 1, PyTorch: 1, RAGAs: 1, MLflow: 1, Pruning: 1 };
 
     var seed = 20260823;
     function rnd() { seed = (seed * 1664525 + 1013904223) % 4294967296; return seed / 4294967296; }
 
     var idx = {}, nodes = [], i;
     for (i = 0; i < NAMES.length; i++) {
-      var a = rnd() * Math.PI * 2, r = 0.18 + rnd() * 0.32;
-      nodes.push({ n: NAMES[i], key: !!KEY[NAMES[i]], x: 0.5 + Math.cos(a) * r, y: 0.5 + Math.sin(a) * r * 0.86, vx: 0, vy: 0, ph: rnd() * Math.PI * 2, hot: 0 });
+      nodes.push({ n: NAMES[i], key: !!KEY[NAMES[i]], x: 0.5, y: 0.5, hx: 0.5, hy: 0.5, vx: 0, vy: 0, ph: rnd() * Math.PI * 2, hot: 0, on: true });
       idx[NAMES[i]] = i;
     }
     var edges = [];
@@ -1040,18 +955,24 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     var adj = [], TGT = [];
     for (i = 0; i < nodes.length; i++) { adj.push([]); TGT.push(0); }
     for (i = 0; i < edges.length; i++) { adj[edges[i].a].push(edges[i].b); adj[edges[i].b].push(edges[i].a); }
+    // act / aedges: the nodes and edges of the current layout (all of them on desktop)
+    var act = [], aedges = [];
     // pinned: node kept hot after the pointer leaves; focus: the hot node, else the pinned one;
-    // shown: the focus the footer currently reflects; glow: eased 0..1 'something is hot'
+    // shown: the focus the caption currently reflects; glow: eased 0..1 'something is hot'
     var pinned = -1, focus = -1, shown = -1, curHot = -1, glow = 0, lastT = 0;
 
-    var W = 0, H = 0, PAD = 34, S = 1, dpr = 1;
-    // SMALL: the phone-sized card (min side under ~280px). 24 labels cannot fit there, so only key,
-    // hot and neighbour labels draw and the repulsion eases so the cluster sits off the walls
-    var SMALL = false, REP = 1;
+    // PADT: the canvas starts 60px above the hero, under the sticky nav, so nodes keep 94px off the top
+    var W = 0, H = 0, PAD = 34, PADT = 94, S = 1, dpr = 1, MOBILE = false, placed = false;
+    /* keep-out zone. R is the copy's box padded for the soft push (nodes are repelled from its
+       nearest edge, strongly inside, fading to zero KO_RANGE px out). RH is the hard clamp,
+       padded by a label's width and height plus drift: a node that still ends up inside it is
+       projected to the nearest edge, so no node or label can be drawn over a word. Both are
+       in canvas pixels and are re-measured on every resize of the canvas or the copy. */
+    var R = { x0: 0, y0: 0, x1: 0, y1: 0 }, RH = { x0: 0, y0: 0, x1: 0, y1: 0 };
+    var KO_RANGE = 120, HARD_X = 44, HARD_Y = 32;
     var C = { ink: '#111', muted: '#777', accent: '#5b8cff', bg: '#fff', line: '#ddd', edge: '#ddd' };
     var reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
     var canHover = matchMedia('(hover:hover) and (pointer:fine)').matches;
-    var fine = canHover && !reduce;
     var mx = -1e4, my = -1e4, packets = [], nextPk = 0, t0 = 0, running = false, visible = false, raf = 0, last = 0;
 
     function readColors() {
@@ -1059,37 +980,87 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       function g(k, d) { var v = cs.getPropertyValue(k); return v && v.trim() ? v.trim() : d; }
       C.ink = g('--ink', '#111'); C.muted = g('--muted', '#777'); C.accent = g('--accent', '#5b8cff');
       C.bg = g('--bg', '#fff'); C.line = g('--line', '#ddd');
-      // the static SVG fallback strokes its edges with --line-strong; match it so the
-      // canvas carries the same weight (plain --line is too faint under the glass)
       C.edge = g('--line-strong', C.line);
+    }
+
+    function measureCopy() {
+      if (!copy) { R.x0 = R.y0 = R.x1 = R.y1 = RH.x0 = RH.y0 = RH.x1 = RH.y1 = -1e4; return; }
+      var cb = cv.getBoundingClientRect(), b = copy.getBoundingClientRect();
+      var x0 = b.left - cb.left, y0 = b.top - cb.top, x1 = x0 + b.width, y1 = y0 + b.height;
+      var p = MOBILE ? 28 : 48;
+      KO_RANGE = MOBILE ? 60 : 120;
+      R.x0 = x0 - p; R.y0 = y0 - p; R.x1 = x1 + p; R.y1 = y1 + p;
+      RH.x0 = x0 - HARD_X; RH.y0 = y0 - HARD_Y; RH.x1 = x1 + HARD_X; RH.y1 = y1 + HARD_Y;
+    }
+
+    /* homes: one seeded target point per node, spread over the free region (right of the copy
+       on desktop, the bands above and below it on one column) with a best-of-ten candidate pick
+       so the nodes read as a constellation. Each node springs gently to its home; the keep-out,
+       repulsion and link springs do the rest. Deterministic for a given canvas size. */
+    function layout() {
+      var n = nodes.length, i, j, k;
+      act.length = 0; aedges.length = 0;
+      for (i = 0; i < n; i++) { nodes[i].on = !MOBILE || !!MOBILE_SET[nodes[i].n]; if (nodes[i].on) act.push(i); }
+      for (i = 0; i < edges.length; i++) if (nodes[edges[i].a].on && nodes[edges[i].b].on) aedges.push(edges[i]);
+      var regs = [];
+      if (MOBILE) {
+        if (R.y0 - PADT > 40) regs.push([PAD, PADT, W - PAD, R.y0]);
+        if (H - PAD - R.y1 > 40) regs.push([PAD, R.y1, W - PAD, H - PAD]);
+      } else if (W - PAD - R.x1 > 120) {
+        regs.push([R.x1 + 40, PADT, W - PAD, H - PAD]);
+      }
+      if (!regs.length) regs.push([PAD, PADT, W - PAD, H - PAD]);
+      var areas = [], tot = 0;
+      for (k = 0; k < regs.length; k++) { areas.push(Math.max(1, (regs[k][2] - regs[k][0]) * (regs[k][3] - regs[k][1]))); tot += areas[k]; }
+      seed = 20260823 + (MOBILE ? 7 : 0);
+      var pts = [], order = act.slice();
+      for (i = 0; i < n; i++) if (!nodes[i].on) order.push(i);
+      for (j = 0; j < order.length; j++) {
+        var share = (Math.min(j, act.length - 1) + 0.5) / act.length, acc = 0, rg = regs[regs.length - 1];
+        for (k = 0; k < regs.length; k++) { acc += areas[k] / tot; if (share <= acc) { rg = regs[k]; break; } }
+        var best = null, bd = -1, c, q;
+        for (c = 0; c < 10; c++) {
+          var cx = rg[0] + rnd() * (rg[2] - rg[0]), cy = rg[1] + rnd() * (rg[3] - rg[1]), md = 1e12;
+          for (q = 0; q < pts.length; q++) { var ddx = pts[q][0] - cx, ddy = pts[q][1] - cy, dd = ddx * ddx + ddy * ddy; if (dd < md) md = dd; }
+          if (md > bd) { bd = md; best = [cx, cy]; }
+        }
+        pts.push(best);
+        var N = nodes[order[j]];
+        N.hx = best[0] / W; N.hy = best[1] / H;
+        if (!placed) { N.x = N.hx; N.y = N.hy; N.vx = N.vy = 0; }
+      }
+      placed = true;
+      if (shown < 0) setInfo(-1);
     }
 
     function resize() {
       var w = cv.clientWidth, h = cv.clientHeight;
-      if (!w || !h) { var p = cv.parentNode; if (p) { w = p.clientWidth; h = p.clientHeight; } }
       if (!w || !h) return;
       dpr = Math.min(window.devicePixelRatio || 1, 2);
-      W = w; H = h; S = Math.min(W, H) / 390;
-      SMALL = S < 0.72; REP = SMALL ? 0.75 : 1;
+      W = w; H = h; S = Math.max(0.8, Math.min(1.6, Math.min(W, H) / 390));
+      MOBILE = matchMedia('(max-width:880px)').matches;
       cv.width = Math.round(W * dpr); cv.height = Math.round(H * dpr);
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
       setFont();
       buildLabels();
+      measureCopy();
+      layout();
+      // nothing animates under reduced motion, so a resize has to re-settle the layout itself
+      if (reduce) settle(60);
       draw(0);
     }
+    function settle(k) { for (var s0 = 0; s0 < k; s0++) step(); }
 
     /* Assigning ctx.font re-resolves the family against the document's font set, which is a
-       forced style recalc. Per frame that cost ~210ms of the load; setting a canvas's width
-       resets context state, so resize() is the only place it actually has to happen. */
+       forced style recalc; setting a canvas's width resets context state, so resize() is the
+       only place it has to happen. */
     function setFont() {
       ctx.font = '11px "JetBrains Mono",ui-monospace,monospace';
       ctx.textAlign = 'center'; ctx.textBaseline = 'top';
     }
 
-    /* Labels are rasterised once into small offscreen canvases and blitted per frame.
-       Stroking a 2px halo behind 18 labels every frame was the most expensive thing on the
-       page by a wide margin; drawImage of a cached bitmap costs almost nothing. Depends on
-       dpr and on the theme colours, so it is rebuilt from resize() and on a theme change. */
+    /* Labels are rasterised once into small offscreen canvases and blitted per frame. Depends
+       on dpr and the theme colours, so it is rebuilt from resize() and on a theme change. */
     var LPAD = 3, LH_ = 17;
     function tile(text, w, fill) {
       var c = document.createElement('canvas');
@@ -1108,29 +1079,59 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       for (var i = 0; i < nodes.length; i++) {
         var N = nodes[i], w = Math.ceil(ctx.measureText(N.n).width) + LPAD * 2;
         N.lw = w;
-        N.lab = [tile(N.n, w, C.muted), tile(N.n, w, C.ink)];
+        N.lab = tile(N.n, w, C.ink);
       }
     }
 
+    // soft keep-out: push away from the nearest edge of R, strong inside, zero KO_RANGE out
+    function keepOut(N) {
+      var x = N.x * W, y = N.y * H;
+      var ox = x < R.x0 ? x - R.x0 : (x > R.x1 ? x - R.x1 : 0);
+      var oy = y < R.y0 ? y - R.y0 : (y > R.y1 ? y - R.y1 : 0);
+      if (ox === 0 && oy === 0) {
+        // inside: leave through the nearest edge that still lies on the canvas
+        var dl = R.x0 > PAD ? x - R.x0 : 1e9, dr = R.x1 < W - PAD ? R.x1 - x : 1e9;
+        var dt = R.y0 > PADT ? y - R.y0 : 1e9, db = R.y1 < H - PAD ? R.y1 - y : 1e9;
+        var m = Math.min(dl, dr, dt, db), s = 1.4;
+        if (m === dl) N.vx -= s / W; else if (m === dr) N.vx += s / W; else if (m === dt) N.vy -= s / H; else N.vy += s / H;
+        return;
+      }
+      var d = Math.sqrt(ox * ox + oy * oy);
+      if (d >= KO_RANGE) return;
+      var s2 = 1 - d / KO_RANGE; s2 = s2 * s2 * 0.9 / d;
+      N.vx += ox * s2 / W; N.vy += oy * s2 / H;
+    }
+    // hard clamp: a node inside RH (label-sized padding) is projected to its nearest edge
+    function hardClamp(N) {
+      var x = N.x * W, y = N.y * H;
+      if (x <= RH.x0 || x >= RH.x1 || y <= RH.y0 || y >= RH.y1) return;
+      var dl = RH.x0 > PAD ? x - RH.x0 : 1e9, dr = RH.x1 < W - PAD ? RH.x1 - x : 1e9;
+      var dt = RH.y0 > PADT ? y - RH.y0 : 1e9, db = RH.y1 < H - PAD ? RH.y1 - y : 1e9;
+      var m = Math.min(dl, dr, dt, db);
+      if (m === dl) x = RH.x0; else if (m === dr) x = RH.x1; else if (m === dt) y = RH.y0; else y = RH.y1;
+      N.x = x / W; N.y = y / H; N.vx = 0; N.vy = 0;
+    }
+
     function step() {
-      var rest = 70 * S, k = 0.0016, n = nodes.length, i, j, d, dx, dy, f;
-      for (i = 0; i < edges.length; i++) {
-        var A = nodes[edges[i].a], B = nodes[edges[i].b];
+      var rest = 68 * S, k = 0.0016, n = act.length, i, j, d, dx, dy, f;
+      for (i = 0; i < aedges.length; i++) {
+        var A = nodes[aedges[i].a], B = nodes[aedges[i].b];
         dx = (B.x - A.x) * W; dy = (B.y - A.y) * H; d = Math.sqrt(dx * dx + dy * dy) || 1;
         f = (d - rest) * k / d;
         A.vx += dx * f / W; A.vy += dy * f / H; B.vx -= dx * f / W; B.vy -= dy * f / H;
       }
       for (i = 0; i < n; i++) for (j = i + 1; j < n; j++) {
-        var P = nodes[i], Q = nodes[j];
+        var P = nodes[act[i]], Q = nodes[act[j]];
         dx = (Q.x - P.x) * W; dy = (Q.y - P.y) * H; var d2 = dx * dx + dy * dy; d = Math.sqrt(d2) || 1;
-        if (d > 300 * S) continue;
-        f = -3200 * S * S * REP / (d2 + 140) / d;
+        if (d > 320 * S) continue;
+        f = -3200 * S * S / (d2 + 140) / d;
         P.vx += dx * f / W; P.vy += dy * f / H; Q.vx -= dx * f / W; Q.vy -= dy * f / H;
       }
-      var px = PAD / W, py = PAD / H;
+      var px = PAD / W, py = PAD / H, pyt = PADT / H;
       for (i = 0; i < n; i++) {
-        var N = nodes[i];
-        N.vx += (0.5 - N.x) * 0.0032; N.vy += (0.5 - N.y) * 0.0045;
+        var N = nodes[act[i]];
+        N.vx += (N.hx - N.x) * 0.0045; N.vy += (N.hy - N.y) * 0.0055;
+        keepOut(N);
         if (mx > -1e3) {
           dx = mx - N.x * W; dy = my - N.y * H; d = Math.sqrt(dx * dx + dy * dy);
           if (d < 120 && d > 0.5) { f = (1 - d / 120) * 0.10 / d; N.vx += dx * f / W * 8; N.vy += dy * f / H * 8; }
@@ -1138,7 +1139,8 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         N.vx *= 0.85; N.vy *= 0.85;
         N.x += N.vx; N.y += N.vy;
         if (N.x < px) { N.x = px; N.vx = 0; } if (N.x > 1 - px) { N.x = 1 - px; N.vx = 0; }
-        if (N.y < py) { N.y = py; N.vy = 0; } if (N.y > 1 - py) { N.y = 1 - py; N.vy = 0; }
+        if (N.y < pyt) { N.y = pyt; N.vy = 0; } if (N.y > 1 - py) { N.y = 1 - py; N.vy = 0; }
+        hardClamp(N);
       }
     }
 
@@ -1146,15 +1148,16 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     function py_(N, t) { return N.y * H + (reduce ? 0 : Math.cos(t * 0.00017 + N.ph * 1.7) * 3.5 * S); }
 
     function nearest(x, y, t) {
-      var best = 24 * 24, h = -1, i;
-      for (i = 0; i < nodes.length; i++) { var ddx = px_(nodes[i], t) - x, ddy = py_(nodes[i], t) - y, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; h = i; } }
+      var best = 26 * 26, h = -1, i;
+      for (i = 0; i < act.length; i++) { var N = nodes[act[i]], ddx = px_(N, t) - x, ddy = py_(N, t) - y, dd = ddx * ddx + ddy * ddy; if (dd < best) { best = dd; h = act[i]; } }
       return h;
     }
     function setInfo(f) {
-      if (!countEl) return;
-      countEl.textContent = f >= 0 ? (NODE_INFO[nodes[f].n] || nodes[f].n) : COUNT;
-      if (footEl) footEl.classList.toggle('info', f >= 0);
+      if (!capEl) return;
+      capEl.textContent = f >= 0 ? (NODE_INFO[nodes[f].n] || nodes[f].n) : 'knowledge_graph.live · ' + act.length + ' nodes';
+      if (capWrap) capWrap.classList.toggle('info', f >= 0);
     }
+    function inRH(x, y) { return x > RH.x0 && x < RH.x1 && y > RH.y0 && y < RH.y1; }
 
     function draw(t) {
       if (!W || !H) return;
@@ -1172,35 +1175,43 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       if (focus !== shown) { shown = focus; setInfo(focus); }
 
       ctx.lineWidth = 1;
-      for (i = 0; i < edges.length; i++) {
-        var e = edges[i], A = nodes[e.a], B = nodes[e.b];
+      for (i = 0; i < aedges.length; i++) {
+        var e = aedges[i], A = nodes[e.a], B = nodes[e.b];
+        var xa = px_(A, t), ya = py_(A, t), xb = px_(B, t), yb = py_(B, t);
         var live = Math.max(A.hot, B.hot);
-        var op = reduce ? 0.62 : 0.45 + 0.175 * (1 + Math.sin(t * 0.002094 + i * 0.7));
+        var op = reduce ? 0.35 : 0.26 + 0.09 * (1 + Math.sin(t * 0.002094 + i * 0.7));
         var al = op * (1 - live) + live * 0.95;
         // edges touching neither the focus node nor a neighbour fade to ~40% while something is hot
         if (live < 0.05) al *= 1 - 0.6 * glow;
+        // an edge crossing behind the copy stays muted at a quarter of its resting alpha, even when
+        // its neighbourhood is lit, so nothing accent-coloured ever runs through the words
+        var cross = inRH((xa + xb) / 2, (ya + yb) / 2);
+        if (cross) al = op * 0.25;
         ctx.globalAlpha = al;
-        ctx.strokeStyle = live > 0.02 ? C.accent : C.edge;
-        ctx.beginPath(); ctx.moveTo(px_(A, t), py_(A, t)); ctx.lineTo(px_(B, t), py_(B, t)); ctx.stroke();
+        ctx.strokeStyle = (live > 0.02 && !cross) ? C.accent : C.edge;
+        ctx.beginPath(); ctx.moveTo(xa, ya); ctx.lineTo(xb, yb); ctx.stroke();
       }
       ctx.globalAlpha = 1;
 
       if (!reduce) for (i = 0; i < packets.length; i++) {
-        var p = packets[i], E = edges[p.e], PA = nodes[E.a], PB = nodes[E.b], u = p.u;
+        var p = packets[i], PA = nodes[p.e.a], PB = nodes[p.e.b], u = p.u;
         var x = px_(PA, t) + (px_(PB, t) - px_(PA, t)) * u, y = py_(PA, t) + (py_(PB, t) - py_(PA, t)) * u;
-        ctx.save(); ctx.globalAlpha = 0.9; ctx.shadowColor = C.accent; ctx.shadowBlur = 8;
+        ctx.save(); ctx.globalAlpha = inRH(x, y) ? 0.12 : 0.9; ctx.shadowColor = C.accent; ctx.shadowBlur = 8;
         ctx.fillStyle = C.accent; ctx.beginPath(); ctx.arc(x, y, 3, 0, 6.2832); ctx.fill(); ctx.restore();
       }
 
-      for (i = 0; i < n; i++) {
-        var N = nodes[i], X = px_(N, t), Y = py_(N, t);
-        var r = (N.key ? 5.5 : 3.6) * (1 + N.hot * 0.55);
+      for (i = 0; i < act.length; i++) {
+        var N = nodes[act[i]], X = px_(N, t), Y = py_(N, t);
+        var r = (N.key ? 6.5 : 4.2) * (1 + N.hot * 0.5);
+        // the accent glow belongs to hot or pinned nodes only
+        if (N.hot > 0.05) { ctx.save(); ctx.shadowColor = C.accent; ctx.shadowBlur = 16 * N.hot; }
         ctx.beginPath(); ctx.arc(X, Y, r, 0, 6.2832);
         if (N.key || N.hot > 0.5) { ctx.fillStyle = C.accent; ctx.fill(); }
         else { ctx.fillStyle = C.bg; ctx.fill(); ctx.strokeStyle = N.hot > 0.02 ? C.accent : C.muted; ctx.lineWidth = 1.2; ctx.stroke(); }
-        var lit = N.key || N.hot > 0.4;
-        var lab = N.lab && (lit || !SMALL) ? N.lab[lit ? 1 : 0] : null;
-        if (lab) ctx.drawImage(lab, X - N.lw / 2, Y + r + 4 - LPAD, N.lw, LH_);
+        if (N.hot > 0.05) ctx.restore();
+        // labels: the key nodes at rest on desktop, the lit neighbourhood anywhere
+        var lit = N.hot > 0.4 || (N.key && !MOBILE);
+        if (lit && N.lab) ctx.drawImage(N.lab, X - N.lw / 2, Y + r + 4 - LPAD, N.lw, LH_);
       }
     }
 
@@ -1213,7 +1224,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         var dt = last ? Math.min(t - last, 120) : 16;
         last = t;
         step();
-        if (t - nextPk > 0 && packets.length < 4) { nextPk = t + 1200; packets.push({ e: (Math.random() * edges.length) | 0, u: 0 }); }
+        if (t - nextPk > 0 && packets.length < 4 && aedges.length) { nextPk = t + 1200; packets.push({ e: aedges[(Math.random() * aedges.length) | 0], u: 0 }); }
         for (i = packets.length - 1; i >= 0; i--) { packets[i].u += dt / 1100; if (packets[i].u > 1) packets.splice(i, 1); }
         draw(t - t0);
       }
@@ -1227,19 +1238,18 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     var booted = false;
     function boot() {
       if (booted) return; booted = true;
-      // canvas takes over only now that it can draw. setAttribute, not .hidden — the
-      // fallback is an <svg>, and SVGElement does not reflect the hidden IDL property,
-      // so the assignment would silently do nothing
-      if (fb) fb.setAttribute('hidden', '');
       readColors();
       resize();
-      if (reduce) { for (var s0 = 0; s0 < 120; s0++) step(); draw(0); }
+      if (reduce) { settle(120); draw(0); }
+      // the layer fades in only once it can draw; without JS or a 2d context the copy stands alone
+      cv.classList.add('on'); if (capWrap) capWrap.classList.add('on');
 
-      if (window.ResizeObserver) { try { new ResizeObserver(resize).observe(cv); } catch (e2) {} }
+      if (window.ResizeObserver) { try { var ro = new ResizeObserver(resize); ro.observe(cv); if (copy) ro.observe(copy); } catch (e2) {} }
       window.addEventListener('resize', resize);
       new MutationObserver(function () { readColors(); buildLabels(); if (!running) draw(0); }).observe(document.documentElement, { attributes: true, attributeFilter: ['class'] });
-      // the font stylesheet is async now, so JetBrains Mono can land after the first frame
-      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { setFont(); buildLabels(); if (!running) draw(0); });
+      // the font stylesheet is async, so both fonts can land after the first frame; the copy's
+      // box moves with Inter, so the keep-out is re-measured too
+      if (document.fonts && document.fonts.ready) document.fonts.ready.then(function () { resize(); });
 
       if (window.IntersectionObserver) {
         new IntersectionObserver(function (en) { visible = en[0].isIntersecting; sync(); }, { threshold: 0 }).observe(cv);
@@ -1259,9 +1269,9 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         cv.addEventListener('pointermove', function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; if (!running) draw(lastT); });
         cv.addEventListener('pointerleave', function () { mx = -1e4; my = -1e4; if (!running) draw(lastT); });
       } else if (!reduce) {
-        // touch: a tap (or a drag with the finger down) pulls nodes toward the touch
-        // point; the pull releases 700ms after lift-off. Scrolling is untouched — no
-        // preventDefault and no touch-action override, so a pan over the card still pans.
+        // touch: a tap (or a drag with the finger down) pulls nodes toward the touch point; the
+        // pull releases 700ms after lift-off. No preventDefault and no touch-action override, so
+        // a pan over the hero still pans.
         var tmr = 0;
         var tset = function (ev) { var b = cv.getBoundingClientRect(); mx = ev.clientX - b.left; my = ev.clientY - b.top; clearTimeout(tmr); };
         cv.addEventListener('pointerdown', tset);
@@ -1272,8 +1282,8 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       }
     }
 
-    /* The graph is decoration, so it stays off the critical path completely: the static SVG
-       holds the frame until the page has loaded and the main thread is actually idle. */
+    /* The graph is decoration, so it stays off the critical path completely: it boots once the
+       page has loaded and the main thread is actually idle. */
     function schedule() {
       if (window.requestIdleCallback) requestIdleCallback(boot, { timeout: 2000 });
       else setTimeout(boot, 200);
@@ -1286,9 +1296,11 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
       resume: function () { boot(); sync(); },
       boot: boot,
       pin: function (i) { pinned = i; if (!running) draw(lastT); },
-      _n: nodes.length, _e: edges.length, _p: function () { return packets.length; },
-      _focus: function () { return focus; }, _pinned: function () { return pinned; },
-      _hot: function () { var o = {}; for (var q = 0; q < nodes.length; q++) o[nodes[q].n] = Math.round(nodes[q].hot * 100) / 100; return o; }
+      _n: function () { return act.length; }, _e: function () { return aedges.length; }, _p: function () { return packets.length; },
+      _focus: function () { return focus; }, _pinned: function () { return pinned; }, _running: function () { return running; },
+      _hot: function () { var o = {}; for (var q = 0; q < nodes.length; q++) o[nodes[q].n] = Math.round(nodes[q].hot * 100) / 100; return o; },
+      _pos: function () { var o = {}; for (var q = 0; q < act.length; q++) { var N = nodes[act[q]]; o[N.n] = [Math.round(px_(N, lastT)), Math.round(py_(N, lastT)), N.lw]; } return o; },
+      _zone: function () { return { R: R, RH: RH, W: W, H: H, mobile: MOBILE }; }
     };
   })();
 })();

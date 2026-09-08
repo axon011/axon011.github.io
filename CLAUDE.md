@@ -67,9 +67,8 @@ axon011.github.io/
 
 | Feature | Location | How it works |
 |---------|----------|-------------|
-| Hero entrance | `h1.title .w`, `.eyebrow/.lede/.hero-cta/.status/.hero-visual` | One-time on load: 7 headline words rise on a 45ms `--i` stagger (`wordin`), then the rest fades up in sequence (`fadeup`). `both` fill is safe here — nothing hovers on these |
-| Live knowledge graph | Hero right column, `<canvas id="kg">` in `.viz-card` | 18 labelled nodes / 27 edges, seeded deterministic layout + light force sim, cursor attracts nodes on fine pointers, edges pulse, a packet dot travels a random edge. Reads `--ink/--muted/--accent/--bg/--line` and recolours on `html.class` change. rAF only while on screen and tab visible; single static frame under reduced-motion. `#kg-fallback` (static SVG) shows if canvas fails. `window.__kg.pause/resume` for tests |
-| Border trail | `.viz-card::after` | motion-primitives BorderTrail, CSS-only: `@property --a` angle + conic-gradient masked to a 1.5px ring, 4.5s linear `orbit` |
+| Hero entrance | `h1.title .w`, `.eyebrow/.lede/.hero-cta/.status` | One-time on load: 7 headline words rise on a 45ms `--i` stagger (`wordin`), then the rest fades up in sequence (`fadeup`). `both` fill is safe here — nothing hovers on these |
+| Live knowledge graph | `<canvas id="kg">`, a full-bleed layer behind `.hero` (2026-09-08 redesign; no card, no SVG fallback) | 24 nodes / 36 edges (`NAMES/PAIRS/NODE_INFO` in the script). Seeded homes spread over the free region (right of `.hero-copy` on desktop, the bands above/below it at ≤880px where `MOBILE_SET` caps it to 14 nodes), spring-to-home + link springs + repulsion. **Keep-out:** the copy's box is measured on every resize; nodes get a soft push from its padded rect and a hard clamp (`RH`, label-sized padding) projects any node inside back out, so nothing is ever drawn over a word; edges crossing behind the copy draw muted at 25%. Labels: key nodes at rest on desktop, the lit neighbourhood on hover/pin, none at rest on mobile. Hover lights neighbours (0.5), click/tap pins, caption `#kg-cap` (bottom-right) shows the count + hint or the NODE_INFO line. `PADT=94` keeps nodes under the sticky nav. rAF only while on screen and tab visible; static + hover/pin under reduced-motion. `window.__kg` test hooks |
 | Live-status pip | Hero eyebrow (`.pip`) | 2.4s opacity `pulse` |
 | Scroll progress | `.nav::after` | 2px gradient bar, `scaleX(var(--p))`; `--p` set from a rAF-throttled passive scroll listener |
 | Mobile menu | `#menu` + `.nav-links` (≤860px) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
@@ -106,7 +105,7 @@ clip does not reach the viewport) to trim the band's half-scrollbar overhang.
 
 | Section ID | Description |
 |-----------|-------------|
-| `.hero` (`#top`) | Two-column: headline + lede + 3 CTAs + availability status, beside the `.viz-card` agent-pipeline visual. No section index. |
+| `.hero` (`#top`) | Copy column (eyebrow, headline, lede, 3 CTAs, availability status) over the full-bleed knowledge-graph canvas; the graph settles right of the copy (desktop) or in bands above/below it (≤880px, hero padding 160/128). No section index. |
 | `#about` | 01 — bento: `lead` panel (3 bold-lead statements + footer line), 4 glass `.fact` tiles (M.Sc., ~3 yrs, 2 yrs, 9), full-width `.marquee` of the stack. `grid-template-areas`, 4→2→1 cols at 880/560 |
 | `#experience` | 02 — timeline with rail + dots, two positions (Perinet, Cognizant) |
 | `#publications` | 03 — one glass panel: First-author `.ftag`, arXiv:2607.02612 meta line, linked title (Fusion), authors, one-paragraph summary, `.metric` chip (48% energy · 4× calibration), Read-on-arXiv button |
