@@ -73,6 +73,10 @@
   --shadow-lift:0 2px 6px rgba(20,22,40,.06),0 26px 56px -20px rgba(20,30,80,.26);
   --blur:16px;
   --aur1:rgba(27,77,228,.16); --aur2:rgba(132,92,255,.14); --aur3:rgba(20,180,160,.10);
+  --aur4:rgba(10,134,200,.11);
+  /* gradient-ink stops. Ordered dark→light in the light theme and light→dark in dark, so
+     every stop clears 4.5:1 on --bg on its own and the fill passes AA wherever it lands. */
+  --g1:#1b4de4; --g2:#6b3df0; --g3:#0a6ea8;
   --band:color-mix(in srgb,var(--surface-solid) 55%,transparent);
   --maxw:1120px; --r:16px; --r-lg:20px;
   --fs-body:17px;
@@ -92,7 +96,9 @@ html.dark{
   --shadow-lift:0 2px 8px rgba(0,0,0,.5),0 30px 60px -22px rgba(0,0,0,.8);
   --band:color-mix(in srgb,var(--surface-solid) 70%,transparent);
   --blur:18px;
-  --aur1:rgba(70,110,255,.20); --aur2:rgba(150,90,255,.16); --aur3:rgba(20,170,180,.12);
+  --aur1:rgba(70,110,255,.26); --aur2:rgba(150,90,255,.22); --aur3:rgba(20,175,190,.16);
+  --aur4:rgba(40,170,240,.18);
+  --g1:#7e9bff; --g2:#b39bff; --g3:#5fd8f0;
 }
 *{box-sizing:border-box;margin:0;padding:0}
 /* clip, NOT hidden: the full-bleed section bands overhang by half a scrollbar width and
@@ -105,13 +111,36 @@ body{
   font-size:var(--fs-body);line-height:1.65;-webkit-font-smoothing:antialiased;
   letter-spacing:-0.011em;position:relative;overflow-x:clip;
 }
-/* aurora field behind the glass */
+/* Living aurora: two fixed layers, four soft fields, drifting on different periods so the
+   field never repeats visibly. The softness is baked into the radial stops — animating
+   filter:blur would re-rasterise every frame; transform and opacity stay on the compositor.
+   Both layers are inset past the viewport so a 1.12 scale never exposes an edge. */
+body::before,body::after{
+  content:"";position:fixed;inset:-25%;z-index:-1;pointer-events:none;
+  background-repeat:no-repeat;
+}
 body::before{
-  content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;
-  background:
-    radial-gradient(46rem 32rem at 12% -6%, var(--aur1), transparent 60%),
-    radial-gradient(40rem 30rem at 92% 8%, var(--aur2), transparent 62%),
-    radial-gradient(44rem 36rem at 70% 100%, var(--aur3), transparent 60%);
+  background-image:
+    radial-gradient(46rem 32rem at 26% 16%, var(--aur1), transparent 62%),
+    radial-gradient(40rem 30rem at 84% 26%, var(--aur2), transparent 64%);
+}
+body::after{
+  background-image:
+    radial-gradient(44rem 36rem at 70% 88%, var(--aur3), transparent 62%),
+    radial-gradient(38rem 34rem at 16% 76%, var(--aur4), transparent 64%);
+}
+/* ambient loops wait for html.ready so they never compete with the first paint */
+html.ready body::before{animation:aur-a 96s var(--ease-out) infinite}
+html.ready body::after{animation:aur-b 124s var(--ease-out) infinite}
+@keyframes aur-a{
+  0%,100%{transform:translate3d(0,0,0) scale(1);opacity:1}
+  33%{transform:translate3d(3.5%,-2.5%,0) scale(1.10);opacity:.86}
+  66%{transform:translate3d(-2.5%,3%,0) scale(1.05);opacity:.95}
+}
+@keyframes aur-b{
+  0%,100%{transform:translate3d(0,0,0) scale(1.06);opacity:.92}
+  40%{transform:translate3d(-4%,2%,0) scale(1);opacity:1}
+  70%{transform:translate3d(2%,-3.5%,0) scale(1.12);opacity:.84}
 }
 .wrap{max-width:var(--maxw);margin:0 auto;padding:0 28px}
 @media(max-width:560px){.wrap{padding:0 18px}}
@@ -204,7 +233,24 @@ html.dark .btn-primary{color:#0a0b0f}
 .eyebrow .pip{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:pulse 2.4s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.35}}
 h1.title{font-size:var(--fs-h1);line-height:1.0;font-weight:800;letter-spacing:-0.035em;max-width:13ch}
+/* gradient ink. The solid accent is the base value, so anything without background-clip:text
+   support (or with the image blocked) still renders a legible accent word. */
 h1.title em{font-style:normal;color:var(--accent)}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  h1.title em{
+    background-image:linear-gradient(96deg,var(--g1),var(--g2) 32%,var(--g3) 58%,var(--g2) 78%,var(--g1));
+    background-size:280% 100%;background-position:0% 50%;
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+    /* the clipped box is the inline box: padding keeps the descender-free glyphs off the edge */
+    padding-right:.04em;
+  }
+  html.ready h1.title em{animation:inkshift 14s linear infinite}
+  .feat-metric .big{
+    background-image:linear-gradient(100deg,var(--g1),var(--g2));
+    -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  }
+}
+@keyframes inkshift{from{background-position:0% 50%}to{background-position:280% 50%}}
 /* one-time hero entrance: words rise in sequence, then lede → CTAs → status */
 h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;animation-delay:calc(var(--i,0) * 45ms)}
 @keyframes wordin{from{opacity:0;transform:translateY(.4em)}to{opacity:1;transform:none}}
@@ -217,6 +263,32 @@ h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;anima
   border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 15px;margin-top:30px;
   -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur))}
 .status .led{width:7px;height:7px;border-radius:50%;background:#19b562;box-shadow:0 0 0 3px color-mix(in srgb,#19b562 22%,transparent)}
+
+/* personal strip: avatar, place, live Berlin clock. Sits between the eyebrow and the
+   headline, on the same fadeup cadence as the rest of the hero entrance. */
+/* flex, not inline-flex: a block box puts the strip on its own line under the eyebrow
+   instead of trailing it, and width:max-content keeps the pill hugging its content */
+.strip{display:flex;width:max-content;align-items:center;gap:10px;margin:-10px 0 24px;padding:5px 13px 5px 5px;
+  border:1px solid var(--line);border-radius:999px;background:var(--surface);
+  -webkit-backdrop-filter:blur(var(--blur));backdrop-filter:blur(var(--blur));
+  font-size:12.5px;color:var(--muted);max-width:100%;
+  animation:fadeup .7s var(--ease-out) both;animation-delay:.14s}
+.strip img{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block;
+  border:1px solid var(--glass-edge);flex-shrink:0}
+.strip .sep{width:1px;height:13px;background:var(--line-strong);flex-shrink:0}
+.strip .where{white-space:nowrap}
+/* tabular figures so the seconds ticking never nudges the pill's width */
+.strip .clock{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--ink);
+  font-variant-numeric:tabular-nums;font-feature-settings:"tnum" 1;white-space:nowrap}
+
+/* hero pointer glow: one pre-blurred field translated to the cursor. Fine pointers only,
+   bound from JS, and it never takes a hit — the canvas below it stays interactive. */
+.hero-glow{position:absolute;left:0;top:0;width:460px;height:460px;margin:-230px 0 0 -230px;
+  z-index:0;pointer-events:none;opacity:0;border-radius:50%;
+  background:radial-gradient(circle,color-mix(in srgb,var(--accent) 26%,transparent),transparent 66%);
+  transition:opacity .45s var(--ease-out)}
+.hero-glow.on{opacity:1}
+html.dark .hero-glow{background:radial-gradient(circle,color-mix(in srgb,var(--accent) 20%,transparent),transparent 68%)}
 
 /* knowledge graph: a full-bleed canvas layer behind the hero copy. It reaches 60px above the
    hero like the aurora dots so it does not look cropped under the nav. A replaced element keeps
@@ -246,8 +318,8 @@ section.block.band::before{
   content:"";position:absolute;inset:0 calc(50% - 50vw);z-index:-1;pointer-events:none;
   background:var(--band);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
 .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:40px;flex-wrap:wrap}
-.sec-idx{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:600;
-  background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#8a5cff));
+.sec-idx{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:600;color:var(--accent-ink);
+  background-image:linear-gradient(135deg,var(--g1),var(--g2) 55%,var(--g3));
   -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
 .sec-title{font-size:var(--fs-sec);font-weight:800;letter-spacing:-0.028em;line-height:1.1}
 .sec-note{margin-left:auto;font-size:13px;color:var(--faint);font-family:"JetBrains Mono",monospace}
@@ -294,8 +366,12 @@ html.ready .mtrack{animation:slide 40s linear infinite}
 
 /* ---- 02 experience ---- */
 .tl{display:flex;flex-direction:column;position:relative;padding-left:30px}
+/* the rail draws itself top-down when #experience reveals. Reduced motion nulls the
+   transform, which lands it at full height with no tween — the intended end state. */
 .tl::before{content:"";position:absolute;left:5px;top:16px;bottom:16px;width:1px;
-  background:linear-gradient(var(--accent),var(--line-strong) 40%,transparent)}
+  background:linear-gradient(var(--accent),var(--line-strong) 40%,transparent);
+  transform:scaleY(0);transform-origin:top;transition:transform .7s var(--ease-out) .12s}
+.reveal.in .tl::before{transform:scaleY(1)}
 .job{display:grid;grid-template-columns:190px 1fr;gap:28px;padding:30px 0;border-top:1px solid var(--line);position:relative}
 .job::before{content:"";position:absolute;left:-30px;top:36px;width:11px;height:11px;border-radius:50%;
   background:var(--surface-solid);border:2px solid var(--line-strong)}
@@ -328,15 +404,25 @@ html.ready .mtrack{animation:slide 40s linear infinite}
 /* ---- 04 projects ---- */
 /* isolate: makes .card a stacking context so the spotlight can sit at z-index:-1,
    i.e. above the glass background but below the text, without escaping the card */
-.card{border-radius:var(--r-lg);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;isolation:isolate;
+/* per-project hue. Each card carries --ph (a hue angle in the site's cool band, 160-292);
+   --pa is its accent and --pw its wash, both derived per theme so the light theme stays dark
+   enough to read and the dark theme stays light enough. Omitting --ph falls back to the
+   site blue, so an unstyled card is indistinguishable from today's. */
+.card{--ph:225;--pa:hsl(var(--ph) 74% 46%);--pw:hsl(var(--ph) 74% 46% / .11);
+  border-radius:var(--r-lg);padding:24px;position:relative;overflow:hidden;display:flex;flex-direction:column;isolation:isolate;
   transition:transform .18s var(--ease-out),box-shadow .2s ease,border-color .2s ease}
+html.dark .card{--pa:hsl(var(--ph) 92% 76%);--pw:hsl(var(--ph) 92% 76% / .15)}
 .card::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;z-index:1;
-  background:linear-gradient(90deg,var(--accent),color-mix(in srgb,var(--accent) 40%,#8a5cff));
+  /* +24 is the largest shift that keeps the top of the palette (265) inside violet;
+     any wider and the bar's far end crosses into magenta and leaves the cool family */
+  background:linear-gradient(90deg,var(--pa),hsl(calc(var(--ph) + 24) 82% 60%));
   transform:scaleX(0);transform-origin:left;transition:transform .32s var(--ease-out)}
 /* cursor spotlight — --mx/--my set from JS on fine pointers only */
 .card::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;opacity:0;z-index:-1;
-  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),var(--accent-wash),transparent 65%);
+  background:radial-gradient(260px circle at var(--mx,50%) var(--my,50%),var(--pw),transparent 65%);
   transition:opacity .25s var(--ease-out)}
+.card .exp-btn .car{color:var(--pa)}
+.card .chip{transition:background .2s var(--ease-out),border-color .2s var(--ease-out)}
 .card>*{position:relative;z-index:2}
 /* h3 stays unpositioned so .card-link::after resolves against .card, not the title box */
 .card h3{position:static;z-index:auto;font-size:var(--fs-card);font-weight:700;letter-spacing:-0.02em}
@@ -364,6 +450,10 @@ html.ready .mtrack{animation:slide 40s linear infinite}
 .exp-btn[aria-expanded="true"]+.more{grid-template-rows:1fr}
 .more p{font-size:14.5px;color:var(--muted);line-height:1.55;padding-top:14px;margin-top:14px;border-top:1px solid var(--line)}
 .more p a{color:var(--accent-ink);text-decoration:underline;text-underline-offset:2px;text-decoration-color:var(--line)}
+/* origin note: why the thing exists at all, set apart from the technical paragraph */
+.more p.origin{font-family:"JetBrains Mono",monospace;font-size:12.5px;line-height:1.6;color:var(--faint);
+  letter-spacing:-0.004em;border-left:2px solid var(--pa,var(--accent));border-top:0;
+  padding:2px 0 2px 12px;margin-top:16px}
 
 .feat{display:grid;grid-template-columns:1.35fr .65fr;gap:32px;align-items:center;margin-bottom:16px;padding:32px}
 /* unpositioned for the same reason as .card h3 — the stretch must reach the whole featured card */
@@ -442,6 +532,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 .sreveal{opacity:0}
 .sreveal.in{opacity:1;animation:cardin .5s var(--ease-out) backwards;animation-delay:calc(var(--i,0) * 60ms)}
 @keyframes cardin{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+/* the About tiles get a longer throw and a wider stagger than the project grid — same
+   --ease-out, so the spring comes from the distance and the offset, not a second curve */
+.fact.sreveal.in{animation:factin .58s var(--ease-out) backwards;animation-delay:calc(var(--i,0) * 90ms)}
+@keyframes factin{from{opacity:0;transform:translateY(20px) scale(.965)}to{opacity:1;transform:none}}
 
 /* theme icons share one grid cell and cross-fade */
 #theme svg{grid-area:1/1;transition:opacity 180ms var(--ease-out),transform 180ms var(--ease-out)}
@@ -466,7 +560,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   .card:hover{transform:translateY(var(--lift,-4px));box-shadow:var(--shadow-lift);border-color:var(--line-strong)}
   .card:hover::before{transform:scaleX(1)}
   .card:hover::after{opacity:1}
-  .card:hover h3 .gh{color:var(--accent)}
+  .card:hover h3 .gh{color:var(--pa)}
+  /* chip tint stays a wash behind unchanged --muted text, so the AA ratio does not move */
+  .card:hover .chip{background:color-mix(in srgb,var(--pa) 9%,var(--chip));
+    border-color:color-mix(in srgb,var(--pa) 30%,var(--line))}
   .exp-btn:hover{color:var(--ink);border-color:var(--line-strong)}
   .pub-title a:hover{color:var(--accent);border-color:var(--accent)}
   .copy:hover{color:var(--ink);border-color:var(--line-strong)}
@@ -487,9 +584,14 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
 @media (prefers-reduced-motion:reduce){
   html{scroll-behavior:auto}
   .pip,.mtrack{animation:none!important}
-  h1.title .w,.eyebrow,.lede,.hero-cta,.status{animation:none}
-  .sreveal.in{animation:none}
+  /* !important, like .pip/.mtrack above: these loops are attached by html.ready-prefixed
+     rules, which outrank an unqualified reset here */
+  body::before,body::after,h1.title em{animation:none!important}
+  h1.title .w,.eyebrow,.strip,.lede,.hero-cta,.status{animation:none}
+  .sreveal.in,.fact.sreveal.in{animation:none}
   .reveal{transform:none}
+  /* the rail's resting transform is scaleY(0); nulling it lands the full rail instantly */
+  .tl::before{transform:none;transition:none}
   .card{--lift:0px}
   .exp-btn .car{transition:none}
   .btn:active,.icon-btn:active,.cc:active,.card:active,.fact:active,.exp-btn:active,.copy:active{transform:none}
@@ -532,10 +634,17 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   <header class="hero">
     <!-- live knowledge graph: a full-bleed layer behind the copy. Decoration only; without JS
          or a 2d context the copy simply stands alone -->
+    <div class="hero-glow" id="hero-glow" aria-hidden="true"></div>
     <canvas id="kg" aria-hidden="true"></canvas>
     <div class="hero-grid">
       <div class="hero-copy">
         <div class="eyebrow"><span class="pip"></span>AI Engineer · Berlin, Germany</div>
+        <div class="strip">
+          <img src="avatar.jpg" width="26" height="26" alt="Aravind Pradeep" decoding="async">
+          <span class="where">Cottbus, DE</span>
+          <span class="sep" aria-hidden="true"></span>
+          <span class="clock" id="berlin-clock">--:--</span>
+        </div>
         <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">get</span> <span class="w" style="--i:6"><em>used</em>.</span></h1>
         <p class="lede">Two years on the backend of an industrial-IoT AI platform at Perinet, plus my own deep work on RAG, agents and LLMOps — judged by whether it measurably works.</p>
         <div class="hero-cta">
@@ -559,10 +668,10 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <p><strong>Not only LLMs.</strong> A deterministic wind-farm installation scheduler over 20 years of hourly wind — the model only handles the human edges.</p>
         <p class="foot">M.Sc. AI at BTU Cottbus (thesis phase) · open to AI/ML/LLM Engineer roles across Germany.</p>
       </div>
-      <div class="fact glass f-msc"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
-      <div class="fact glass f-yrs"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
-      <div class="fact glass f-perinet"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
-      <div class="fact glass f-proj"><div class="n">10</div><div class="l">projects shipped</div></div>
+      <div class="fact glass f-msc sreveal" style="--i:0"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
+      <div class="fact glass f-yrs sreveal" style="--i:1"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
+      <div class="fact glass f-perinet sreveal" style="--i:2"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
+      <div class="fact glass f-proj sreveal" style="--i:3"><div class="n">10</div><div class="l">projects shipped</div></div>
       <div class="b-stack glass">
         <div class="k">stack</div>
         <div class="marquee">
@@ -633,7 +742,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   <section class="block band" id="projects">
     <div class="sec-head reveal"><span class="sec-idx mono">04</span><h2 class="sec-title">Projects</h2><span class="sec-note">// selected open source</span></div>
 
-    <article class="card glass feat sreveal" style="--i:0">
+    <article class="card glass feat sreveal" style="--i:0;--ph:225">
       <div>
         <span class="ftag">Featured</span>
         <h3><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
@@ -643,23 +752,23 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-windfarm"><div><p>Crane lifts can't be paused, have wind limits, and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p></div></div>
       </div>
       <div class="feat-metric">
-        <div class="big">€5.59M → €3.56M</div>
+        <div class="big" id="feat-big">€<span class="cu" data-to="5.59">5.59</span>M → €<span class="cu" data-to="3.56">3.56</span>M</div>
         <div class="sub">189 → 64 days<br>19/19 weather-years</div>
       </div>
     </article>
 
     <div class="proj-grid">
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:0;--ph:262">
         <h3><a class="card-link" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">Deutsch-Tutor <span aria-hidden="true">↗</span></a></h3>
         <p class="pitch">AI German tutor that builds your curriculum from your own mistakes.</p>
         <span class="metric">two-agent SSE turn · explainable recommender · live app</span>
         <div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">SSE streaming</span><span class="chip">Zod</span><span class="chip">Tailwind</span></div>
         <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-tutor">Details <span class="car" aria-hidden="true">▾</span></button>
-        <div class="more" id="more-tutor"><div><p>Every error you make in live conversation is logged and turned into drills: the reply streams immediately while a parallel corrector marks exact error spans, and a decay-weighted formula — not an LLM — picks what you practice next.</p></div></div>
+        <div class="more" id="more-tutor"><div><p class="origin">Built to practice my own German, living in Cottbus at level B1.</p><p>Every error you make in live conversation is logged and turned into drills: the reply streams immediately while a parallel corrector marks exact error spans, and a decay-weighted formula — not an LLM — picks what you practice next.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:1;--ph:200">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
@@ -668,7 +777,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-graphrag-agent"><div><p>Entity and relation extraction builds a typed graph first, so a question that spans three documents is answered by walking edges instead of hoping one chunk contains everything.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:0;--ph:210">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
         <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
@@ -677,7 +786,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-graphrag-studio"><div><p>An interactive force-graph front end over the GraphRAG Agent core, so the retrieval path behind every cited answer is something you can actually see.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:1;--ph:265">
         <h3><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</p>
         <span class="metric">self-correcting Critic · YAML eval harness · 2,000+ word cited reports</span>
@@ -686,7 +795,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-multi-agent"><div><p>A fourth Critic agent audits every cited sentence against its source snippet and triggers one bounded repair pass, so the report corrects itself before it is returned. A YAML-driven eval harness scores runs on citation validity, citation grounding, source diversity and routing precision over a 10-topic set.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:0;--ph:188">
         <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
         <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
@@ -695,7 +804,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-rag-eval"><div><p>Every retrieval change runs against a fixed question set and logs to MLflow, so a quality regression shows up as a failed run rather than a complaint months later.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:1;--ph:172">
         <h3><a class="card-link" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">LLMOps Observability Dashboard <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Self-hosted tracing of latency, tokens and cost per model call.</p>
         <span class="metric">full-stack · multi-stage Docker · 12 tests</span>
@@ -704,7 +813,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-llmops"><div><p>Traces land in PostgreSQL rather than a third-party service, which matters when the calls being traced carry customer data.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:0;--ph:245">
         <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
@@ -713,7 +822,7 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-news"><div><p>The whole German-language chain was engineered to fit one consumer GPU, which forced quantisation and batching decisions that a bigger card would have hidden.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1">
+      <article class="card glass sreveal" style="--i:1;--ph:252">
         <h3><a class="card-link" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">LLM Fine-Tuning — JD Extractor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
@@ -722,13 +831,13 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
         <div class="more" id="more-finetune"><div><p>Training roughly 0.44% of the parameters was enough to get reliable structured output from messy postings — a small tuned model beating a large prompted one on this task.</p></div></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0">
+      <article class="card glass sreveal" style="--i:0;--ph:162">
         <h3><a class="card-link" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">Resume Tailor <svg class="gh" width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a></h3>
         <p class="pitch">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</p>
         <span class="metric">3 gates before pdflatex · 106 tests · profile-driven, no personal data in code</span>
         <div class="chips"><span class="chip">Python</span><span class="chip">LLM</span><span class="chip">LaTeX</span><span class="chip">Jinja2</span><span class="chip">pytest</span></div>
         <button class="exp-btn mono" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button>
-        <div class="more" id="more-resume"><div><p>A tailoring LLM moves personal-project work under the employer's heading, invents numbers, and adds whatever the posting asks for. Three mechanical gates run on the rendered LaTeX: a regression gate for banned claims and attribution slips, a claim-backing gate that traces every number, skill and tool name to the base CV, and an omission gate that reports what tailoring dropped. Nothing compiles until every artifact is clean. Pairs with <a href="https://github.com/axon011/job-search-toolkit" target="_blank" rel="noopener">job-search-toolkit</a>, which scans boards, filters roles and hands the cached JD straight to the tailor.</p></div></div>
+        <div class="more" id="more-resume"><div><p class="origin">Dogfooded on my own applications for machine learning engineering roles in Germany.</p><p>A tailoring LLM moves personal-project work under the employer's heading, invents numbers, and adds whatever the posting asks for. Three mechanical gates run on the rendered LaTeX: a regression gate for banned claims and attribution slips, a claim-backing gate that traces every number, skill and tool name to the base CV, and an omission gate that reports what tailoring dropped. Nothing compiles until every artifact is clean. Pairs with <a href="https://github.com/axon011/job-search-toolkit" target="_blank" rel="noopener">job-search-toolkit</a>, which scans boards, filters roles and hands the cached JD straight to the tailor.</p></div></div>
       </article>
 
     </div>
@@ -882,7 +991,25 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
   // year
   document.getElementById('yr').textContent=new Date().getFullYear();
   // reveal on scroll
-  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.12});
+  // count-up on the featured metric. The rendered string is rebuilt from the same two
+  // numbers the markup ships, so the resting text is byte-identical to the static version.
+  function countUp(scope){
+    var els=scope.querySelectorAll?scope.querySelectorAll('.cu'):[];
+    if(!els.length) return;
+    [].forEach.call(els,function(el){
+      var to=parseFloat(el.getAttribute('data-to'));
+      if(!isFinite(to)) return;
+      if(reduced){ el.textContent=to.toFixed(2); return; }
+      var t0=0, dur=900;
+      function tick(t){ if(!t0)t0=t;
+        var u=Math.min(1,(t-t0)/dur), e=1-Math.pow(1-u,3);   // ease-out, matches the CSS feel
+        el.textContent=(to*e).toFixed(2);
+        if(u<1) requestAnimationFrame(tick); else el.textContent=to.toFixed(2); }
+      el.textContent=(0).toFixed(2);
+      requestAnimationFrame(tick);
+    });
+  }
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');countUp(e.target);io.unobserve(e.target);}});},{threshold:.12});
   document.querySelectorAll('.reveal,.sreveal').forEach(function(el){io.observe(el);});
   // active nav
   var links=[].slice.call(document.querySelectorAll('.nav-links a'));
@@ -891,9 +1018,33 @@ footer a{color:var(--muted);border-bottom:1px solid var(--line-strong);transitio
     if(e.isIntersecting){links.forEach(function(l){l.classList.remove('on');});
       var i=secs.indexOf(e.target); if(i>-1)links[i].classList.add('on');}});},{rootMargin:'-45% 0px -50% 0px'});
   secs.forEach(function(s){if(s)spy.observe(s);});
+  // hero pointer glow — same gate as the card spotlight, plus reduced-motion, and one rAF
+  // per frame at most. The element is pre-blurred by its gradient, so this is a composite.
+  var glowEl=document.getElementById('hero-glow'), heroEl=document.querySelector('.hero');
+  if(glowEl && heroEl && !reduced && matchMedia('(hover:hover) and (pointer:fine)').matches){
+    var gx=0, gy=0, gq=false;
+    function gpaint(){ gq=false; glowEl.style.transform='translate3d('+gx+'px,'+gy+'px,0)'; }
+    heroEl.addEventListener('pointermove',function(e){
+      var r=heroEl.getBoundingClientRect();
+      gx=e.clientX-r.left; gy=e.clientY-r.top;
+      if(!glowEl.classList.contains('on'))glowEl.classList.add('on');
+      if(!gq){gq=true;requestAnimationFrame(gpaint);}
+    },{passive:true});
+    heroEl.addEventListener('pointerleave',function(){glowEl.classList.remove('on');});
+  }
+  // live Berlin clock. The static "--:--" holds the pill's shape until this runs.
+  var clockEl=document.getElementById('berlin-clock');
+  function startClock(){
+    if(!clockEl || !window.Intl || !Intl.DateTimeFormat) return;
+    var fmt;
+    try{ fmt=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Berlin',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}); }
+    catch(e){ return; }
+    function tickClock(){ clockEl.textContent=fmt.format(new Date()); }
+    tickClock(); setInterval(tickClock,1000);
+  }
   // html.ready releases the ambient loop (stack marquee) once
   // the critical render is done. Also a good moment to re-measure: fonts have swapped in.
-  function ready(){ root.classList.add('ready'); measure(); prog(); }
+  function ready(){ root.classList.add('ready'); measure(); prog(); startClock(); }
   if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
 
   /* live knowledge graph: a full-bleed layer behind the hero copy. Own IIFE so its locals
