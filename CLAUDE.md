@@ -44,7 +44,10 @@ axon011.github.io/
 - **Single HTML file** - no framework, no build tools, no runtime dependencies
 - **Two fonts**: Inter (body) + JetBrains Mono (code snippets)
 - **CSS variables** for theming - light/dark mode via `html.dark` (NOT `[data-theme]`),
-  persisted in `localStorage` under key `theme`
+  persisted in `localStorage` under key `theme`. A tiny boot script in `<head>` applies the
+  class before first paint (no light flash for dark visitors); the page script also sets `html.light`
+  so the `prefers-color-scheme` CSS fallback never fights an explicit choice. All storage access is
+  wrapped in try/catch (private mode / blocked storage used to throw and kill the whole script)
 - **Static project cards** - hand-written in HTML. The GitHub mark is a single
   `<symbol id="gh">` sprite at the top of `<body>`, referenced via `<use href="#gh">`. The GitHub API is no longer called;
   there is no rate-limit or 404-probe risk any more.
@@ -67,24 +70,25 @@ axon011.github.io/
 
 | Feature | Location | How it works |
 |---------|----------|-------------|
-| Hero entrance | `h1.title .w`, `.eyebrow/.lede/.hero-cta/.status` | One-time on load: 7 headline words rise on a 45ms `--i` stagger (`wordin`), then the rest fades up in sequence (`fadeup`). `both` fill is safe here — nothing hovers on these |
-| Live knowledge graph | `<canvas id="kg">`, a full-bleed layer behind `.hero` (2026-09-08 redesign; no card, no SVG fallback) | 24 nodes / 36 edges (`NAMES/PAIRS/NODE_INFO` in the script). Seeded homes spread over the free region (right of `.hero-copy` on desktop, the bands above/below it at ≤880px where `MOBILE_SET` caps it to 14 nodes), spring-to-home + link springs + repulsion. **Keep-out:** the copy's box is measured on every resize; nodes get a soft push from its padded rect and a hard clamp (`RH`, label-sized padding) projects any node inside back out, so nothing is ever drawn over a word; edges crossing behind the copy draw muted at 25%. Labels: key nodes at rest on desktop, the lit neighbourhood on hover/pin, none at rest on mobile. Hover lights neighbours (0.5), click/tap pins, caption `#kg-cap` (bottom-right) shows the count + hint or the NODE_INFO line. `PADT=94` keeps nodes under the sticky nav. rAF only while on screen and tab visible; static + hover/pin under reduced-motion. `window.__kg` test hooks |
+| Hero entrance | `h1.title .w`, `.strip/.lede/.hero-cta`, `.tile` | One-time on load: 7 headline words rise on a 45ms `--i` stagger (`wordin`), the copy fades up (`fadeup`), then the four bento tiles fade up on an 80ms `--d` stagger starting at .45s. The wind-farm bars grow in (`grow`, scaleX) at .8s |
+| Proof bento (hero, 2026-09-27) | `.bento` of four `.tile`s right of the copy | Paper tile (48% + label + full FUSION title → `#publications`), wind-farm tile (€5.59M → €3.56M + 189/64-day bars drawn to scale, 64/189 = 33.9% → `#projects`), Deutsch-Tutor live-app tile (→ tutor.aravindpradee.me), availability tile (status + 0.94 hit@5). Per-tile hue via `--ph` like the project cards. 2 cols → 1 col at ≤520px. Replaced the full-bleed knowledge-graph canvas, which collapsed to a thin dot strip below 880px (every phone) so the hero read as plain text; the graph code lives in git history before this commit |
 | Living aurora | `body::before` + `body::after` | Four soft radial fields (`--aur1..4`, blue→violet→cyan) drifting via `aur-a` 96s / `aur-b` 124s (translate3d+scale+opacity only, `inset:-25%` hides edges). Loops attach only under `html.ready`; richer alphas in dark |
 | Gradient ink | `h1.title em`, `.feat-metric .big`, `.sec-idx` | `--g1/--g2/--g3` per theme, AA-checked stops. The `em` animates `background-position` (`inkshift` 14s, `html.ready`-gated) inside `@supports (background-clip:text)` with solid-accent fallback |
 | Per-project hues | Every `#projects` card (`style="--ph:<hue>"`) | `--pa`/`--pw` derived from `--ph` via `hsl()` (re-derived lighter in dark). Consumed by the wipe bar, spotlight, chevron, `.origin` rule, chip hover tint. Omitting `--ph` falls back to accent blue. Hues: 225 windfarm, 262 tutor, 200/210 GraphRAG×2, 265 multi-agent, 188 rag-eval, 172 llmops, 245 news, 252 finetune, 162 resume-tailor |
 | Metric count-up | Featured card `.cu[data-to]` spans | On first reveal (existing IntersectionObserver), 900ms cubic ease-out counts €5.59M/€3.56M from 0; final string byte-identical to static text; reduced-motion lands instantly |
 | Timeline draw-in | `#experience .tl::before` | Rests `scaleY(0)` origin-top; `.reveal.in` releases a 700ms `--ease-out` transition |
-| Hero pointer glow | `.hero-glow` (z-index 0, under the kg canvas) | Pre-blurred radial gradient follows cursor via rAF-throttled translate3d; bound only when `(hover:hover) and (pointer:fine)` AND no reduced-motion; `pointer-events:none` |
-| Personal strip | Hero, under the eyebrow | Glass pill: `avatar.jpg` 26×26 + "Cottbus, DE" + `#berlin-clock` (Intl.DateTimeFormat Europe/Berlin, 1s tick started from `ready()`; static `--:--` before JS) |
-| Live-status pip | Hero eyebrow (`.pip`) | 2.4s opacity `pulse` |
+| Hero pointer glow | `.hero-glow` (z-index 0) | Pre-blurred radial gradient follows cursor via rAF-throttled translate3d; bound only when `(hover:hover) and (pointer:fine)` AND no reduced-motion; `pointer-events:none` |
+| Personal strip | Hero, first line of the copy | One glass pill: pulsing `.pip` + "AI Engineer" + "Cottbus, Germany" + `#berlin-clock` (Intl.DateTimeFormat Europe/Berlin, 1s tick from `ready()`). Replaced the separate eyebrow and the avatar (it was GitHub's default identicon and read as a broken image). The pill cannot wrap, so ≤380px hides the clock and its separator |
 | Scroll progress | `.nav::after` | 2px gradient bar, `scaleX(var(--p))`; `--p` set from a rAF-throttled passive scroll listener |
 | Mobile menu | `#menu` + `.nav-links` (≤860px) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
 | Scroll reveal | Sections with `.reveal` | Fade + rise via IntersectionObserver adding `.in` |
 | Staggered card reveal | `#projects` cards (`.sreveal`) | Same observer; per-card `cardin` keyframe, `--i` sets a 60ms column offset. `backwards` fill ONLY, so the finished state releases `transform` back to the hover rule |
 | Card spotlight | `.card::after` | motion-primitives Spotlight: radial `--accent-wash` at `--mx/--my`, fades in on hover. JS binds `pointermove` only when `(hover:hover) and (pointer:fine)` matches |
 | Project "Details ▾" | `.exp-btn` + `.more` on every card | `.more{display:grid;grid-template-rows:0fr}` → `1fr` over 260ms; chevron rotates; `aria-expanded`/`aria-controls`. Cards are `<article>` with a stretched `.card-link::after`, so the button sits above the link (`z-index:1`) — no button-inside-anchor |
-| Stack marquee | About bento `.marquee` | 40s linear duplicated track, mask fade at both ends, paused on hover (gated), `animation:none` under reduced-motion. The one permitted ambient loop outside the hero |
-| Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card`, `.fact`, `.exp-btn`, `.copy` | `:active` scale, 140ms `--ease-out` |
+| Stack marquee | About `.a-stack .marquee` | 40s linear duplicated track, mask fade at both ends, paused on hover (gated), killed under reduced-motion. The one permitted ambient loop outside the hero |
+| Focus reveal | About `.stmt.fx` (the three statements only) | Words are wrapped in `.w` spans at runtime and grouped by visual line; lines below a reading line at 62% of the viewport get up to 6px blur and 28% opacity, sharpening as they rise to it, and each statement scales from .96 to 1. Lines above stay sharp. Re-measured on resize, font load and layout changes (`fxMeasure`). Entirely off under reduced motion |
+| Show all projects | `#show-all` under `#proj-grid` | Grid opens with six cards; the last three carry `.extra` + `hidden`. The button toggles them, observes them for the stagger reveal, and scrolls back to `#projects` on collapse. `.proj-grid>.card:last-child:nth-child(odd)` spans both columns so nine cards never leave an empty cell |
+| Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card` (.99), `.fact`, `.exp-btn`, `.copy`, `.tile` (.98) | `:active` scale, 140ms `--ease-out` |
 | Card hover lift | `#projects` cards | `translateY(var(--lift,-4px))` + gradient bar wipes in via `::before scaleX`; reduced-motion sets `--lift:0px` |
 | Timeline rail | `#experience .tl` | 1px gradient rail + 11px dots per `.job`; first job gets the accent ring |
 | Copy email | `#copy-email` inline after the email headline in `#contact` | Clipboard API; copy→check icon cross-fade, tooltip "Copied", resets after 1.4s |
@@ -94,9 +98,11 @@ axon011.github.io/
 There is no typing effect, particle canvas, filter pills, contribution graph, or
 back-to-top button. Those existed in an older version of the site and were removed.
 
-**Type scale (2026-08-23 redesign):** `--fs-body:17px`, `--fs-lede:clamp(19px,2.3vw,22px)`,
-`--fs-h1:clamp(44px,7.2vw,84px)`, `--fs-sec:clamp(28px,3.4vw,36px)`, `--fs-card:19px`,
-`--maxw:1120px`, `section.block{padding:84px 0}`. Copy is deliberately terse: one-sentence
+**Type scale (2026-09-27 redesign): seven steps, nothing in between.** `--t-xs:12px`, `--t-sm:14px`, `--t-md:17px` (body),
+`--t-lg:20px`, `--t-xl:clamp(21px,2.3vw,25px)` (lede, About statements), `--t-2xl:clamp(30px,3.6vw,42px)` (section titles),
+`--t-hero:clamp(46px,7.6vw,92px)` (hero h1 overrides to `clamp(44px,6.6vw,84px)` beside the bento). Body copy uses `--body`
+(#30333c light / #c9ccd5 dark), darker than `--muted`. **Three radii:** `--r-sm:8px`, `--r-md:12px`, `--r-lg:22px`.
+`--maxw:1160px`, `section.block{padding:92px 0}` (64px ≤560). No em dashes in visible copy. Copy stays terse: one-sentence
 lede, three-statement About, one-line project pitches — long text lives behind "Details ▾".
 
 ---
@@ -112,8 +118,8 @@ clip does not reach the viewport) to trim the band's half-scrollbar overhang.
 
 | Section ID | Description |
 |-----------|-------------|
-| `.hero` (`#top`) | Copy column (eyebrow, headline, lede, 3 CTAs, availability status) over the full-bleed knowledge-graph canvas; the graph settles right of the copy (desktop) or in bands above/below it (≤880px, hero padding 160/128). No section index. |
-| `#about` | 01 — bento: `lead` panel (3 bold-lead statements + footer line), 4 glass `.fact` tiles (M.Sc., ~3 yrs, 2 yrs, 9), full-width `.marquee` of the stack. `grid-template-areas`, 4→2→1 cols at 880/560 |
+| `.hero` (`#top`) | Two columns: copy (strip pill, headline, lede, 3 CTAs) and the proof bento; one column ≤880px (hero padding 56/64). No section index. |
+| `#about` | 01 — `.about` grid: `.a-lead` glass panel (3 bold-lead statements with the focus reveal + footer line) beside `.a-side` (2×2 `.fact` tiles: M.Sc., ~3 yrs, 2 yrs, 10; then the full-width stack marquee). One column ≤880px, facts stay 2×2 |
 | `#experience` | 02 — timeline with rail + dots, two positions (Perinet, Cognizant) |
 | `#publications` | 03 — one glass panel: First-author `.ftag`, arXiv:2607.02612 meta line, linked title (Fusion), authors, one-paragraph summary, `.metric` chip (48% energy · 4× calibration), Read-on-arXiv button |
 | `#projects` | 04 — **10 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 9 in the 2-col `.proj-grid` (first: Deutsch-Tutor — the only live app, so it leads the grid; its card-link goes to https://tutor.aravindpradee.me, not GitHub). Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
