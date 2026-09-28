@@ -71,6 +71,9 @@ document.documentElement.classList.add(t);})();
   ascent-override:90.49%;descent-override:22.56%;line-gap-override:0%;size-adjust:107.06%;
 }
 /* ================= tokens ================= */
+/* ================= tokens ================= */
+/* ================= tokens ================= */
+/* ================= tokens ================= */
 :root{
   --bg:#f6f7fb; --surface:rgba(255,255,255,.62); --surface-solid:#ffffff; --surface-hi:rgba(255,255,255,.86);
   --ink:#121318; --body:#30333c; --muted:#5a5e69; --faint:#7d808b;
@@ -181,7 +184,7 @@ html.dark .btn-primary{color:#0a0b10}
 .btn-ghost{background:var(--surface);border-color:var(--line);color:var(--ink)}
 .btn-sm{height:38px;padding:0 15px;font-size:var(--t-sm)}
 .cv-short{display:none}
-@media(max-width:860px){
+@media(max-width:980px){
   .menu-btn{display:grid}
   .nav-links{position:absolute;left:0;right:0;top:100%;flex-direction:column;gap:2px;margin:0;
     padding:10px 18px 16px;background:color-mix(in srgb,var(--bg) 95%,transparent);border-bottom:1px solid var(--line);
@@ -193,13 +196,14 @@ html.dark .btn-primary{color:#0a0b10}
 @media(max-width:359px){.cv-long{display:none}.cv-short{display:inline}}
 
 /* ================= hero ================= */
-.hero{position:relative}
+.hero{position:relative;padding:96px 0 84px}
+@media(max-width:880px){.hero{padding:150px 0 120px}}
 .hero-glow{position:absolute;left:0;top:0;width:560px;height:560px;margin:-280px 0 0 -280px;z-index:0;pointer-events:none;
   border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--accent) 22%,transparent),transparent 66%);
   opacity:0;transition:opacity .5s}
 .hero-glow.on{opacity:1}
-.hero-grid{display:grid;align-items:center}
-.hero-grid>*{min-width:0}
+.hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:56px;align-items:center}
+@media(max-width:880px){.hero-grid{grid-template-columns:1fr}}
 .hero-copy{position:relative;z-index:1;max-width:640px}
 
 .strip{display:inline-flex;align-items:center;gap:10px;padding:6px 14px 6px 12px;border-radius:999px;
@@ -208,8 +212,6 @@ html.dark .btn-primary{color:#0a0b10}
 .strip .pip{width:7px;height:7px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 3px var(--accent-wash);animation:pulse 2.4s ease-in-out infinite}
 .strip .sep{width:1px;height:12px;background:var(--line-strong)}
 .strip .clock{font-family:"JetBrains Mono",monospace;color:var(--ink);font-variant-numeric:tabular-nums}
-/* the pill cannot wrap; below 380px the clock gives way so role and place still fit */
-@media(max-width:380px){.strip .clock,.strip .sep-clock{display:none}}
 @keyframes pulse{50%{opacity:.35}}
 
 h1.title{margin-top:26px;font-size:var(--t-hero);line-height:.98;font-weight:800;letter-spacing:-.04em;max-width:12.5ch;text-wrap:balance}
@@ -282,6 +284,102 @@ h1.title .w{display:inline-block;animation:wordin .6s var(--ease-out) both;anima
 @media (hover:hover) and (pointer:fine){.tile:hover{transform:translateY(-3px);border-color:color-mix(in srgb,var(--pa) 35%,var(--line))}}
 .tile:active{transform:scale(.98)}
 
+/* ---------- hero option B: project stack ---------- */
+.b-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:center}
+.b-grid>*,.c-row>*{min-width:0}
+@media(max-width:880px){.b-grid{grid-template-columns:1fr}}
+.b-grid .hero-copy h2.title,.c-wrap h2.title{margin-top:26px;font-weight:800;letter-spacing:-.04em;line-height:.98;text-wrap:balance}
+.b-grid .hero-copy h1.title{font-size:clamp(44px,6.4vw,80px);max-width:12.5ch}
+.b-grid h2.title em,.c-wrap h2.title em{font-style:normal;color:var(--accent)}
+@supports (background-clip:text) or (-webkit-background-clip:text){
+  .b-grid h2.title em,.c-wrap h2.title em{background-image:linear-gradient(96deg,var(--g1),var(--g2) 45%,var(--g3));-webkit-background-clip:text;background-clip:text;color:transparent}
+}
+.b-grid .status,.c-side .status{margin-top:22px}
+.stack{position:relative;height:470px;perspective:1600px;touch-action:pan-y}
+.pc{--pa:hsl(var(--ph,225) var(--ps) var(--pl));--pw:hsl(var(--ph,225) 90% 60% / .14);
+  position:absolute;left:50%;top:46%;width:min(372px,88%);border-radius:var(--r-lg);padding:24px 24px 20px;
+  cursor:pointer;border:1px solid var(--line);background:var(--surface-solid);box-shadow:var(--shadow);
+  transform:translate(-50%,-50%) translateX(var(--x,0)) translateY(var(--y,0)) rotate(var(--r,0deg)) scale(var(--s,1)) rotateX(var(--rx,0deg)) rotateY(var(--ry,0deg));
+  transition:transform .7s var(--ease-out),opacity .45s,box-shadow .45s,filter .45s;z-index:var(--z,1);overflow:hidden}
+.pc::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--pa),transparent);transition:background .4s}
+.pc::after{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(120% 80% at 0% 0%,var(--pw),transparent 60%)}
+.pcb{display:flex;flex-direction:column;gap:9px;transition:opacity .28s var(--ease-out)}
+.pc.swapping .pcb{opacity:0}
+.pc .pt{font-size:var(--t-lg);font-weight:700;letter-spacing:-.02em;line-height:1.25;color:var(--ink)}
+.pc .pp{font-size:15px;color:var(--body);line-height:1.55}
+.pc .pm{font-family:"JetBrains Mono",monospace;font-size:clamp(20px,2.4vw,26px);font-weight:600;color:var(--pa);letter-spacing:-.02em;margin-top:2px;white-space:nowrap}
+.pc .pms{font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted)}
+.pc .pgo{position:relative;z-index:1;align-self:flex-start;margin-top:4px;font-size:var(--t-sm);font-weight:600;color:var(--pa)}
+.pc[data-pos="0"]{--x:0px;--y:0px;--r:0deg;--s:1;--z:3;box-shadow:0 1px 2px rgba(20,30,60,.05),0 34px 60px -30px color-mix(in srgb,var(--pa) 60%,transparent)}
+.pc[data-pos="1"]{--x:78px;--y:26px;--r:6deg;--s:.93;--z:2;opacity:.9;filter:saturate(.8)}
+.pc[data-pos="2"]{--x:-78px;--y:34px;--r:-6deg;--s:.88;--z:1;opacity:.9;filter:saturate(.8)}
+.pc:not([data-pos="0"]) .pgo{pointer-events:none}
+.viz{margin-top:2px}
+.viz-bars{display:grid;gap:6px}
+.viz-bars .b{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--muted)}
+.viz-bars .b i{display:block;height:7px;border-radius:4px;background:var(--line-strong)}
+.viz-bars .b.after i{background:linear-gradient(90deg,var(--g1),var(--g2))}
+.viz-tok{display:flex;gap:4px;align-items:center;flex-wrap:wrap}
+.viz-tok i{width:15px;height:15px;border-radius:3px;background:color-mix(in srgb,var(--pa) 55%,var(--line))}
+.viz-tok i.m{width:34px;background:color-mix(in srgb,var(--pa) 85%,var(--line))}
+.viz-tok i.x{background:transparent;outline:1px dashed var(--line-strong);outline-offset:-1px}
+.viz-tok span{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);margin-left:6px}
+.viz-live{display:inline-flex;align-items:center;gap:8px;font-family:"JetBrains Mono",monospace;font-size:12px;color:var(--muted)}
+.viz-live i{width:9px;height:9px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 0 rgba(22,163,74,.5);animation:ping 1.8s var(--ease-out) infinite}
+@keyframes ping{70%{box-shadow:0 0 0 9px rgba(22,163,74,0)}100%{box-shadow:0 0 0 0 rgba(22,163,74,0)}}
+/* deck navigation: prev · counter · timer bar · next */
+.deck-nav{display:flex;align-items:center;justify-content:center;gap:12px;margin:6px auto 0;width:100%;max-width:400px}
+.deck-nav button{width:34px;height:34px;border-radius:50%;border:1px solid var(--line);background:var(--surface-solid);color:var(--ink);
+  font-size:17px;line-height:1;cursor:pointer;display:grid;place-items:center;transition:border-color .2s,transform .14s var(--ease-out)}
+.deck-nav button:active{transform:scale(.94)}
+.deck-count{font-family:"JetBrains Mono",monospace;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;min-width:56px;text-align:center}
+.deck-count b{color:var(--ink);font-weight:600}
+/* the track is a scrubber: one segment per project; hovering shows a preview card, clicking jumps */
+.deck-scrub{position:relative;flex:1 1 180px;min-width:0;max-width:200px;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none;border-radius:6px}
+.deck-scrub:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+.deck-scrub .segs{display:flex;gap:2px;width:100%;height:5px;pointer-events:none}
+.deck-scrub .segs i{flex:1;position:relative;overflow:hidden;border-radius:2px;background:var(--line-strong);transition:transform .15s var(--ease-out),background .2s}
+.deck-scrub .segs i.past{background:var(--accent)}
+.deck-scrub .segs i.cur::after{content:"";position:absolute;inset:0;background:var(--accent);transform-origin:0 50%}
+.stack-wrap.stack-playing .deck-scrub .segs i.cur::after{animation:deckfill 4.2s linear forwards}
+.deck-scrub .segs i.hov{transform:scaleY(2);background:color-mix(in srgb,var(--accent) 60%,var(--line-strong))}
+.scrub-tip{--pa:hsl(var(--ph,225) var(--ps) var(--pl));position:absolute;bottom:calc(100% + 12px);left:50%;width:230px;transform:translateX(-50%);z-index:20;pointer-events:none;
+  display:flex;flex-direction:column;gap:4px;padding:13px 14px 11px;border-radius:14px;background:var(--surface-solid);border:1px solid var(--line);overflow:hidden;
+  box-shadow:0 18px 40px -18px color-mix(in srgb,var(--pa) 55%,rgba(0,0,0,.35));animation:tipin .16s var(--ease-out)}
+.scrub-tip::before{content:"";position:absolute;left:0;right:0;top:0;height:3px;background:linear-gradient(90deg,var(--pa),transparent)}
+@keyframes tipin{from{opacity:0;transform:translateX(-50%) translateY(4px)}}
+.stip-k{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:var(--faint)}
+.stip-t{font-size:14.5px;font-weight:700;letter-spacing:-.01em;line-height:1.3;color:var(--ink);display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.stip-m{font-family:"JetBrains Mono",monospace;font-size:14px;font-weight:600;color:var(--pa)}
+.stip-n{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
+@keyframes deckfill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+@media (hover:hover) and (pointer:fine){
+  .stack:hover .pc[data-pos="0"]{--y:-8px}
+  .stack:hover .pc[data-pos="1"]{--x:128px;--y:10px;--r:8deg;--s:.88;opacity:1;filter:none}
+  .stack:hover .pc[data-pos="2"]{--x:-128px;--y:16px;--r:-8deg;--s:.86;opacity:1;filter:none}
+  .deck-nav button:hover{border-color:var(--line-strong)}
+}
+@media(max-width:560px){
+  .pc{width:86%;padding:20px 20px 18px}
+  .pc[data-pos="1"]{--x:16px;--y:14px;--r:3deg;--s:.95}
+  .pc[data-pos="2"]{--x:-16px;--y:22px;--r:-3deg;--s:.9}
+  /* on a phone the back cards are just edges of the deck; their text would peek out untidily */
+  .pc:not([data-pos="0"]) .pcb{opacity:0}
+}
+@media (prefers-reduced-motion:reduce){.viz-live i{animation:none}.pc{transition:opacity .2s}}
+
+@media(min-width:881px) and (max-width:1100px){
+  .pc[data-pos="1"]{--x:44px;--r:4deg}
+  .pc[data-pos="2"]{--x:-44px;--r:-4deg}
+}
+@media(min-width:881px) and (max-width:1100px) and (hover:hover) and (pointer:fine){
+  .stack:hover .pc[data-pos="1"]{--x:58px;--r:5deg}
+  .stack:hover .pc[data-pos="2"]{--x:-58px;--r:-5deg}
+}
+@media(min-width:1101px) and (max-width:1220px) and (hover:hover) and (pointer:fine){
+  .stack:hover .pc[data-pos="1"]{--x:96px}
+  .stack:hover .pc[data-pos="2"]{--x:-96px}
+}
 /* ================= sections ================= */
 section.block{position:relative;padding:92px 0}
 @media(max-width:560px){section.block{padding:64px 0}}
@@ -329,9 +427,6 @@ html.ready .mtrack{animation:mq 40s linear infinite}
 .mgroup span::after{content:"·";margin-left:14px;color:var(--line-strong)}
 @keyframes mq{to{transform:translateX(-50%)}}
 
-/* focus reveal on the About statements */
-.fx .w{display:inline-block;transition:filter .28s var(--ease-out),opacity .28s var(--ease-out)}
-.fx{transform-origin:0 50%;transition:transform .35s var(--ease-out)}
 
 /* ---------- experience ---------- */
 .tl{position:relative;display:grid;gap:0;padding-left:28px}
@@ -468,6 +563,210 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 .foot-in{max-width:var(--maxw);margin:0 auto;padding:26px 28px 34px;display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between;font-size:13px;color:var(--faint)}
 .foot-in a{color:var(--muted);text-decoration:underline;text-underline-offset:3px}
 
+
+/* publication: one column, stats as a row under the authors, so no tall empty side column */
+.pub{grid-template-columns:1fr}
+.pub-main{gap:16px}
+.pub-summary{max-width:72ch}
+.pub-stats{border-left:0!important;border-top:0!important;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px 24px;
+  padding:18px 22px;border:1px solid var(--line)!important;border-radius:var(--r-md);background:var(--surface-hi);margin:2px 0 4px}
+.pub-stats .ctx{grid-column:1/-1}
+.pub-stats .stat .big{font-size:clamp(28px,3.2vw,40px)}
+@media(max-width:560px){.pub-stats{grid-template-columns:1fr;gap:14px;padding:16px 18px}}
+
+/* ================= 1. skill map ================= */
+.sm-bar{display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap;margin-bottom:18px}
+.sm-search{display:flex;align-items:center;gap:8px;flex:0 1 300px;min-width:0;border:1px solid var(--line);background:var(--surface-solid);
+  border-radius:var(--r-md);padding:0 12px;height:42px;color:var(--faint);transition:border-color .2s,box-shadow .2s}
+.sm-search:focus-within{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-wash)}
+.sm-search input{flex:1;min-width:0;border:0;background:transparent;font:inherit;font-size:15px;color:var(--ink);outline:none}
+.sm-search input::placeholder{color:var(--faint)}
+.sm-status{flex:1;min-width:200px;font-size:14.5px;color:var(--muted)}
+.sm-status b{color:var(--ink)}
+.reset{border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-sm);padding:7px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--muted)}
+
+.smap{position:relative;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.05fr);gap:22px 110px;align-items:start}
+@media(max-width:820px){.smap{grid-template-columns:1fr;gap:22px}}
+.sm-links{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:visible;z-index:0}
+.sm-links path{fill:none;stroke-width:1.6;stroke-linecap:round;opacity:.9;
+  stroke-dasharray:var(--len);stroke-dashoffset:var(--len);animation:draw .45s var(--ease-out) forwards}
+@keyframes draw{to{stroke-dashoffset:0}}
+.sm-skills,.sm-projects{position:relative;z-index:1;display:grid;gap:14px;min-width:0}
+.sm-group .gk{display:flex;align-items:baseline;justify-content:space-between;margin-bottom:7px}
+.sm-group .gk span:last-child{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint)}
+.sm-group .chips{gap:6px}
+.sk{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface-solid);color:var(--body);
+  font-size:13.5px;font-weight:500;padding:5px 7px 5px 11px;border-radius:999px;cursor:pointer;line-height:1.3;
+  transition:opacity .2s,border-color .2s,background .2s,color .2s,transform .14s var(--ease-out)}
+.sk .c{font-family:"JetBrains Mono",monospace;font-size:10.5px;font-weight:600;min-width:18px;height:18px;padding:0 5px;border-radius:999px;
+  display:inline-grid;place-items:center;background:var(--line);color:var(--muted)}
+.sk.multi{border-color:var(--line-strong)}
+.sk.multi .c{background:var(--accent-wash);color:var(--accent-ink)}
+.sk.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.sk.on .c{background:rgba(255,255,255,.25);color:#fff}
+:root[data-theme="dark"] .sk.on,:root[data-theme="dark"] .sk.on .c{color:#0a0b10}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .sk.on,:root:not([data-theme="light"]) .sk.on .c{color:#0a0b10}}
+.sk.lit{border-color:var(--accent);color:var(--ink);background:var(--accent-wash)}
+.smap.act .sk:not(.on):not(.lit){opacity:.32}
+.sk.nomatch{opacity:.22}
+.sk:active{transform:scale(.96)}
+
+.pr{--pa:hsl(var(--ph) var(--ps) var(--pl));display:grid;grid-template-columns:auto 1fr auto;align-items:center;gap:4px 12px;width:100%;text-align:left;
+  border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-md);padding:10px 14px;cursor:pointer;
+  transition:opacity .2s,border-color .2s,box-shadow .2s,transform .14s var(--ease-out)}
+.pr .dot{width:10px;height:10px;border-radius:50%;background:var(--pa);box-shadow:0 0 0 3px color-mix(in srgb,var(--pa) 22%,transparent)}
+.pr .nm{font-weight:700;font-size:15px;letter-spacing:-.01em;line-height:1.3;min-width:0}
+.pr .ct{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--faint);white-space:nowrap}
+.pr .st{grid-column:2/-1;font-family:"JetBrains Mono",monospace;font-size:11.5px;color:var(--faint);line-height:1.5}
+.pr .st mark{background:transparent;color:var(--pa);font-weight:700}
+.smap.act .pr:not(.on){opacity:.35}
+.pr.on{border-color:color-mix(in srgb,var(--pa) 60%,var(--line));box-shadow:0 0 0 3px color-mix(in srgb,var(--pa) 14%,transparent)}
+.pr.pin{box-shadow:0 0 0 3px color-mix(in srgb,var(--pa) 30%,transparent)}
+.pr:active{transform:scale(.98)}
+@media (hover:hover) and (pointer:fine){
+  .sk:hover{border-color:var(--accent)}
+  .pr:hover{border-color:color-mix(in srgb,var(--pa) 50%,var(--line))}
+}
+
+/* skill map, scaled up for reading at a glance */
+#skills .sm-panel{padding:32px}
+@media(max-width:560px){#skills .sm-panel{padding:20px 14px}}
+.sm-bar{margin-bottom:24px;gap:14px 20px}
+.sm-search{flex-basis:360px;height:50px;padding:0 16px;border-radius:14px}
+.sm-search svg{width:19px;height:19px}
+.sm-search input{font-size:17px}
+.sm-status{font-size:17px}
+.reset{font-size:14.5px;padding:9px 15px}
+.smap{column-gap:130px}
+.sm-skills{gap:20px}
+.sm-projects{gap:12px}
+.sm-group .gk{margin-bottom:10px}
+.sm-group .gk .k{font-size:12.5px}
+.sm-group .gk span:last-child{font-size:12px}
+.sm-group .chips{gap:8px}
+.sk{font-size:15.5px;padding:7px 9px 7px 14px;gap:8px}
+.sk .c{font-size:12px;min-width:22px;height:22px;padding:0 6px}
+.pr{padding:14px 18px;gap:5px 14px;border-radius:14px}
+.pr .dot{width:12px;height:12px}
+.pr .nm{font-size:17px}
+.pr .ct{font-size:12.5px}
+.pr .st{font-size:13px}
+.sm-links path{stroke-width:2.2}
+@media(max-width:820px){.sk{font-size:15px}.pr .nm{font-size:16px}}
+
+/* type pass: snap the map to the site's scale (14 / 17 / 20) */
+.sm-status{font-size:20px;letter-spacing:-.01em}
+.pr .st{font-size:14px}
+.pr .ct{font-size:14px}
+.sm-group .gk .k{font-size:14px}
+.sm-group .gk span:last-child{font-size:14px}
+.sk{font-size:17px}
+.sk .c{font-size:14px;min-width:24px;height:24px}
+@media(max-width:820px){.sk{font-size:15px}.sk .c{font-size:12px;min-width:22px;height:22px}}
+@media(max-width:560px){.sm-status{font-size:17px}}
+
+/* single-column layouts: the answer opens right under the tapped skill's group */
+.sm-answer{margin-top:12px;border:1px solid color-mix(in srgb,var(--accent) 45%,var(--line));background:var(--accent-wash);border-radius:14px;
+  padding:12px 14px 10px;animation:ansIn .3s var(--ease-out)}
+@keyframes ansIn{from{opacity:0;transform:translateY(-6px)}}
+.sm-answer .ah{font-size:15.5px;color:var(--body);margin-bottom:8px}
+.sm-answer .ah b{color:var(--ink)}
+.sm-answer ul{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+.sm-answer button{--pa:hsl(var(--ph) var(--ps) var(--pl));width:100%;display:flex;align-items:center;gap:10px;text-align:left;border:0;background:var(--surface-solid);
+  border-radius:10px;padding:10px 12px;font-size:15.5px;font-weight:600;color:var(--ink);cursor:pointer}
+.sm-answer button i{width:11px;height:11px;border-radius:50%;background:var(--pa);flex-shrink:0}
+.sm-answer button span{margin-left:auto;padding-left:8px;font-family:"JetBrains Mono",monospace;font-size:11.5px;font-weight:500;color:var(--faint);white-space:nowrap;flex-shrink:0}
+.sm-answer button:active{transform:scale(.98)}
+.pr.flash{animation:flash 1.2s var(--ease-out)}
+@keyframes flash{0%,40%{box-shadow:0 0 0 5px color-mix(in srgb,var(--pa) 45%,transparent)}}
+
+
+/* the location pill cannot wrap: below 380px the clock gives way (same fix as the site code) */
+.hero-grid>*{min-width:0}
+@media(max-width:380px){.strip .clock,.strip .sep:has(+ .clock){display:none}}
+#skills .sm-panel{border-radius:var(--r-lg)}
+.sm-group .k{font-family:"JetBrains Mono",monospace;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+html.dark .sk.on,html.dark .sk.on .c{color:#0a0b10}
+.tk-panel{margin-top:28px;padding-top:22px;border-top:1px solid var(--line)}
+.tk-head{display:flex;justify-content:space-between;align-items:baseline;gap:8px 16px;flex-wrap:wrap;margin-bottom:14px}
+.tk-title{font-family:"JetBrains Mono",monospace;font-size:12.5px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--faint)}
+.tk-legend{display:inline-flex;align-items:center;gap:8px;font-size:13.5px;color:var(--muted)}
+.tk-dot{width:7px;height:7px;border-radius:50%;background:#16a34a;box-shadow:0 0 0 3px rgba(22,163,74,.16);flex-shrink:0}
+.tk-rows{display:grid;gap:12px}
+.tk-row{display:grid;grid-template-columns:170px minmax(0,1fr);gap:6px 18px;align-items:start}
+@media(max-width:620px){.tk-row{grid-template-columns:1fr}}
+.tk-cat{font-size:14.5px;font-weight:600;color:var(--ink);padding-top:6px}
+.tk-chips{display:flex;flex-wrap:wrap;gap:7px}
+.tkc{display:inline-flex;align-items:center;gap:7px;font:inherit;font-size:14px;font-weight:500;line-height:1.35;color:var(--body);
+  background:var(--surface-solid);border:1px solid var(--line);border-radius:999px;padding:5px 12px;transition:border-color .2s,background .2s,color .2s,transform .14s var(--ease-out)}
+button.tkc{cursor:pointer}
+.tkc.work{border-color:color-mix(in srgb,#16a34a 40%,var(--line));color:var(--ink)}
+.tkc.work[aria-expanded="true"]{background:rgba(22,163,74,.12);border-color:#16a34a}
+button.tkc:active{transform:scale(.96)}
+.tkc.hit{border-color:var(--accent);background:var(--accent-wash);color:var(--ink);animation:tkhit .5s var(--ease-out)}
+@keyframes tkhit{40%{transform:scale(1.08)}}
+.tk-note{margin-top:16px;padding:14px 16px;border-radius:var(--r-md);background:var(--surface-hi);border:1px solid var(--line);border-left:3px solid #16a34a;
+  font-size:15px;color:var(--body);line-height:1.6;animation:ansIn .25s var(--ease-out)}
+.tk-note .nh{display:block;font-weight:700;color:var(--ink);margin-bottom:2px}
+.tk-note .nh span{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:500;color:var(--faint);margin-left:8px}
+.tk-note mark{background:rgba(22,163,74,.18);color:inherit;border-radius:3px;padding:0 2px}
+.tk-note a{color:var(--accent-ink);font-weight:600;margin-left:6px}
+@media (hover:hover) and (pointer:fine){ button.tkc:hover{border-color:#16a34a} }
+
+/* ---------- project pipeline diagrams (the approved prototype component) ---------- */
+.dgw{margin-top:16px}
+.dg{container:dg / inline-size;padding:18px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-hi)}
+.dg{--pa:hsl(var(--ph,225) var(--ps) var(--pl));--pw:hsl(var(--ph,225) 90% 60% / .14)}
+.dg-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:18px}
+.dg-head h3{font-size:20px;font-weight:700;letter-spacing:-.02em}
+.dg-metric{font-family:"JetBrains Mono",monospace;font-size:13px;font-weight:500;color:var(--pa);background:var(--pw);padding:5px 10px;border-radius:var(--r-sm)}
+.flow{display:flex;align-items:stretch;gap:0}
+@container dg (max-width:720px){.flow{flex-direction:column}}
+.stage{flex:1 1 0;min-width:0;border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-md);padding:12px 12px 11px;
+  display:flex;flex-direction:column;gap:6px;position:relative;transition:border-color .3s,box-shadow .3s,transform .3s var(--ease-out)}
+.stage.io{background:transparent;border-style:dashed;flex:.8 1 0}
+.stage .st{font-weight:700;font-size:14.5px;letter-spacing:-.01em;line-height:1.25}
+.stage .sd{font-size:12.5px;color:var(--muted);line-height:1.4}
+.stage .sub{display:grid;gap:5px}
+.stage .sub span{font-family:"JetBrains Mono",monospace;font-size:11.5px;border:1px solid var(--line);border-radius:6px;padding:4px 7px;color:var(--body);background:var(--chip)}
+.stage .loop{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--pa);display:flex;align-items:center;gap:5px;margin-top:2px}
+.stage.st-live{border-color:var(--pa);box-shadow:0 0 0 3px var(--pw),0 10px 24px -14px var(--pa);transform:translateY(-2px)}
+.stage.st-done{border-color:color-mix(in srgb,var(--pa) 40%,var(--line))}
+.link{flex:0 0 34px;position:relative;align-self:center;height:2px;margin:0 -1px}
+.link::before{content:"";position:absolute;inset:0;background:repeating-linear-gradient(90deg,var(--line-strong) 0 6px,transparent 6px 11px)}
+.link::after{content:"";position:absolute;right:-1px;top:-4px;border:5px solid transparent;border-left:7px solid var(--line-strong);border-right:0}
+.link.ln-live::before{background:repeating-linear-gradient(90deg,var(--pa) 0 6px,transparent 6px 11px);background-size:22px 2px;animation:dash .6s linear infinite}
+.link.ln-live::after{border-left-color:var(--pa)}
+@keyframes dash{to{background-position:22px 0}}
+@container dg (max-width:720px){
+  .link{flex:0 0 26px;width:2px;height:auto;align-self:center;margin:-1px 0}
+  .link::before{background:repeating-linear-gradient(180deg,var(--line-strong) 0 6px,transparent 6px 11px)}
+  .link.ln-live::before{background:repeating-linear-gradient(180deg,var(--pa) 0 6px,transparent 6px 11px);background-size:2px 22px;animation:dashv .6s linear infinite}
+  .link::after{right:auto;left:-4px;top:auto;bottom:-1px;border:5px solid transparent;border-top:7px solid var(--line-strong);border-bottom:0}
+  .link.ln-live::after{border-top-color:var(--pa);border-left-color:transparent}
+}
+@keyframes dashv{to{background-position:0 22px}}
+.dg-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:16px;font-size:14px;color:var(--muted)}
+.dg-foot .src{font-size:12.5px;color:var(--faint)}
+.dg-head .pk{font-family:"JetBrains Mono",monospace;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--pa)}
+.dg .play{border:1px solid var(--line);background:var(--surface-solid);border-radius:var(--r-sm);padding:6px 12px;font-size:13px;font-weight:600;cursor:pointer;color:var(--ink);position:relative;z-index:1}
+/* an open card with a diagram takes the full grid width, so the diagram runs left to right */
+.proj-grid>.card:has(.dgw):has(.exp-btn[aria-expanded="true"]){grid-column:1/-1}
+.dg .stage,.dg .link{position:relative;z-index:1}
+
+/* ---------- FUSION: how it works ---------- */
+.pub-how{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-top:4px}
+@media(max-width:700px){.pub-how{grid-template-columns:1fr}}
+.ph-step{position:relative;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-hi);padding:14px 14px 13px}
+.ph-step .ph-n{font-family:"JetBrains Mono",monospace;font-size:12px;font-weight:600;color:var(--accent-ink);display:block;margin-bottom:4px}
+.ph-step b{display:block;font-size:16px;font-weight:700;letter-spacing:-.01em;margin-bottom:4px}
+.ph-step p{font-size:14px;color:var(--muted);line-height:1.5}
+.ph-step:not(:last-child)::after{content:"→";position:absolute;right:-11px;top:50%;transform:translateY(-50%);z-index:1;
+  font-size:14px;color:var(--accent);background:var(--surface-solid);border:1px solid var(--line);border-radius:50%;width:22px;height:22px;display:grid;place-items:center}
+@media(max-width:700px){.ph-step:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-11px;transform:translateX(-50%)}}
+.pub-why{font-size:15px;color:var(--body);line-height:1.6}
+.pub-why b{color:var(--ink)}
+
 /* ================= press + hover (fine pointers only) ================= */
 .btn:active,.icon-btn:active,.cc:active,.fact:active,.exp-btn:active,.copy:active,.proof a:active{transform:scale(.97)}
 .card:active{transform:scale(.99)}
@@ -537,61 +836,38 @@ footer{border-top:1px solid var(--line);margin-top:20px}
 
   <header class="hero">
     <div class="hero-glow" id="hero-glow" aria-hidden="true"></div>
-    <div class="hero-grid">
+    <div class="b-grid" id="hero-b">
       <div class="hero-copy">
-        <div class="strip glass">
-          <span class="pip"></span><span class="role">AI Engineer</span>
-          <span class="sep" aria-hidden="true"></span><span class="where">Cottbus, Germany</span>
-          <span class="sep sep-clock" aria-hidden="true"></span><span class="clock" id="berlin-clock">--:--:--</span>
-        </div>
+        <div class="strip glass"><span class="pip"></span><span class="role">AI Engineer</span><span class="sep" aria-hidden="true"></span><span class="where">Cottbus, Germany</span><span class="sep" aria-hidden="true"></span><span class="clock js-clock">--:--:--</span></div>
         <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">get</span> <span class="w" style="--i:6"><em>used</em>.</span></h1>
         <p class="lede">Two years on the backend of an industrial-IoT AI platform at Perinet, plus my own deep work on RAG, agents and LLMOps, judged by whether it measurably works.</p>
-        <div class="hero-cta">
-          <a class="btn btn-primary" href="#projects">View projects</a>
-          <a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a>
-          <a class="btn btn-ghost" href="mailto:aravindpradeep001@gmail.com">Email</a>
-        </div>
+        <div class="hero-cta"><a class="btn btn-primary" href="#projects">View projects</a><a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a><a class="btn btn-ghost" href="mailto:aravindpradeep001@gmail.com">Email</a></div>
+        <div class="status"><span class="led"></span>Available full-time from November 2026 · open to relocate</div>
       </div>
-      <div class="bento">
-        <a class="tile glass wide" style="--d:0;--ph:225" href="#publications">
-          <div class="trow"><span class="ftag">First author</span><span class="tk">Presented at Euromicro DSD 2026</span></div>
-          <div class="paper">
-            <div class="tbig">48%</div>
-            <div class="tl2">less inference energy · up to 4× lower calibration error</div>
-            <div class="tt">Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers</div>
-          </div>
-        </a>
-        <a class="tile glass" style="--d:1;--ph:200" href="#projects">
-          <span class="tk">Wind-Farm Installation Planner</span>
-          <div class="tmid">€5.59M → €3.56M</div>
-          <div class="bars" role="img" aria-label="189 days before, 64 days after">
-            <div class="b"><i style="width:100%"></i><span>189 d</span></div>
-            <div class="b after"><i style="width:33.9%"></i><span>64 d</span></div>
-          </div>
-        </a>
-        <a class="tile glass" style="--d:2;--ph:262" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">
-          <span class="live"><span class="led"></span>Live app</span>
-          <div class="tt">Deutsch-Tutor</div>
-          <div class="tl2">AI German tutor that builds your curriculum from your own mistakes.</div>
-          <span class="go">tutor.aravindpradee.me ↗</span>
-        </a>
-        <div class="tile glass wide" style="--d:3;--ph:160">
-          <div class="trow" style="justify-content:space-between">
-            <span class="status"><span class="led"></span>Available full-time from November 2026 · open to relocate</span>
-            <span class="tk">0.94 hit@5 · RAG Evaluation System</span>
-          </div>
+      <div>
+        <div class="stack" id="stack" aria-roledescription="carousel" aria-label="Projects, one at a time">
+          <div class="pc" data-pos="0" style="--ph:225" tabindex="0" role="button" aria-label="Wind-Farm Installation Planner"><div class="pcb"><span class="tk">Featured project</span><span class="pt">Wind-Farm Installation Planner</span><span class="pp">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</span><span class="pm">€5.59M → €3.56M</span><span class="pms">189 → 64 days · 19/19 weather-years</span><span class="viz viz-bars" role="img" aria-label="189 days before, 64 days after"><span class="b"><i style="width:100%"></i><span>189 d</span></span><span class="b after"><i style="width:33.9%"></i><span>64 d</span></span></span><a class="pgo" href="#projects">See the project ↓</a></div></div>
+          <div class="pc" data-pos="1" style="--ph:290" tabindex="0" role="button" aria-label="Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers"><div class="pcb"><span class="tk">First-author paper · DSD 2026</span><span class="pt">Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers</span><span class="pm">48% less energy</span><span class="pms">31.8% fewer FLOPs for 0.09 pp of accuracy</span><span class="viz viz-tok" aria-hidden="true"><i></i><i class="m"></i><i></i><i class="x"></i><i class="m"></i><i></i><i class="x"></i><i></i><span>merge · exit · prune</span></span><a class="pgo" href="#publications">Read about it ↓</a></div></div>
+          <div class="pc" data-pos="2" style="--ph:162" tabindex="0" role="button" aria-label="Resume Tailor"><div class="pcb"><span class="tk">Open source</span><span class="pt">Resume Tailor</span><span class="pp">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</span><span class="pm">106 tests</span><span class="pms">3 gates before pdflatex</span><a class="pgo" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">View on GitHub ↗</a></div></div>
+        </div>
+        <div class="deck-nav">
+          <button type="button" id="deck-prev" aria-label="Previous project">‹</button>
+          <span class="deck-count" aria-live="polite"><b id="deck-cur">01</b> / 11</span>
+          <div class="deck-scrub" id="deck-scrub" role="slider" tabindex="0" aria-label="Choose a project" aria-valuemin="1" aria-valuemax="11" aria-valuenow="1"><span class="segs"></span><div class="scrub-tip" id="scrub-tip" hidden></div></div>
+          <button type="button" id="deck-next" aria-label="Next project">›</button>
         </div>
       </div>
     </div>
+
   </header>
 
   <section class="block reveal" id="about">
     <div class="sec-head"><span class="sec-idx">01</span><h2 class="sec-title">About</h2><span class="sec-note">// who &amp; what</span></div>
     <div class="about">
       <div class="a-lead glass">
-        <p class="stmt fx"><strong>Production first.</strong> Python/Go services on real-time MQTT streams, FastAPI, Docker/K8s, CI/CD. Two years at Perinet, including the model-benchmarking that shaped the platform.</p>
-        <p class="stmt fx"><strong>Depth through my own projects.</strong> Hybrid RAG with RAGAs + MLflow eval, multi-agent LangGraph systems, an LLMOps tracer, and a GraphRAG stack.</p>
-        <p class="stmt fx"><strong>Not only LLMs.</strong> A deterministic wind-farm installation scheduler over 20 years of hourly wind. The model only handles the human edges.</p>
+        <p class="stmt"><strong>Production first.</strong> Python/Go services on real-time MQTT streams, FastAPI, Docker/K8s, CI/CD. Two years at Perinet, including the model-benchmarking that shaped the platform.</p>
+        <p class="stmt"><strong>Depth through my own projects.</strong> Hybrid RAG with RAGAs + MLflow eval, multi-agent LangGraph systems, an LLMOps tracer, and a GraphRAG stack.</p>
+        <p class="stmt"><strong>Not only LLMs.</strong> A deterministic wind-farm installation scheduler over 20 years of hourly wind. The model only handles the human edges.</p>
         <p class="foot">M.Sc. AI at BTU Cottbus (thesis phase) · open to AI/ML/LLM Engineer roles across Germany.</p>
       </div>
       <div class="a-side">
@@ -619,9 +895,9 @@ footer{border-top:1px solid var(--line);margin-top:20px}
           <h3>AI Engineer (Working Student)</h3>
           <div class="org">Perinet GmbH · Cottbus</div>
           <ul>
-            <li>Python &amp; Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s and GitHub Actions.</li>
+            <li>Python &amp; Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s, GitHub Actions and GitLab CI/CD.</li>
             <li>Led containerization of the AI platform (chatbot, anomaly detection, sensor explorer).</li>
-            <li>Owned model benchmarking: retrieval speed vs generation quality across variants.</li>
+            <li>Owned RAG evaluation and model benchmarking: retrieval speed vs generation quality across variants.</li>
           </ul>
         </div>
       </div>
@@ -646,19 +922,25 @@ footer{border-top:1px solid var(--line);margin-top:20px}
         </div>
         <h3 class="pub-title"><a href="https://arxiv.org/abs/2607.02612" target="_blank" rel="noopener">Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers</a></h3>
         <p class="pub-authors"><strong>Aravind Pradeep</strong>, Samira Nazari, Mahdi Taheri, Christian Herglotz</p>
+        <div class="pub-stats">
+        <div class="stat"><div class="big">48%</div><div class="l">less inference energy, power-save setting</div></div>
+        <div class="stat"><div class="big">1.58 pp</div><div class="l">accuracy recovered by staging the three in order</div></div>
+        <div class="stat"><div class="big">31.8%</div><div class="l">fewer FLOPs for 0.09 pp of accuracy</div></div>
+        <div class="ctx">ImageNet-1k · DeiT-S</div>
+      </div>
         <p class="pub-summary">Token merging, early exiting and token pruning each cut a Vision Transformer's inference cost alone, but combined they destabilise the intermediate representations. Fusion stages them so they cooperate (merge first, check confidence, prune only what continues), with routing modules that adapt compression per input and expose the accuracy/latency trade-off at inference time, no retraining.</p>
-        <p class="pub-repro mono">One checkpoint, inference-time profiles · benchmark reproduces on one validation shard</p>
+        <div class="pub-how" aria-label="How Fusion works">
+          <div class="ph-step"><span class="ph-n">01</span><b>Merge</b><p>In the first half of the network, the most similar tokens are averaged together, a little at each of three steps.</p></div>
+          <div class="ph-step"><span class="ph-n">02</span><b>Exit early</b><p>At two checkpoints further in, an image stops as soon as the model is confident enough in its answer.</p></div>
+          <div class="ph-step"><span class="ph-n">03</span><b>Prune</b><p>In the last layers, tokens that barely matter are dropped from the images that continue.</p></div>
+        </div>
+        <p class="pub-why">The order is the point: running all three at once cost <b>1.62 pp</b> of accuracy, and staging them recovers <b>1.58 pp</b>. One trained model serves two settings, balanced and power-save, with no retraining.</p>
+        <p class="pub-repro mono">The benchmark reproduces on one validation shard</p>
         <div class="pub-links">
           <a class="btn btn-ghost btn-sm" href="https://arxiv.org/abs/2607.02612" target="_blank" rel="noopener">Read on arXiv ↗</a>
           <a class="btn btn-ghost btn-sm" href="https://github.com/axon011/fusion-vit" target="_blank" rel="noopener">Code + checkpoint <svg width="15" height="15" fill="currentColor" aria-hidden="true"><use href="#gh"/></svg></a>
           <a class="btn btn-ghost btn-sm" href="https://www.youtube.com/watch?v=fZLU2UiiV9k" target="_blank" rel="noopener">Watch the talk ↗</a>
         </div>
-      </div>
-      <div class="pub-stats">
-        <div class="stat"><div class="big">48%</div><div class="l">less inference energy</div></div>
-        <div class="stat"><div class="big">up to 4×</div><div class="l">lower calibration error</div></div>
-        <div class="stat"><div class="big">31.8%</div><div class="l">FLOPs saved at 0.09 pp top-1 cost</div></div>
-        <div class="ctx">ImageNet-1k · DeiT-S</div>
       </div>
     </article>
   </section>
@@ -715,7 +997,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
         <h3><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</p>
         <span class="metric">self-correcting Critic · YAML eval harness · 2,000+ word cited reports</span>
-        <div class="more" id="more-multi-agent"><div><p>A fourth Critic agent audits every cited sentence against its source snippet and triggers one bounded repair pass, so the report corrects itself before it is returned. A YAML-driven eval harness scores runs on citation validity, citation grounding, source diversity and routing precision over a 10-topic set.</p></div></div>
+        <div class="more" id="more-multi-agent"><div><p>A fourth Critic agent audits every cited sentence against its source snippet and triggers one bounded repair pass, so the report corrects itself before it is returned. A YAML-driven eval harness scores runs on citation validity, citation grounding, source diversity and routing precision over a 10-topic set.</p><div class="dgw" data-dg="multi"></div></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-multi-agent">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
@@ -724,7 +1006,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
         <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
         <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
-        <div class="more" id="more-rag-eval"><div><p>Every retrieval change runs against a fixed question set and logs to MLflow, so a quality regression shows up as a failed run rather than a complaint months later.</p></div></div>
+        <div class="more" id="more-rag-eval"><div><p>A 50-question golden set scores each run on retrieval hit@5 and citation presence, and a check script flags any metric that drops more than 5% between runs.</p><div class="dgw" data-dg="rag"></div></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-rag-eval">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
@@ -742,7 +1024,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
         <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
-        <div class="more" id="more-news"><div><p>The whole German-language chain was engineered to fit one consumer GPU, which forced quantisation and batching decisions that a bigger card would have hidden.</p></div></div>
+        <div class="more" id="more-news"><div><p>The whole German-language chain was engineered to fit one consumer GPU, which forced quantisation and batching decisions that a bigger card would have hidden.</p><div class="dgw" data-dg="news"></div></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">Whisper</span><span class="chip">XLM-RoBERTa</span><span class="chip">PyTorch</span><span class="chip">MLflow</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-news">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
@@ -760,7 +1042,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
         <h3><a class="card-link" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">Resume Tailor</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</p>
         <span class="metric">3 gates before pdflatex · 106 tests · profile-driven, no personal data in code</span>
-        <div class="more" id="more-resume"><div><p class="origin">Dogfooded on my own applications for machine learning engineering roles in Germany.</p><p>A tailoring LLM moves personal-project work under the employer's heading, invents numbers, and adds whatever the posting asks for. Three mechanical gates run on the rendered LaTeX: a regression gate for banned claims and attribution slips, a claim-backing gate that traces every number, skill and tool name to the base CV, and an omission gate that reports what tailoring dropped. Nothing compiles until every artifact is clean. Pairs with <a href="https://github.com/axon011/job-search-toolkit" target="_blank" rel="noopener">job-search-toolkit</a>, which scans boards, filters roles and hands the cached JD straight to the tailor.</p></div></div>
+        <div class="more" id="more-resume"><div><p class="origin">Dogfooded on my own applications for machine learning engineering roles in Germany.</p><p>A tailoring LLM moves personal-project work under the employer's heading, invents numbers, and adds whatever the posting asks for. Three mechanical gates run on the rendered LaTeX: a regression gate for banned claims and attribution slips, a claim-backing gate that traces every number, skill and tool name to the base CV, and an omission gate that reports what tailoring dropped. Nothing compiles until every artifact is clean. Pairs with <a href="https://github.com/axon011/job-search-toolkit" target="_blank" rel="noopener">job-search-toolkit</a>, which scans boards, filters roles and hands the cached JD straight to the tailor.</p><div class="dgw" data-dg="resume"></div></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">Python</span><span class="chip">LLM</span><span class="chip">LaTeX</span><span class="chip">pytest</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
@@ -769,12 +1051,22 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   </section>
 
   <section class="block reveal" id="skills">
-    <div class="sec-head"><span class="sec-idx">05</span><h2 class="sec-title">Skills</h2><span class="sec-note">// toolkit</span></div>
-    <div class="skills">
-      <div class="skill-card glass"><h3>AI &amp; Agents</h3><div class="chips"><span class="chip">LangGraph</span><span class="chip">LangChain</span><span class="chip">CrewAI</span><span class="chip">RAG</span><span class="chip">Agentic AI</span><span class="chip">Prompt Engineering</span><span class="chip">Structured Outputs</span><span class="chip">MCP</span><span class="chip">Tool Use</span></div></div>
-      <div class="skill-card glass"><h3>LLMOps &amp; Evaluation</h3><div class="chips"><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">Langfuse</span><span class="chip">LLM-as-Judge</span><span class="chip">Hybrid Retrieval</span><span class="chip">Qdrant</span><span class="chip">ChromaDB</span><span class="chip">pgvector</span></div></div>
-      <div class="skill-card glass"><h3>Programming &amp; Backend</h3><div class="chips"><span class="chip">Python</span><span class="chip">Go</span><span class="chip">FastAPI</span><span class="chip">REST / gRPC</span><span class="chip">PyTorch</span><span class="chip">React</span><span class="chip">TypeScript</span><span class="chip">SQL / PostgreSQL</span></div></div>
-      <div class="skill-card glass"><h3>Infrastructure &amp; DevOps</h3><div class="chips"><span class="chip">Docker</span><span class="chip">Kubernetes</span><span class="chip">GitHub Actions</span><span class="chip">GitLab CI/CD</span><span class="chip">MQTT</span><span class="chip">Azure</span><span class="chip">AWS</span><span class="chip">Linux</span></div></div>
+    <div class="sec-head"><span class="sec-idx">05</span><h2 class="sec-title">Skills</h2><span class="sec-note">// where each tool was used</span></div>
+    <div class="sm-panel glass">
+      <div class="sm-bar">
+        <label class="sm-search" for="sm-q">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/></svg>
+          <input id="sm-q" type="search" placeholder="Search a skill, e.g. FastAPI" autocomplete="off" spellcheck="false">
+        </label>
+        <div class="sm-status" id="sm-status" aria-live="polite"></div>
+        <button class="reset" id="sm-reset" type="button" hidden>Clear</button>
+      </div>
+      <div class="smap" id="smap">
+        <svg class="sm-links" id="sm-links" aria-hidden="true"></svg>
+        <div class="sm-skills" id="sm-skills"></div>
+        <div class="sm-projects" id="sm-projects"></div>
+      </div>
+      <div class="tk-panel" id="toolkit"><div class="tk-head"><span class="tk-title">Also in my toolkit</span><span class="tk-legend"><span class="tk-dot" aria-hidden="true"></span>used at Perinet, tap to see where</span></div><div class="tk-rows"><div class="tk-row"><span class="tk-cat">AI &amp; agents</span><div class="tk-chips"><button type="button" class="tkc work" data-k="RAG" data-q="RAG" data-l="b" aria-expanded="false" aria-controls="tk-note">RAG<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Agentic AI">Agentic AI</span><span class="tkc" data-k="Prompt Engineering">Prompt Engineering</span><span class="tkc" data-k="Structured Outputs">Structured Outputs</span><span class="tkc" data-k="MCP">MCP</span><span class="tkc" data-k="Tool Use">Tool Use</span></div></div><div class="tk-row"><span class="tk-cat">LLMOps &amp; retrieval</span><div class="tk-chips"><span class="tkc" data-k="Langfuse">Langfuse</span><span class="tkc" data-k="LLM-as-Judge">LLM-as-Judge</span><span class="tkc" data-k="Hybrid Retrieval">Hybrid Retrieval</span><span class="tkc" data-k="ChromaDB">ChromaDB</span><span class="tkc" data-k="pgvector">pgvector</span></div></div><div class="tk-row"><span class="tk-cat">Backend &amp; data</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Go" data-q="Go" data-l="a" aria-expanded="false" aria-controls="tk-note">Go<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="REST / gRPC">REST / gRPC</span><span class="tkc" data-k="SQL">SQL</span></div></div><div class="tk-row"><span class="tk-cat">Infra &amp; cloud</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Kubernetes" data-q="K8s" data-l="a" aria-expanded="false" aria-controls="tk-note">Kubernetes<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitHub Actions" data-q="GitHub Actions" data-l="a" aria-expanded="false" aria-controls="tk-note">GitHub Actions<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitLab CI/CD" data-q="GitLab CI/CD" data-l="a" aria-expanded="false" aria-controls="tk-note">GitLab CI/CD<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="MQTT" data-q="MQTT" data-l="a" aria-expanded="false" aria-controls="tk-note">MQTT<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Azure">Azure</span><span class="tkc" data-k="AWS">AWS</span><span class="tkc" data-k="Linux">Linux</span></div></div></div><div class="tk-note" id="tk-note" aria-live="polite" hidden></div></div>
     </div>
   </section>
 
@@ -952,7 +1244,7 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   function startClock(){
     if(!clockEl || !window.Intl || !Intl.DateTimeFormat) return;
     var fmt; try{ fmt=new Intl.DateTimeFormat('en-GB',{timeZone:'Europe/Berlin',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false}); }catch(e){ return; }
-    function tickClock(){ clockEl.textContent=fmt.format(new Date()); } tickClock(); setInterval(tickClock,1000);
+    var allClocks=document.querySelectorAll('#berlin-clock,.js-clock'); function tickClock(){ var v=fmt.format(new Date()); allClocks.forEach(function(c){ c.textContent=v; }); } tickClock(); setInterval(tickClock,1000);
   }
 
   /* focus reveal on the About statements: each visual line below the reading line is soft and
@@ -1003,6 +1295,322 @@ footer{border-top:1px solid var(--line);margin-top:20px}
   function ready(){ root.classList.add('ready'); measure(); prog(); startClock(); fxMeasure(); }
   if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
   if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fxMeasure(); });
+
+  // preview-only: switch the hero between the three options
+  var heroes={b:document.getElementById('hero-b')};
+
+  // option B: a cycling deck. Three card slots show the current project (front), the next (right) and the
+  // previous (left). Each step rotates the slots and refills the one that has moved out of sight.
+  var DECK=[{"ph": 225, "k": "Featured project", "t": "Wind-Farm Installation Planner", "p": "Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.", "m": "€5.59M → €3.56M", "ms": "189 → 64 days · 19/19 weather-years", "go": "See the project ↓", "href": "#projects", "vizHtml": "<span class=\"viz viz-bars\" role=\"img\" aria-label=\"189 days before, 64 days after\"><span class=\"b\"><i style=\"width:100%\"></i><span>189 d</span></span><span class=\"b after\"><i style=\"width:33.9%\"></i><span>64 d</span></span></span>"}, {"ph": 290, "k": "First-author paper · DSD 2026", "t": "Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers", "p": "", "m": "48% less energy", "ms": "31.8% fewer FLOPs for 0.09 pp of accuracy", "go": "Read about it ↓", "href": "#publications", "vizHtml": "<span class=\"viz viz-tok\" aria-hidden=\"true\"><i></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i></i><span>merge · exit · prune</span></span>"}, {"ph": 262, "k": "Live app", "t": "Deutsch-Tutor", "p": "AI German tutor that builds your curriculum from your own mistakes.", "m": "two-agent SSE turn", "ms": "explainable recommender", "go": "Open the app ↗", "href": "https://tutor.aravindpradee.me", "vizHtml": "<span class=\"viz viz-live\"><i aria-hidden=\"true\"></i>live at tutor.aravindpradee.me</span>"}, {"ph": 200, "k": "Open source", "t": "GraphRAG Agent", "p": "Multi-hop answers by traversing a built knowledge graph, with citations.", "m": "k-hop retrieval", "ms": "knowledge graph · cited answers", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-agent", "vizHtml": ""}, {"ph": 210, "k": "Open source", "t": "GraphRAG Studio", "p": "Full-stack app: upload docs, watch the graph build, chat over it.", "m": "live graph viz", "ms": "k-hop retrieval · cited chat", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-studio", "vizHtml": ""}, {"ph": 265, "k": "Open source", "t": "Multi-Agent Research Pipeline", "p": "Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.", "m": "2,000+ words", "ms": "cited reports · self-correcting Critic", "go": "View on GitHub ↗", "href": "https://github.com/axon011/multi-agent-pipeline", "vizHtml": ""}, {"ph": 188, "k": "Open source", "t": "RAG Evaluation System", "p": "Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.", "m": "0.94 hit@5", "ms": "0.96 citation presence", "go": "View on GitHub ↗", "href": "https://github.com/axon011/rag-eval-system", "vizHtml": ""}, {"ph": 172, "k": "Open source", "t": "LLMOps Observability Dashboard", "p": "Self-hosted tracing of latency, tokens and cost per model call.", "m": "12 tests", "ms": "full-stack · multi-stage Docker", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llmops-dashboard", "vizHtml": ""}, {"ph": 245, "k": "Open source", "t": "Multilingual News NLP Pipeline", "p": "Whisper → NER → event classification → summary, on a 4 GB GPU.", "m": "+13% F1", "ms": "8.4× faster inference", "go": "View on GitHub ↗", "href": "https://github.com/axon011/Multilingual-News-NLP-Pipeline", "vizHtml": ""}, {"ph": 252, "k": "Open source", "t": "LLM Fine-Tuning: JD Extractor", "p": "QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.", "m": "100% JSON validity", "ms": "<4 min on 4 GB GPU", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-fine-tuning", "vizHtml": ""}, {"ph": 162, "k": "Open source", "t": "Resume Tailor", "p": "Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.", "m": "106 tests", "ms": "3 gates before pdflatex", "go": "View on GitHub ↗", "href": "https://github.com/axon011/resume-tailor-public", "vizHtml": ""}];
+  var stackEl=document.getElementById('stack'), stackWrap=stackEl.parentNode, slots=[].slice.call(stackEl.querySelectorAll('.pc')),
+      cntEl=document.getElementById('deck-cur'), pTimer=null, cur=0, N=DECK.length;
+  stackWrap.classList.add('stack-wrap');
+  slots[0]._i=0; slots[1]._i=1; slots[2]._i=N-1;
+  function esc(t){ return String(t).replace(/[&<>"]/g,function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+  function inner(d){ var ext=/^http/.test(d.href);
+    return '<span class="tk">'+esc(d.k)+'</span><span class="pt">'+esc(d.t)+'</span>'+(d.p?'<span class="pp">'+esc(d.p)+'</span>':'')+
+      '<span class="pm">'+esc(d.m)+'</span><span class="pms">'+esc(d.ms)+'</span>'+(d.vizHtml||'')+
+      '<a class="pgo" href="'+esc(d.href)+'"'+(ext?' target="_blank" rel="noopener"':'')+'>'+esc(d.go)+'</a>'; }
+  function fill(slot,i,fade){ i=(i+N)%N; slot._i=i; var d=DECK[i];
+    var put=function(){ slot.querySelector('.pcb').innerHTML=inner(d); slot.style.setProperty('--ph',d.ph);
+      slot.setAttribute('aria-label',d.t); slot.classList.remove('swapping'); size(); };
+    if(fade && !reduced){ slot.classList.add('swapping'); setTimeout(put,280); } else put(); }
+  // measure every project once in an invisible probe card; the stack keeps that height, so nothing below it moves
+  var maxH=0;
+  function size(force){
+    if(force) maxH=0;
+    var w=slots[0].offsetWidth; if(!w) return;                     // hero hidden: measure when it is shown
+    if(!maxH){ var probe=slots[0].cloneNode(true), pcb=probe.querySelector('.pcb');
+      probe.setAttribute('aria-hidden','true'); probe.removeAttribute('tabindex');
+      probe.style.cssText='position:absolute;left:0;top:0;visibility:hidden;pointer-events:none;transform:none;transition:none;width:'+w+'px';
+      stackEl.appendChild(probe);
+      DECK.forEach(function(d){ pcb.innerHTML=inner(d); maxH=Math.max(maxH,probe.offsetHeight); });
+      probe.remove(); }
+    stackEl.style.height=(maxH+70)+'px'; }
+  function slotAt(pos){ return slots.filter(function(s){ return s.getAttribute('data-pos')===String(pos); })[0]; }
+  var scrub=document.getElementById('deck-scrub'), tip=document.getElementById('scrub-tip'), segWrap=scrub.querySelector('.segs'), scrubbing=false;
+  function paintCount(){ cntEl.textContent=String(cur+1).padStart(2,'0');
+    segWrap.innerHTML=''; for(var q=0;q<N;q++){ var e=document.createElement('i'); if(q<cur) e.className='past'; else if(q===cur) e.className='cur'; segWrap.appendChild(e); }
+    scrub.setAttribute('aria-valuenow',String(cur+1)); scrub.setAttribute('aria-valuetext',DECK[cur].t); }
+  function idxAt(x){ var r=segWrap.getBoundingClientRect(); return Math.max(0,Math.min(N-1,Math.floor((x-r.left)/r.width*N))); }
+  function showTip(i,x){ var d=DECK[i];
+    tip.style.setProperty('--ph',d.ph);
+    tip.innerHTML='<span class="stip-k">'+esc(d.k)+'</span><span class="stip-t">'+esc(d.t)+'</span><span class="stip-m">'+esc(d.m)+'</span><span class="stip-n">'+String(i+1).padStart(2,'0')+' / '+N+'</span>';
+    tip.hidden=false;
+    var sr=scrub.getBoundingClientRect(), c=Math.max(124,Math.min(innerWidth-124,x));   // keep the card on screen
+    tip.style.left=(c-sr.left)+'px';
+    [].forEach.call(segWrap.children,function(e,k){ e.classList.toggle('hov',k===i); }); }
+  function hideTip(){ tip.hidden=true; [].forEach.call(segWrap.children,function(e){ e.classList.remove('hov'); }); }
+  function goTo(i){ i=(i+N)%N; if(i===cur) return;
+    if(i===(cur+1)%N){ step(1); return; } if(i===(cur-1+N)%N){ step(-1); return; }
+    cur=i; fill(slotAt(0),i,true); fill(slotAt(1),i+1,true); fill(slotAt(2),i-1,true); paintCount(); }
+  function step(dir){
+    var f=slotAt(0), r=slotAt(1), l=slotAt(2);
+    if(dir>0){ // right card comes forward, front goes left, left wraps round to the right with the next project
+      r.setAttribute('data-pos','0'); f.setAttribute('data-pos','2'); l.setAttribute('data-pos','1'); cur=(cur+1)%N; fill(l,cur+1,true);
+    } else {   // left card comes forward, front goes right, right wraps round to the left with the previous project
+      l.setAttribute('data-pos','0'); f.setAttribute('data-pos','1'); r.setAttribute('data-pos','2'); cur=(cur-1+N)%N; fill(r,cur-1,true);
+    }
+    slots.forEach(function(s){ s.style.removeProperty('--rx'); s.style.removeProperty('--ry'); });
+    paintCount();
+  }
+  function restartStack(){ clearInterval(pTimer); size(); var play=!reduced && !heroes.b.hidden; stackWrap.classList.toggle('stack-playing',play); paintCount();
+    if(play) pTimer=setInterval(function(){ step(1); },4200); }
+  function holdStack(){ clearInterval(pTimer); stackWrap.classList.remove('stack-playing'); paintCount(); }
+  slots.forEach(function(c){
+    c.addEventListener('click',function(e){ var pos=c.getAttribute('data-pos'); if(pos==='0') return; e.preventDefault(); step(pos==='1'?1:-1); restartStack(); });
+    c.addEventListener('keydown',function(e){ if((e.key==='Enter'||e.key===' ') && e.target===c && c.getAttribute('data-pos')!=='0'){ e.preventDefault(); step(c.getAttribute('data-pos')==='1'?1:-1); restartStack(); } });
+    if(fine && !reduced){
+      c.addEventListener('pointermove',function(e){ if(c.getAttribute('data-pos')!=='0') return; var rc=c.getBoundingClientRect();
+        c.style.setProperty('--rx',((.5-(e.clientY-rc.top)/rc.height)*6).toFixed(2)+'deg'); c.style.setProperty('--ry',(((e.clientX-rc.left)/rc.width-.5)*8).toFixed(2)+'deg'); });
+      c.addEventListener('pointerleave',function(){ c.style.removeProperty('--rx'); c.style.removeProperty('--ry'); });
+    }
+  });
+  document.getElementById('deck-prev').addEventListener('click',function(){ step(-1); restartStack(); });
+  document.getElementById('deck-next').addEventListener('click',function(){ step(1); restartStack(); });
+  stackEl.addEventListener('keydown',function(e){ if(e.key==='ArrowRight'){ e.preventDefault(); step(1); holdStack(); } if(e.key==='ArrowLeft'){ e.preventDefault(); step(-1); holdStack(); } });
+  stackEl.addEventListener('mouseenter',holdStack);
+  stackEl.addEventListener('mouseleave',restartStack);
+  stackEl.addEventListener('focusin',holdStack);
+  // touch: a horizontal swipe steps the deck, a vertical one still scrolls the page
+  var sx=null, sy=null;
+  stackEl.addEventListener('touchstart',function(e){ sx=e.touches[0].clientX; sy=e.touches[0].clientY; },{passive:true});
+  stackEl.addEventListener('touchend',function(e){ if(sx===null) return; var dx=e.changedTouches[0].clientX-sx, dy=e.changedTouches[0].clientY-sy; sx=null;
+    if(Math.abs(dx)>40 && Math.abs(dx)>Math.abs(dy)*1.3){ step(dx<0?1:-1); restartStack(); } },{passive:true});
+  scrub.addEventListener('pointerenter',function(){ holdStack(); });
+  scrub.addEventListener('pointermove',function(e){ showTip(idxAt(e.clientX),e.clientX); });
+  scrub.addEventListener('pointerleave',function(){ if(!scrubbing){ hideTip(); restartStack(); } });
+  scrub.addEventListener('pointerdown',function(e){ scrubbing=true; if(e.pointerType!=='mouse'){ try{ scrub.setPointerCapture(e.pointerId); }catch(_){} } holdStack(); showTip(idxAt(e.clientX),e.clientX); });
+  scrub.addEventListener('pointerup',function(e){ if(!scrubbing) return; scrubbing=false; goTo(idxAt(e.clientX));
+    if(e.pointerType==='mouse'){ holdStack(); showTip(idxAt(e.clientX),e.clientX); } else { hideTip(); restartStack(); } });
+  scrub.addEventListener('pointercancel',function(){ scrubbing=false; hideTip(); });
+  scrub.addEventListener('keydown',function(e){
+    var k={ArrowRight:1,ArrowUp:1,ArrowLeft:-1,ArrowDown:-1}[e.key];
+    if(k){ e.preventDefault(); step(k); holdStack(); }
+    else if(e.key==='Home'){ e.preventDefault(); goTo(0); holdStack(); }
+    else if(e.key==='End'){ e.preventDefault(); goTo(N-1); holdStack(); } });
+  scrub.addEventListener('blur',hideTip);
+  var szT; addEventListener('resize',function(){ clearTimeout(szT); szT=setTimeout(function(){ size(true); },120); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ size(true); });
+  size();
+
+  restartStack();
+
+})();
+</script>
+<script>
+/* skill map: lives in its own scope so nothing collides with the page script */
+(function(){
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var SVGNS='http://www.w3.org/2000/svg';
+  function el(tag,attrs,parent,ns){ var e=ns?document.createElementNS(SVGNS,tag):document.createElement(tag);
+    for(var k in attrs){ if(k==='text') e.textContent=attrs[k]; else e.setAttribute(k,attrs[k]); } if(parent) parent.appendChild(e); return e; }
+  /* ================= 1. skill map ================= */
+  // chips copied from the site's project cards, full lists
+  var P=[
+    {id:'wind',n:'Wind-Farm Installation Planner',ph:225,k:['Python','NumPy','pandas','Pydantic','FastAPI','Optimization']},
+    {id:'tutor',n:'Deutsch-Tutor',ph:262,k:['Next.js','TypeScript','SSE streaming','Zod','Tailwind']},
+    {id:'gagent',n:'GraphRAG Agent',ph:200,k:['GraphRAG','networkx','Pydantic','LLM extraction','Python']},
+    {id:'gstudio',n:'GraphRAG Studio',ph:210,k:['Next.js','TypeScript','React','FastAPI','GraphRAG']},
+    {id:'multi',n:'Multi-Agent Research Pipeline',ph:265,k:['LangGraph','CrewAI','Pydantic','FastAPI','Docker']},
+    {id:'rag',n:'RAG Evaluation System',ph:188,k:['Qdrant','RAGAs','MLflow','LangChain','FastAPI']},
+    {id:'llmops',n:'LLMOps Observability Dashboard',ph:172,k:['FastAPI','React','TypeScript','PostgreSQL','Docker']},
+    {id:'news',n:'Multilingual News NLP Pipeline',ph:245,k:['Whisper','XLM-RoBERTa','PyTorch','MLflow']},
+    {id:'jd',n:'LLM Fine-Tuning: JD Extractor',ph:252,k:['QLoRA','Qwen2','PEFT','PyTorch']},
+    {id:'resume',n:'Resume Tailor',ph:162,k:['Python','LLM','LaTeX','Jinja2','pytest']}
+  ];
+  // editorial grouping; every chip above appears in exactly one group
+  var G=[
+    {n:'AI & Agents',k:['LangGraph','CrewAI','LangChain','GraphRAG','LLM extraction','LLM']},
+    {n:'Models & ML',k:['PyTorch','QLoRA','PEFT','Qwen2','Whisper','XLM-RoBERTa','networkx','Optimization']},
+    {n:'Eval & Data',k:['MLflow','RAGAs','Qdrant','PostgreSQL','NumPy','pandas']},
+    {n:'Backend & Infra',k:['FastAPI','Python','Pydantic','Docker','pytest','Jinja2','LaTeX']},
+    {n:'Frontend',k:['TypeScript','Next.js','React','SSE streaming','Zod','Tailwind']}
+  ];
+  var S={}, byId={};
+  P.forEach(function(p){ byId[p.id]=p; p.k.forEach(function(k){ (S[k]=S[k]||[]).push(p.id); }); });
+  var grouped={}; G.forEach(function(g){ g.k.forEach(function(k){ grouped[k]=1; }); });
+  Object.keys(S).forEach(function(k){ if(!grouped[k]) console.warn('ungrouped skill',k); });
+  var nSkills=Object.keys(S).length;
+
+  var smap=document.getElementById('smap'), skBox=document.getElementById('sm-skills'), prBox=document.getElementById('sm-projects');
+  var links=document.getElementById('sm-links'), status=document.getElementById('sm-status'), resetB=document.getElementById('sm-reset'), smQ=document.getElementById('sm-q');
+  var skEl={}, prEl={}, pinned=null, hover=null;
+  var fine=matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  G.forEach(function(g){
+    var ks=g.k.slice().sort(function(a,b){ return S[b].length-S[a].length || a.localeCompare(b); });
+    var box=el('div',{class:'sm-group'},skBox), head=el('div',{class:'gk'},box);
+    el('span',{class:'k',text:g.n},head); el('span',{text:ks.length+' skills'},head);
+    var chips=el('div',{class:'chips'},box);
+    ks.forEach(function(k){ var n=S[k].length;
+      var b=el('button',{type:'button',class:'sk'+(n>1?' multi':''),'aria-pressed':'false','aria-label':k+', used in '+n+' project'+(n>1?'s':'')},chips);
+      b.appendChild(document.createTextNode(k)); el('span',{class:'c',text:String(n)},b);
+      bind(b,{t:'s',id:k}); skEl[k]=b; });
+  });
+  P.forEach(function(p){
+    var b=el('button',{type:'button',class:'pr',style:'--ph:'+p.ph,'aria-pressed':'false'},prBox);
+    el('span',{class:'dot'},b); el('span',{class:'nm',text:p.n},b); el('span',{class:'ct',text:p.k.length+' skills'},b);
+    var st=el('span',{class:'st'},b); p.stEl=st;
+    bind(b,{t:'p',id:p.id}); prEl[p.id]=b; });
+
+  function bind(b,ref){
+    b.addEventListener('click',function(){ pinned=(pinned&&pinned.t===ref.t&&pinned.id===ref.id)?null:ref; render(); });
+    if(fine){ b.addEventListener('mouseenter',function(){ hover=ref; render(); });
+              b.addEventListener('mouseleave',function(){ hover=null; render(); }); }
+  }
+  function active(){ return hover||pinned; }
+  function render(){
+    var a=active(), onS={}, onP={};
+    if(a&&a.t==='s'){ onS[a.id]=1; S[a.id].forEach(function(id){ onP[id]=1; }); }
+    if(a&&a.t==='p'){ onP[a.id]=1; byId[a.id].k.forEach(function(k){ onS[k]=1; }); }
+    smap.classList.toggle('act',!!a);
+    Object.keys(skEl).forEach(function(k){ var b=skEl[k], isSel=a&&a.t==='s'&&a.id===k;
+      b.classList.toggle('on',!!isSel); b.classList.toggle('lit',!!onS[k]&&!isSel);
+      b.setAttribute('aria-pressed',String(!!(pinned&&pinned.t==='s'&&pinned.id===k))); });
+    P.forEach(function(p){ var b=prEl[p.id];
+      b.classList.toggle('on',!!onP[p.id]); b.classList.toggle('pin',!!(pinned&&pinned.t==='p'&&pinned.id===p.id));
+      b.setAttribute('aria-pressed',String(!!(pinned&&pinned.t==='p'&&pinned.id===p.id)));
+      p.stEl.innerHTML=p.k.map(function(k){ return (a&&a.t==='s'&&a.id===k)?'<mark>'+k+'</mark>':k; }).join(' · '); });
+    resetB.hidden=!pinned;
+    if(!a) status.textContent=nSkills+' skills across 10 projects. Pick one to see where it was used.';
+    else if(a.t==='s'){ var n=S[a.id].length; status.innerHTML='<b>'+a.id+'</b> is used in '+n+' project'+(n>1?'s':'')+'.'; }
+    else { var p=byId[a.id]; status.innerHTML='<b>'+p.n+'</b> uses '+p.k.length+' skills.'; }
+    drawLinks(a);
+    showAnswer(a);
+  }
+  // phones and narrow panels: put the answer under the tapped skill instead of a screen away
+  function narrow(){ return getComputedStyle(smap).gridTemplateColumns.split(' ').length<2; }
+  function showAnswer(a){
+    var old=smap.querySelector('.sm-answer'); if(old) old.remove();
+    if(!a || a.t!=='s' || !narrow()) return;
+    var group=skEl[a.id].closest('.sm-group'), n=S[a.id].length;
+    var card=el('div',{class:'sm-answer'},null);
+    var h=el('p',{class:'ah'},card); h.innerHTML='<b>'+a.id+'</b> is used in '+n+' project'+(n>1?'s':'')+':';
+    var ul=el('ul',{},card);
+    S[a.id].forEach(function(id){ var p=byId[id], li=el('li',{},ul), b=el('button',{type:'button',style:'--ph:'+p.ph},li);
+      el('i',{},b); b.appendChild(document.createTextNode(p.n)); el('span',{text:'see ↓'},b);
+      b.addEventListener('click',function(){ var row=prEl[id]; row.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
+        row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); }); });
+    group.appendChild(card);
+    // bring the whole card on screen, moving no further than needed
+    requestAnimationFrame(function(){ card.scrollIntoView({behavior:reduced?'auto':'smooth',block:'nearest'}); });
+  }
+  // curves from each lit skill chip to each lit project row, two-column layout only
+  function drawLinks(a){
+    while(links.firstChild) links.removeChild(links.firstChild);
+    if(!a || getComputedStyle(smap).gridTemplateColumns.split(' ').length<2) return;
+    var box=smap.getBoundingClientRect(), rail=skBox.getBoundingClientRect().right-box.left+8, pairs=[], seen={};
+    if(a.t==='s') S[a.id].forEach(function(id){ pairs.push([a.id,id]); });
+    else byId[a.id].k.forEach(function(k){ pairs.push([k,a.id]); });
+    pairs.forEach(function(pr){
+      var s=skEl[pr[0]].getBoundingClientRect(), t=prEl[pr[1]].getBoundingClientRect(), p=byId[pr[1]];
+      // lines leave from the skills column's edge, level with the chip, so they never cross other chips
+      var x1=rail, y1=s.top+s.height/2-box.top, x2=t.left-box.left-2, y2=t.top+t.height/2-box.top, dx=Math.max(40,(x2-x1)*.55);
+      var path=el('path',{d:'M'+x1+' '+y1+' C'+(x1+dx)+' '+y1+' '+(x2-dx)+' '+y2+' '+x2+' '+y2,stroke:'hsl('+p.ph+' 75% 58%)'},links,true);
+      var len=Math.ceil(path.getTotalLength()); path.style.setProperty('--len',len);
+      if(reduced){ path.style.strokeDashoffset=0; path.style.animation='none'; }
+      if(!seen[y1]){ seen[y1]=1; el('circle',{cx:x1,cy:y1,r:4.5,fill:'var(--accent)'},links,true); }
+    });
+  }
+  // search narrows the chips; one clear match selects itself, Enter picks the first match
+  function matches(){ var v=smQ.value.trim().toLowerCase(); return v?Object.keys(S).filter(function(k){ return k.toLowerCase().indexOf(v)>-1; }):null; }
+  smQ.addEventListener('input',function(){
+    var m=matches();
+    Object.keys(skEl).forEach(function(k){ skEl[k].classList.toggle('nomatch',!!m && m.indexOf(k)<0); });
+    if(m && m.length===1){ pinned={t:'s',id:m[0]}; } else if(pinned&&pinned.t==='s'&&m&&m.indexOf(pinned.id)<0){ pinned=null; }
+    render();
+  });
+  smQ.addEventListener('keydown',function(e){ if(e.key==='Enter'){ var m=matches(); if(m&&m.length){ m.sort(function(a,b){ return S[b].length-S[a].length; }); pinned={t:'s',id:m[0]}; render(); } }
+    if(e.key==='Escape'){ smQ.value=''; smQ.dispatchEvent(new Event('input')); } });
+  resetB.addEventListener('click',function(){ pinned=null; smQ.value=''; Object.keys(skEl).forEach(function(k){ skEl[k].classList.remove('nomatch'); }); render(); });
+  var rtm; addEventListener('resize',function(){ clearTimeout(rtm); rtm=setTimeout(function(){ drawLinks(active()); },100); });
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(function(){ drawLinks(active()); });
+  render();
+
+
+  // search that matches no project chip still answers: the toolkit line lists the rest
+  var ALSO=['RAG','Agentic AI','Prompt Engineering','Structured Outputs','MCP','Tool Use','Langfuse','LLM-as-Judge','Hybrid Retrieval','ChromaDB','pgvector','Go','REST / gRPC','SQL','Kubernetes','GitHub Actions','GitLab CI/CD','MQTT','Azure','AWS','Linux'];
+  smQ.addEventListener('input',function(){
+    var v=smQ.value.trim().toLowerCase(); if(!v) return;
+    var hit=Object.keys(S).some(function(k){ return k.toLowerCase().indexOf(v)>-1; }); if(hit) return;
+    var other=ALSO.filter(function(k){ return k.toLowerCase().indexOf(v)>-1; });
+    status.innerHTML=other.length?'<b>'+other.join(', ')+'</b> is not on a project card, but it is in the toolkit list below.':'No tool matching that on this site.';
+  });
+  // toolkit: chips the search matches light up; work-backed chips open the Experience line that names them
+  var tkChips=[].slice.call(document.querySelectorAll('.tkc')), tkNote=document.getElementById('tk-note');
+  var WORK_LINES={a:'Python &amp; Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s, GitHub Actions and GitLab CI/CD.', b:'Owned RAG evaluation and model benchmarking: retrieval speed vs generation quality across variants.'};
+  smQ.addEventListener('input',function(){ var v=smQ.value.trim().toLowerCase();
+    tkChips.forEach(function(c){ c.classList.toggle('hit', !!v && c.getAttribute('data-k').toLowerCase().indexOf(v)>-1); }); });
+  tkChips.filter(function(c){ return c.tagName==='BUTTON'; }).forEach(function(c){
+    c.addEventListener('click',function(){
+      var open=c.getAttribute('aria-expanded')==='true';
+      tkChips.forEach(function(x){ if(x.tagName==='BUTTON') x.setAttribute('aria-expanded','false'); });
+      if(open){ tkNote.hidden=true; return; }
+      c.setAttribute('aria-expanded','true');
+      var q=c.getAttribute('data-q'), line=WORK_LINES[c.getAttribute('data-l')].split(q).join('<mark>'+q+'</mark>');
+      tkNote.innerHTML='<span class="nh">'+c.getAttribute('data-k')+' at Perinet GmbH<span>Jul 2024 – May 2026</span></span>'+line+'<a href="#experience">See Experience ↓</a>';
+      tkNote.hidden=false;
+    });
+  });
+})();
+</script>
+<script>
+/* project pipeline diagrams: the approved prototype component, one per card, animating only while open */
+(function(){
+  var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function el(tag,attrs,parent){ var e=document.createElement(tag); for(var k in attrs){ if(k==='text') e.textContent=attrs[k]; else e.setAttribute(k,attrs[k]); } if(parent) parent.appendChild(e); return e; }
+  var D=[
+    {id:'multi',name:'Multi-Agent Research Pipeline',ph:265,metric:'self-correcting Critic · 2,000+ word cited reports',
+     stages:[{io:1,t:'Question'},{t:'Planner'},{t:'Researcher',d:'picks 2 to 4 of 5 sources for the question'},{t:'Writer',d:'drafts the cited report'},
+       {t:'Critic',d:'checks every cited sentence against its source',loop:'repairs once if a claim is unsupported'},{io:1,t:'Sourced report'}],
+     foot:'Built on LangGraph. The repair pass runs at most once, and only when the Critic finds an unsupported claim.'},
+    {id:'rag',name:'RAG Evaluation System',ph:188,metric:'0.94 hit@5 · 0.96 citation presence',
+     stages:[{io:1,t:'Question'},{t:'Query rewrite',d:'an LLM sharpens the question'},{t:'Hybrid retrieval',sub:['dense (Qdrant)','BM25']},{t:'RRF fusion',d:'merges both rankings'},{t:'Answer',d:'cites its sources'}],
+     foot:'Offline, a 50-question golden set measures hit@5 and citation presence, and a check script flags any metric that drops more than 5% between runs.'},
+    {id:'news',name:'Multilingual News NLP Pipeline',ph:245,metric:'+13% F1 · 8.4× faster inference',
+     stages:[{io:1,t:'News audio'},{t:'Whisper',d:'speech to text'},{t:'NER',d:'runs on the German text directly'},{t:'Event classification'},{t:'Translate DE → EN',d:'only for the summary'},{io:1,t:'Summary'}],
+     foot:'Models load one at a time, so the whole chain fits a 4 GB GPU.'},
+    {id:'resume',name:'Resume Tailor',ph:162,metric:'3 gates before pdflatex · 106 tests',
+     stages:[{io:1,t:'Job description'},{t:'Tailoring LLM',d:'uses the base CV and GitHub repos'},{t:'Rendered LaTeX'},
+       {t:'Gates',sub:['regression: blocks','claim-backing: blocks','omission: reports only']},{t:'pdflatex',d:'only if both blocking gates pass'},{io:1,t:'Résumé + cover letter'}],
+     foot:'The omission gate never blocks. It lists what tailoring dropped, because dropping an off-topic project is legitimate.'}
+  ];
+
+  var byId={}; D.forEach(function(d){ byId[d.id]=d; });
+  document.querySelectorAll('.dgw').forEach(function(w){
+    var d=byId[w.getAttribute('data-dg')]; if(!d) return;
+    var box=el('div',{class:'dg'},w);
+    var h=el('div',{class:'dg-head'},box); el('span',{class:'pk',text:'How it works'},h);
+    var flow=el('div',{class:'flow'},box);
+    d.stages.forEach(function(st,k){
+      if(k) el('div',{class:'link','aria-hidden':'true'},flow);
+      var sEl=el('div',{class:'stage'+(st.io?' io':'')},flow); el('div',{class:'st',text:st.t},sEl);
+      if(st.d) el('div',{class:'sd',text:st.d},sEl);
+      if(st.sub){ var sb=el('div',{class:'sub'},sEl); st.sub.forEach(function(x){ el('span',{text:x},sb); }); }
+      if(st.loop) el('div',{class:'loop',text:'↺ '+st.loop},sEl);
+    });
+    var f=el('div',{class:'dg-foot'},box); el('span',{class:'src',text:d.foot},f);
+    var pb=el('button',{type:'button',class:'play'},f);
+    var stages=box.querySelectorAll('.stage'), links=box.querySelectorAll('.link'), n=d.stages.length;
+    var step=-1, timer=null, playing=false, open=false;
+    function paint(){
+      [].forEach.call(stages,function(x,k){ x.classList.toggle('st-live',k===step); x.classList.toggle('st-done',step>k || (!playing&&step<0)); });
+      [].forEach.call(links,function(x,k){ x.classList.toggle('ln-live',k===step-1 || (!playing&&step<0)); });
+    }
+    function run(){ clearInterval(timer); step=-1;
+      pb.textContent=playing?'Pause':'Play'; pb.setAttribute('aria-pressed',String(playing));
+      if(!playing){ paint(); return; }
+      step=0; paint();
+      timer=setInterval(function(){ step=(step+1)%(n+2); if(step>=n) step=-1; paint(); },900); }
+    pb.addEventListener('click',function(e){ e.stopPropagation(); playing=!playing; run(); });
+    var card=w.closest('article'), btn=card.querySelector('.exp-btn');
+    btn.addEventListener('click',function(){ setTimeout(function(){
+      open=btn.getAttribute('aria-expanded')==='true'; playing=open && !reduced; run();
+      if(open) setTimeout(function(){ card.scrollIntoView({behavior:reduced?'auto':'smooth',block:'nearest'}); },320);
+    },0); });
+    run();
+  });
 })();
 </script>
 </body>
