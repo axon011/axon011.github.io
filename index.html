@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0b10" media="(prefers-color-scheme: dark)">
 <title>Aravind Pradeep — AI Engineer</title>
 <meta name="description" content="Aravind Pradeep — AI Engineer in Cottbus, Germany. Building agentic systems, RAG and LLMOps. M.Sc. Artificial Intelligence at BTU Cottbus.">
 
@@ -46,11 +48,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <!-- The Google Fonts stylesheet blocks first paint for ~1.4s on a throttled phone, and it
-     only gates two @font-face rules. media="print" drops it out of the render-blocking set;
+     only gates @font-face rules. media="print" drops it out of the render-blocking set;
      onload promotes it back to all. The fallback face below keeps the pre-swap layout the
      same size, so nothing reflows when Inter arrives. -->
-<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" media="print" onload="this.media='all'" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600..800&display=swap">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Sora:wght@600..800&display=swap"></noscript>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon.ico" sizes="32x32">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png">
@@ -69,6 +71,13 @@ document.documentElement.classList.add(t);})();
   font-family:"Inter Fallback";
   src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");
   ascent-override:90.49%;descent-override:22.56%;line-gap-override:0%;size-adjust:107.06%;
+}
+/* Arial re-scaled to Sora's metrics (measured: headings 6.6% wider, ascent .97, descent .29),
+   so headings keep their size and line breaks while Sora loads. */
+@font-face{
+  font-family:"Sora Fallback";
+  src:local("Arial"),local("Helvetica Neue"),local("Liberation Sans");
+  ascent-override:90.99%;descent-override:27.2%;line-gap-override:0%;size-adjust:106.6%;
 }
 /* ================= tokens ================= */
 /* ================= tokens ================= */
@@ -789,12 +798,12 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
   display:flex;flex-direction:column;border-radius:var(--r-lg);overflow:hidden;resize:both;
   background:var(--surface-hi);backdrop-filter:blur(22px) saturate(1.5);-webkit-backdrop-filter:blur(22px) saturate(1.5);
   border:1px solid var(--glass-edge);box-shadow:var(--shadow),0 30px 80px -30px rgba(20,30,80,.35);
-  transform-origin:bottom right;transition:opacity 220ms var(--ease-out),transform 260ms var(--ease-out),visibility 0s linear 260ms;
+  transform-origin:bottom right;transition:opacity 160ms var(--ease-out),transform 180ms var(--ease-out),visibility 0s linear 180ms;
   opacity:0;transform:translateY(10px) scale(.96);visibility:hidden}
-.ab-panel.open{opacity:1;transform:none;visibility:visible;transition-delay:0s}
+/* the visitor opened it: a little slower in; closing snaps away faster */
+.ab-panel.open{opacity:1;transform:none;visibility:visible;transition:opacity 220ms var(--ease-out),transform 260ms var(--ease-out),visibility 0s}
 /* see-through while the page scrolls underneath; solid again as soon as you point at it */
 .ab-panel.open.peek{opacity:.22;transition:opacity 160ms var(--ease-out)}
-.ab-panel.ab-glide{transition:left 320ms var(--ease-out),top 320ms var(--ease-out),opacity 220ms var(--ease-out)}
 .ab-panel.dragging{transition:none;opacity:.92;box-shadow:var(--shadow),0 40px 90px -30px rgba(20,30,80,.45);user-select:none;-webkit-user-select:none}
 /* minimised: just the title bar, parked where the window was */
 .ab-panel.min{height:auto!important;min-height:0;resize:none}
@@ -883,13 +892,44 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
   .ab-panel{right:12px;bottom:12px;width:calc(100vw - 24px);height:56vh;height:56dvh;min-width:0;min-height:240px;resize:none;
     background:var(--surface-solid);backdrop-filter:none;-webkit-backdrop-filter:none;contain:layout paint;
     box-shadow:0 1px 2px rgba(20,30,60,.06),0 18px 40px -18px rgba(20,30,80,.35);
-    transform:translateY(24px);transition:opacity 200ms var(--ease-out),transform 240ms var(--ease-out),visibility 0s linear 240ms}
-  .ab-panel.open{transform:none}
+    transform:translateY(24px);transition:opacity 150ms var(--ease-out),transform 170ms var(--ease-out),visibility 0s linear 170ms}
+  .ab-panel.open{transform:none;transition:opacity 200ms var(--ease-out),transform 240ms var(--ease-out),visibility 0s}
   .ab-panel.open.peek{opacity:.3}
   .ab-ttl span{display:none}
   .ab-msg{max-width:94%;animation:ab-msg-m 180ms var(--ease-out) backwards}
   .ab-foot{display:none}
 }
+
+/* ================= type: Sora headings, airy spacing, roomier boxes (2026-10-03) =================
+   Sora carries the headings and the big numbers, Inter stays for body and box text, JetBrains Mono for
+   metrics and tags. Headings are lighter and looser than before and text inside cards gets a little
+   tracking and leading, so nothing reads cramped. */
+:is(h1.title,.sec-title,h3,.pc .pt,.fact .n,.stat .big,a.mail,.stmt strong){font-family:Sora,"Sora Fallback",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+h1.title{font-weight:600;letter-spacing:-.018em;line-height:1.08;max-width:13.5ch}
+.sec-title{font-weight:600;letter-spacing:-.012em;line-height:1.15}
+.pc .pt,.card h3,.mini h3,.pub-title{font-weight:650;letter-spacing:-.005em}
+.lede,.stmt,.pitch{line-height:1.7}
+/* mono labels with no tracking of their own get a touch of air; tracked caps keep theirs */
+.metric,.when,.sec-idx,.sec-note,.pms,.deck-count,.clock,.pub-meta,.pub-repro,.feat-metric .sub,.mgroup span,.loop,.ph-n,.sk .c,.pr .ct,.pr .st,.gk span:not(.k),.viz span,.foot-in .mono{letter-spacing:.02em}
+/* roomier boxes: the tracking inherits into box text; headings and tags set their own */
+.card,.pc,.glass,.fact,.mini,.cc,.ab-panel,.tk-panel,.sm-panel,#scrub-tip{letter-spacing:.012em}
+:is(.card,.pc,.glass,.fact,.mini,.cc,.tk-panel,.sm-panel) :is(p,li,.pitch,.pp,.l){line-height:1.68}
+.ab-msg{line-height:1.65}
+.chip,.tkc,.sk,.ab-chip,.ab-pbtn{letter-spacing:.02em;word-spacing:.04em}
+.fact .l,.stat .l{font-size:15px}
+@media (max-width:400px){.fact{letter-spacing:0;min-width:0}.fact .l{font-size:var(--t-sm)}}
+/* the deck metric is nowrap: on the narrowest phones it steps down so "est. 48% less energy" fits */
+@media (max-width:380px){.pc .pm{font-size:17px}}
+
+/* ================= small fixes (2026-10-03) ================= */
+/* long unbroken input (a URL, a pasted string) wraps inside its bubble instead of widening the chat */
+.ab-bub{overflow-wrap:anywhere}
+.ab-log{overflow-x:hidden}
+/* phones: no grey tap flash (every control has its own :active), no landscape text inflation,
+   no double-tap-zoom wait on controls, no text selection when holding a button */
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+a,button,[role="button"],summary{touch-action:manipulation}
+button,[role="button"]{-webkit-user-select:none;user-select:none}
 
 /* ================= press + hover (fine pointers only) ================= */
 .btn:active,.icon-btn:active,.cc:active,.fact:active,.exp-btn:active,.copy:active,.proof a:active{transform:scale(.97)}
@@ -1274,6 +1314,7 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
   var sun=document.getElementById('i-sun'), moon=document.getElementById('i-moon');
   function apply(t){ var dark=t==='dark';
     root.classList.toggle('dark',dark); root.classList.toggle('light',!dark);
+    document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){ m.setAttribute('content',dark?'#0a0b10':'#f6f7fb'); });
     sun.classList.toggle('off',dark); moon.classList.toggle('off',!dark); }
   var hostTheme=root.getAttribute('data-theme');
   apply(store('theme') || (hostTheme==='dark'||hostTheme==='light'?hostTheme:null) || (matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light'));
@@ -2351,10 +2392,14 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     var x = null;
     if (innerWidth - c.right - G - M >= p.width) x = c.right + G;              // room on the right
     else if (c.left - G - M >= p.width) x = c.left - G - p.width;              // room on the left
-    panel.classList.add('ab-glide');
-    if (x !== null){ geo.x = x; place(); saveGeo(); }
-    else { setMin(true); geo.y = innerHeight; place(); saveGeo(); }
-    setTimeout(function(){ panel.classList.remove('ab-glide'); }, 360);
+    if (x !== null){
+      var from = panel.getBoundingClientRect();
+      geo.x = x; place(); saveGeo();
+      if (!reduce && panel.animate){   // glide on the GPU: jump to the new spot, then animate a transform back from the old one
+        var to = panel.getBoundingClientRect();
+        panel.animate([{transform:'translate(' + (from.left - to.left) + 'px,' + (from.top - to.top) + 'px)'}, {transform:'none'}], {duration:320, easing:'cubic-bezier(.23,1,.32,1)'});
+      }
+    } else { setMin(true); geo.y = innerHeight; place(); saveGeo(); }
   }
   function meta(r){
     if (r.kind === 'answer') return 'matched <i>' + r.intent.id + '</i> · ' + r.conf.toFixed(2);

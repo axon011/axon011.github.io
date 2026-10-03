@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#f6f7fb" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#0a0b10" media="(prefers-color-scheme: dark)">
+<title>Page not found · Aravind Pradeep</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon.ico" sizes="32x32">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500&family=Sora:wght@600..700&display=swap">
+<script>
+/* same theme resolution as the main page: saved choice, else the OS setting; storage can throw */
+(function(){var t=null;try{t=localStorage.getItem('theme');}catch(e){}
+if(t!=='dark'&&t!=='light')t=matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+document.documentElement.classList.add(t);
+if(t==='dark')document.querySelectorAll('meta[name="theme-color"]').forEach(function(m){m.setAttribute('content','#0a0b10');});})();
+</script>
+<style>
+/* the main site's tokens, trimmed to what this page uses */
+:root{--bg:#f6f7fb;--surface:rgba(255,255,255,.62);--ink:#121318;--body:#30333c;--muted:#5a5e69;--line:rgba(20,30,60,.10);--line-strong:rgba(20,30,60,.30);
+  --glass-edge:rgba(255,255,255,.72);--accent:#1b4de4;--accent-ink:#1538a8;--g1:#1b4de4;--g2:#6b3df0;--g3:#0a6ea8;
+  --aur1:rgba(27,77,228,.13);--aur2:rgba(107,61,240,.11);--aur3:rgba(10,140,200,.09);
+  --shadow:0 1px 2px rgba(20,30,60,.04),0 12px 32px -14px rgba(20,30,60,.16);--ease-out:cubic-bezier(.23,1,.32,1);color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not(.light){--bg:#0a0b10;--surface:rgba(28,31,42,.5);--ink:#eeeff3;--body:#c9ccd5;--muted:#9ea1ab;--line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.18);--glass-edge:rgba(255,255,255,.09);--accent:#7e9bff;--accent-ink:#a9bcff;--g1:#7e9bff;--g2:#b39bff;--g3:#5fd8f0;
+  --aur1:rgba(126,155,255,.17);--aur2:rgba(179,155,255,.12);--aur3:rgba(95,216,240,.09);--shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -18px rgba(0,0,0,.6);color-scheme:dark}}
+html.dark{--bg:#0a0b10;--surface:rgba(28,31,42,.5);--ink:#eeeff3;--body:#c9ccd5;--muted:#9ea1ab;--line:rgba(255,255,255,.08);
+  --line-strong:rgba(255,255,255,.18);--glass-edge:rgba(255,255,255,.09);--accent:#7e9bff;--accent-ink:#a9bcff;--g1:#7e9bff;--g2:#b39bff;--g3:#5fd8f0;
+  --aur1:rgba(126,155,255,.17);--aur2:rgba(179,155,255,.12);--aur3:rgba(95,216,240,.09);--shadow:0 1px 2px rgba(0,0,0,.3),0 16px 40px -18px rgba(0,0,0,.6);color-scheme:dark}
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-tap-highlight-color:transparent;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+body{margin:0;min-height:100vh;min-height:100svh;display:grid;place-items:center;padding:24px 16px;background:var(--bg);color:var(--ink);
+  font:400 17px/1.65 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;-webkit-font-smoothing:antialiased}
+body::before{content:"";position:fixed;inset:-20%;z-index:-1;pointer-events:none;
+  background:radial-gradient(38% 34% at 22% 20%,var(--aur1),transparent 70%),radial-gradient(30% 30% at 80% 26%,var(--aur2),transparent 70%),radial-gradient(34% 30% at 64% 82%,var(--aur3),transparent 70%)}
+main{width:min(560px,100%);padding:40px 36px;border-radius:22px;border:1px solid var(--glass-edge);background:var(--surface);
+  backdrop-filter:blur(18px) saturate(1.4);-webkit-backdrop-filter:blur(18px) saturate(1.4);box-shadow:var(--shadow);letter-spacing:.012em}
+.code{font:500 13px/1 "JetBrains Mono",ui-monospace,Consolas,monospace;letter-spacing:.06em;color:var(--accent-ink)}
+h1{margin:14px 0 0;font:600 clamp(30px,6vw,40px)/1.12 Sora,system-ui,sans-serif;letter-spacing:-.012em}
+h1 em{font-style:normal;color:var(--accent)}
+@supports (background-clip:text) or (-webkit-background-clip:text){h1 em{background:linear-gradient(100deg,var(--g1),var(--g2) 55%,var(--g3));-webkit-background-clip:text;background-clip:text;color:transparent}}
+p{margin:12px 0 0;color:var(--body);line-height:1.68}
+.path{font:500 13px/1.4 "JetBrains Mono",ui-monospace,monospace;color:var(--muted);overflow-wrap:anywhere}
+nav{display:flex;flex-wrap:wrap;gap:10px;margin-top:26px}
+a{display:inline-flex;align-items:center;height:44px;padding:0 18px;border-radius:12px;font-weight:600;font-size:15px;text-decoration:none;
+  border:1px solid var(--line-strong);color:var(--ink);touch-action:manipulation;transition:transform 140ms var(--ease-out),border-color 160ms var(--ease-out),box-shadow 160ms var(--ease-out)}
+a.primary{background:var(--accent);border-color:var(--accent);color:var(--bg)}
+a:active{transform:scale(.97)}
+a:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+@media (hover:hover) and (pointer:fine){a:hover{border-color:var(--accent)}a.primary:hover{box-shadow:0 10px 28px -8px var(--accent)}}
+@media (max-width:480px){main{padding:30px 22px}nav a{flex:1 1 100%;justify-content:center}}
+</style>
+</head>
+<body>
+<main>
+  <div class="code">404 · page not found</div>
+  <h1>This page <em>isn't here.</em></h1>
+  <p>The link may be old or mistyped. Everything on the site lives on one page.</p>
+  <p class="path" id="path"></p>
+  <nav aria-label="Where to go next">
+    <a class="primary" href="/">Go to the homepage</a>
+    <a href="/#projects">See projects</a>
+    <a href="/Aravind_Pradeep_AI_Engineer.pdf">Résumé (PDF)</a>
+  </nav>
+</main>
+<script>
+(function(){var p=document.getElementById('path');try{var u=decodeURIComponent(location.pathname);if(u&&u!=='/'){p.textContent='Requested: '+u;}else{p.remove();}}catch(e){p.remove();}})();
+</script>
+</body>
+</html>
