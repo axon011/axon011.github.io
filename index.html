@@ -1056,9 +1056,9 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     <div class="nav-links" id="nav-links">
       <a href="#about">About</a>
       <a href="#experience">Experience</a>
+      <a href="#skills">Skills</a>
       <a href="#publications">Publications</a>
       <a href="#projects">Projects</a>
-      <a href="#skills">Skills</a>
       <a href="#education">Education</a>
       <a href="#contact">Contact</a>
     </div>
@@ -1156,8 +1156,29 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     </div>
   </section>
 
-  <section class="block reveal" id="publications">
-    <div class="sec-head"><span class="sec-idx">03</span><h2 class="sec-title">Publications</h2><span class="sec-note">// peer-reviewed &amp; preprints</span></div>
+  <section class="block reveal" id="skills">
+    <div class="sec-head"><span class="sec-idx">03</span><h2 class="sec-title">Skills</h2><span class="sec-note">// where each tool was used</span></div>
+    <div class="sm-panel glass">
+      <div class="sm-bar">
+        <label class="sm-search" for="sm-q">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/></svg>
+          <input id="sm-q" type="search" placeholder="Search a skill, e.g. FastAPI" autocomplete="off" spellcheck="false">
+        </label>
+        <div class="sm-status" id="sm-status" aria-live="polite"></div>
+        <button class="reset" id="sm-reset" type="button" hidden>Clear</button>
+      </div>
+      <div class="smap" id="smap">
+        <svg class="sm-links" id="sm-links" aria-hidden="true"></svg>
+        <div class="sm-skills" id="sm-skills"></div>
+        <div class="sm-projects" id="sm-projects"></div>
+        <button class="sm-more" id="sm-more" type="button" aria-expanded="false" aria-controls="sm-projects">See tools by project <span class="car" aria-hidden="true">▾</span></button>
+      </div>
+      <div class="tk-panel" id="toolkit"><div class="tk-head"><span class="tk-title">Also in my toolkit</span><span class="tk-legend"><span class="tk-dot" aria-hidden="true"></span>used at Perinet, tap to see where</span></div><div class="tk-rows"><div class="tk-row"><span class="tk-cat">AI &amp; agents</span><div class="tk-chips"><button type="button" class="tkc work" data-k="RAG" data-q="RAG" data-l="b" aria-expanded="false" aria-controls="tk-note">RAG<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Agentic AI">Agentic AI</span><span class="tkc" data-k="Prompt Engineering">Prompt Engineering</span><span class="tkc" data-k="Structured Outputs">Structured Outputs</span><span class="tkc" data-k="MCP">MCP</span><span class="tkc" data-k="Tool Use">Tool Use</span></div></div><div class="tk-row"><span class="tk-cat">LLMOps &amp; retrieval</span><div class="tk-chips"><span class="tkc" data-k="Langfuse">Langfuse</span><span class="tkc" data-k="LLM-as-Judge">LLM-as-Judge</span><span class="tkc" data-k="Hybrid Retrieval">Hybrid Retrieval</span><span class="tkc" data-k="ChromaDB">ChromaDB</span><span class="tkc" data-k="pgvector">pgvector</span></div></div><div class="tk-row"><span class="tk-cat">Backend &amp; data</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Go" data-q="Go" data-l="a" aria-expanded="false" aria-controls="tk-note">Go<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="REST / gRPC">REST / gRPC</span><span class="tkc" data-k="SQL">SQL</span></div></div><div class="tk-row"><span class="tk-cat">Infra &amp; cloud</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Kubernetes" data-q="K8s" data-l="a" aria-expanded="false" aria-controls="tk-note">Kubernetes<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitHub Actions" data-q="GitHub Actions" data-l="a" aria-expanded="false" aria-controls="tk-note">GitHub Actions<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitLab CI/CD" data-q="GitLab CI/CD" data-l="a" aria-expanded="false" aria-controls="tk-note">GitLab CI/CD<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="MQTT" data-q="MQTT" data-l="a" aria-expanded="false" aria-controls="tk-note">MQTT<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Azure">Azure</span><span class="tkc" data-k="AWS">AWS</span><span class="tkc" data-k="Linux">Linux</span></div></div></div><div class="tk-note" id="tk-note" aria-live="polite" hidden></div></div>
+    </div>
+  </section>
+
+  <section class="block band reveal" id="publications">
+    <div class="sec-head"><span class="sec-idx">04</span><h2 class="sec-title">Publications</h2><span class="sec-note">// peer-reviewed &amp; preprints</span></div>
     <article class="pub glass">
       <div class="pub-main">
         <div class="pub-badges">
@@ -1189,8 +1210,8 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     </article>
   </section>
 
-  <section class="block band" id="projects">
-    <div class="sec-head reveal"><span class="sec-idx">04</span><h2 class="sec-title">Projects</h2><span class="sec-note">// selected open source</span></div>
+  <section class="block" id="projects">
+    <div class="sec-head reveal"><span class="sec-idx">05</span><h2 class="sec-title">Projects</h2><span class="sec-note">// selected open source</span></div>
 
     <article class="card glass feat sreveal" style="--i:0;--ph:225">
       <div class="feat-body">
@@ -1292,27 +1313,6 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
       </article>
     </div>
     <div class="more-row"><button class="btn btn-ghost show-all" id="show-all" type="button" aria-expanded="false" aria-controls="proj-grid"><span id="show-all-t">Show all 10 projects</span> <span class="car" aria-hidden="true">▾</span></button></div>
-  </section>
-
-  <section class="block reveal" id="skills">
-    <div class="sec-head"><span class="sec-idx">05</span><h2 class="sec-title">Skills</h2><span class="sec-note">// where each tool was used</span></div>
-    <div class="sm-panel glass">
-      <div class="sm-bar">
-        <label class="sm-search" for="sm-q">
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path stroke-linecap="round" d="M20 20l-3.5-3.5"/></svg>
-          <input id="sm-q" type="search" placeholder="Search a skill, e.g. FastAPI" autocomplete="off" spellcheck="false">
-        </label>
-        <div class="sm-status" id="sm-status" aria-live="polite"></div>
-        <button class="reset" id="sm-reset" type="button" hidden>Clear</button>
-      </div>
-      <div class="smap" id="smap">
-        <svg class="sm-links" id="sm-links" aria-hidden="true"></svg>
-        <div class="sm-skills" id="sm-skills"></div>
-        <div class="sm-projects" id="sm-projects"></div>
-        <button class="sm-more" id="sm-more" type="button" aria-expanded="false" aria-controls="sm-projects">See tools by project <span class="car" aria-hidden="true">▾</span></button>
-      </div>
-      <div class="tk-panel" id="toolkit"><div class="tk-head"><span class="tk-title">Also in my toolkit</span><span class="tk-legend"><span class="tk-dot" aria-hidden="true"></span>used at Perinet, tap to see where</span></div><div class="tk-rows"><div class="tk-row"><span class="tk-cat">AI &amp; agents</span><div class="tk-chips"><button type="button" class="tkc work" data-k="RAG" data-q="RAG" data-l="b" aria-expanded="false" aria-controls="tk-note">RAG<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Agentic AI">Agentic AI</span><span class="tkc" data-k="Prompt Engineering">Prompt Engineering</span><span class="tkc" data-k="Structured Outputs">Structured Outputs</span><span class="tkc" data-k="MCP">MCP</span><span class="tkc" data-k="Tool Use">Tool Use</span></div></div><div class="tk-row"><span class="tk-cat">LLMOps &amp; retrieval</span><div class="tk-chips"><span class="tkc" data-k="Langfuse">Langfuse</span><span class="tkc" data-k="LLM-as-Judge">LLM-as-Judge</span><span class="tkc" data-k="Hybrid Retrieval">Hybrid Retrieval</span><span class="tkc" data-k="ChromaDB">ChromaDB</span><span class="tkc" data-k="pgvector">pgvector</span></div></div><div class="tk-row"><span class="tk-cat">Backend &amp; data</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Go" data-q="Go" data-l="a" aria-expanded="false" aria-controls="tk-note">Go<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="REST / gRPC">REST / gRPC</span><span class="tkc" data-k="SQL">SQL</span></div></div><div class="tk-row"><span class="tk-cat">Infra &amp; cloud</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Kubernetes" data-q="K8s" data-l="a" aria-expanded="false" aria-controls="tk-note">Kubernetes<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitHub Actions" data-q="GitHub Actions" data-l="a" aria-expanded="false" aria-controls="tk-note">GitHub Actions<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitLab CI/CD" data-q="GitLab CI/CD" data-l="a" aria-expanded="false" aria-controls="tk-note">GitLab CI/CD<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="MQTT" data-q="MQTT" data-l="a" aria-expanded="false" aria-controls="tk-note">MQTT<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Azure">Azure</span><span class="tkc" data-k="AWS">AWS</span><span class="tkc" data-k="Linux">Linux</span></div></div></div><div class="tk-note" id="tk-note" aria-live="polite" hidden></div></div>
-    </div>
   </section>
 
   <section class="block band reveal" id="education">

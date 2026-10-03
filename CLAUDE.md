@@ -131,8 +131,9 @@ lede, three-statement About, one-line project pitches — long text lives behind
 
 ## Section Map
 
-Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`. Alternating sections
-(02 Experience, 04 Projects, 06 Education) carry `class="band"` — a full-bleed `--band`
+Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`. **Order since 2026-10-03 (user: "skills should
+be below experience"): About, Experience, Skills, Publications, Projects, Education, Contact.** The even positions
+(02 Experience, 04 Publications, 06 Education) carry `class="band"` — a full-bleed `--band`
 tint via `::before{inset:0 calc(50% - 50vw)}` with its own 1px top/bottom rules (the
 banded section and its follower drop `border-top` to avoid doubling). `html` carries
 `overflow-x:clip` (NOT hidden — hidden would break the sticky nav; and on `body` alone
@@ -143,9 +144,9 @@ clip does not reach the viewport) to trim the band's half-scrollbar overhang.
 | `.hero` (`#top`) | `#hero-b`: copy (strip pill, headline, lede, 3 CTAs, availability status) beside the cycling project deck; one column <=880px. No section index. |
 | `#about` | 01 - `.about` grid: `.a-lead` glass panel (3 bold-lead statements + footer line; no blur/focus reveal, removed 2026-09-28) beside `.a-side` (2x2 `.fact` tiles: M.Sc., ~3 yrs, 2 yrs, 10; then the stack marquee). One column <=880px |
 | `#experience` | 02 - timeline with rail + dots, two positions (Perinet, Cognizant). Perinet bullet 1 names GitHub Actions and GitLab CI/CD; bullet 3 says "Owned RAG evaluation and model benchmarking" (both match the resume, 2026-09-28) |
-| `#publications` | 03 - one-column glass card: First-author `.ftag` + DSD/arXiv meta, linked Fusion title, authors, `.pub-stats` row (48% energy, labelled estimated + power-save setting, since the paper derives it analytically from the FLOPs profile / 1.58 pp recovered by staging / 31.8% fewer FLOPs for 0.09 pp), summary, `.pub-how` three steps (merge, exit early, prune; wording checked against the paper method section), `.pub-why` (1.62 pp is the cost of running pruning and early exit in parallel, paper Table VII, not all three mechanisms; one model for both settings). The hero deck metric reads "est. 48% less energy", repro note, three buttons. No calibration claim: the thesis review found 3.4x drops to ~1.2x after temperature scaling |
-| `#projects` | 04 — **10 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 9 in the 2-col `.proj-grid` (first: Deutsch-Tutor — the only live app, so it leads the grid; its card-link goes to https://tutor.aravindpradee.me, not GitHub). Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
-| `#skills` | 05 - the skill map and the toolkit (see Interactive Elements) |
+| `#skills` | 03 - the skill map and the toolkit (see Interactive Elements) |
+| `#publications` | 04 - one-column glass card: First-author `.ftag` + DSD/arXiv meta, linked Fusion title, authors, `.pub-stats` row (48% energy, labelled estimated + power-save setting, since the paper derives it analytically from the FLOPs profile / 1.58 pp recovered by staging / 31.8% fewer FLOPs for 0.09 pp), summary, `.pub-how` three steps (merge, exit early, prune; wording checked against the paper method section), `.pub-why` (1.62 pp is the cost of running pruning and early exit in parallel, paper Table VII, not all three mechanisms; one model for both settings). The hero deck metric reads "est. 48% less energy", repro note, three buttons. No calibration claim: the thesis review found 3.4x drops to ~1.2x after temperature scaling |
+| `#projects` | 05 — **10 hand-written** `<article class="card">`: one full-width `.feat` (Wind-Farm, 32px mono metric, `.ftag`) + 9 in the 2-col `.proj-grid` (first: Deutsch-Tutor — the only live app, so it leads the grid; its card-link goes to https://tutor.aravindpradee.me, not GitHub). Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
 | `#education` | 06 — 2 `.mini` cards (M.Sc. BTU with language chips English C1 · German B1 · Malayalam, B.Sc. BVM) |
 | `#contact` | 07 — email as a Sora headline (`aravindpradeep001@<wbr>gmail.com`, so phones break after the @) + inline copy button, then 3 `.cc` tiles (LinkedIn, GitHub, résumé PDF) |
 
