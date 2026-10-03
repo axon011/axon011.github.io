@@ -19,6 +19,7 @@
 axon011.github.io/
 ├── index.html              # THE site — markup + all CSS + all JS, self-contained
 ├── Aravind_Pradeep_AI_Engineer.pdf  # Resume PDF (linked from nav + contact)
+├── 404.html                # Custom "page not found" (GitHub Pages serves it for any unknown path); own tokens, Sora + Inter
 ├── CNAME                   # Custom domain config (aravindpradee.me)
 ├── robots.txt              # Crawl rules
 ├── sitemap.xml             # Sitemap for SEO
@@ -42,7 +43,11 @@ axon011.github.io/
 ## Key Design Decisions
 
 - **Single HTML file** - no framework, no build tools, no runtime dependencies
-- **Two fonts**: Inter (body) + JetBrains Mono (code snippets)
+- **Three fonts (2026-10-03)**: **Sora** for headings and big numbers (`h1.title`, `.sec-title`, `h3`, `.pc .pt`, `.fact .n`,
+  `.stat .big`, `a.mail`, `.stmt strong`), **Inter** for body and all text inside boxes, **JetBrains Mono** for metrics and tags.
+  Chosen by the user over Manrope (its small box text read cramped) and Outfit. Each has a metric-matched Arial fallback
+  (`Inter Fallback`, `Sora Fallback`) so the async font swap moves nothing; on a slow-network test the hero shift went from
+  0.159 (headline re-wrapped when Inter 800 arrived) to 0.003. Keep the type airy: the user does not want it "clustered"
 - **CSS variables** for theming - light/dark mode via `html.dark` (NOT `[data-theme]`),
   persisted in `localStorage` under key `theme`. A tiny boot script in `<head>` applies the
   class before first paint (no light flash for dark visitors); the page script also sets `html.light`
@@ -63,6 +68,11 @@ axon011.github.io/
     stuck hover states
   - `prefers-reduced-motion` means gentler, not zero: the block only kills `animation`
     and `transform`, never `opacity` or `display` (killing those hides content)
+  - Added 2026-10-03 from Emil's `review-animations` checklist (not installed; rules copied here):
+    animate `transform`/`opacity`, never `left`/`top`/`width`/`height` (the chat window's glide-aside uses WAAPI on
+    transform); never write a CSS custom property on `:root` or a big parent every frame (it restyles the whole subtree;
+    a root-level hue variable on scroll measured 5 -> 80 janky frames); exits faster than entrances (chat panel closes in
+    160-180ms, opens in 220-260ms); stagger groups 30-80ms
 
 ---
 
@@ -89,7 +99,7 @@ axon011.github.io/
 | Show all projects | `#show-all` under `#proj-grid` | Grid opens with six cards; the last three carry `.extra` + `hidden`. The button toggles them, observes them for the stagger reveal, and scrolls back to `#projects` on collapse. `.proj-grid>.card:last-child:nth-child(odd)` spans both columns so nine cards never leave an empty cell |
 | Skill map (Skills section) | `#skills .sm-panel`: `#sm-skills` chips grouped left, `#sm-projects` rows right, `#sm-links` SVG | Every chip from the project cards (33 tools, full lists, not the trimmed 4) linked to the projects that use it. Search (`#sm-q`) narrows chips; hover (fine pointers) or click pins a skill or project and draws curves from the skills column edge to the matching rows. One column (<=820px): no curves; tapping a skill opens an inline answer card (`.sm-answer`) under its group listing the projects, each scrolling to its row. Tools not on any card are answered by the search fallback and live in the toolkit below |
 | Toolkit | `#toolkit` under the skill map | The 21 tools the old Skills cards listed that no project card names, in four labelled rows. Tools the Experience section names (Go, MQTT, Kubernetes, GitHub Actions, GitLab CI/CD from Perinet bullet 1; RAG from bullet 3) get a green dot and open `#tk-note` quoting that bullet with the tool highlighted and a link to `#experience`. Search matches light the chip (`.hit`). If you edit those Perinet bullets, update `WORK_LINES` in the skill-map script |
-| Ask about me (2026-10-03) | `.ab-launch` (bottom-right) + `#ab-panel`, last `<script>` in `<body>` | Floating chat window answering recruiter questions from this page's own copy. No model, no network: BM25 over each intent's example questions (`BOT_INTENTS`, 37 intents), synonyms, typo repair, a tool lookup over the project chips + toolkit + Perinet bullets (`BOT_PROJECTS`/`BOT_TOOLKIT`/`BOT_LINES`), "did you mean" chips, an honest fallback with the email. Window: drag by the header (arrow keys on the grip), resize on desktop, minimise to the title bar; no backdrop, no scroll lock, `aria-modal=false`, Esc only from inside; turns see-through while the page scrolls; position + conversation in sessionStorage. Phones: a 56dvh floating window, tuned for cost (2026-10-03): solid `--surface-solid` panel with no backdrop blur, a lighter shadow, `contain:layout paint`, a 24px slide-up with no scale, `will-change` only while animating (`.ab-anim`), no auto-focus on coarse pointers (the keyboard appears only on tapping the input), and a `visualViewport` fit (`.kb`) that moves and shortens the window above the on-screen keyboard. The greeting is built two frames after open so the slide paints first. Answers naming 2+ projects get a button per project (`proj` ids in `BOT_PID`): the card is read from the DOM, "Show on page" opens Show all/Details, flashes the card and moves the window off it. **If you edit availability, Perinet bullets, education, languages, the FUSION card or contact copy, update the matching `BOT_INTENTS` answer too.** Project cards need no bot edit unless a title changes (`BOT_PID` names must equal the card titles; the engine throws if a project lacks an id). Visa answer comes from Aravind, not the page |
+| Ask about me (2026-10-03) | `.ab-launch` (bottom-right) + `#ab-panel`, last `<script>` in `<body>` | Floating chat window answering recruiter questions from this page's own copy. No model, no network: BM25 over each intent's example questions (`BOT_INTENTS`, 37 intents), synonyms, typo repair, a tool lookup over the project chips + toolkit + Perinet bullets (`BOT_PROJECTS`/`BOT_TOOLKIT`/`BOT_LINES`), "did you mean" chips, an honest fallback with the email. Window: drag by the header (arrow keys on the grip), resize on desktop, minimise to the title bar; no backdrop, no scroll lock, `aria-modal=false`, Esc only from inside; turns see-through while the page scrolls; position + conversation in sessionStorage. Phones: a 56dvh floating window, tuned for cost (2026-10-03): solid `--surface-solid` panel with no backdrop blur, a lighter shadow, `contain:layout paint`, a 24px slide-up with no scale, `will-change` only while animating (`.ab-anim`), no auto-focus on coarse pointers (the keyboard appears only on tapping the input), and a `visualViewport` fit (`.kb`) that moves and shortens the window above the on-screen keyboard. The greeting is built two frames after open so the slide paints first. Answers naming 2+ projects get a button per project (`proj` ids in `BOT_PID`): the card is read from the DOM, "Show on page" opens Show all/Details, flashes the card and moves the window off it. **If you edit availability, Perinet bullets, education, languages, the FUSION card or contact copy, update the matching `BOT_INTENTS` answer too.** Project cards need no bot edit unless a title changes (`BOT_PID` names must equal the card titles; the engine throws if a project lacks an id). Visa answer comes from Aravind, not the page. Long unbroken input wraps (`.ab-bub{overflow-wrap:anywhere}`, `.ab-log{overflow-x:hidden}`) |
 | Project pipelines | `.dgw` mount inside the Details panel of Multi-Agent, RAG Eval, News NLP, Resume Tailor | The approved prototype component: stage boxes, dashed animated links, travelling highlight (`st-live`/`ln-live`), Pause button. Stage data was verified against each GitHub repo on 2026-09-28. An open card with a diagram spans the full grid width (`:has()`), so the flow runs horizontally; a container query (`dg`, <=720px) switches it to vertical. Animates only while its Details panel is open |
 | Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card` (.99), `.fact`, `.exp-btn`, `.copy`, `.sk`, `.tkc`, deck buttons | `:active` scale, 140ms `--ease-out` |
 | Card hover lift | `#projects` cards | `translateY(var(--lift,-4px))` + gradient bar wipes in via `::before scaleX`; reduced-motion sets `--lift:0px` |
@@ -100,6 +110,14 @@ axon011.github.io/
 
 There is no typing effect, particle canvas, filter pills, contribution graph, or
 back-to-top button. Those existed in an older version of the site and were removed.
+
+**Airy type (2026-10-03).** `h1.title` is Sora 600, `-.018em`, line-height 1.08, `max-width:13.5ch`; `.sec-title` Sora 600,
+`-.012em`, 1.15; card/deck/pub titles 650, `-.005em`; lede/stmt/pitch line-height 1.7. Boxes (`.card,.pc,.glass,.fact,.mini,
+.cc,.ab-panel,.tk-panel,.sm-panel,#scrub-tip`) carry `letter-spacing:.012em`, which inherits into box text; paragraphs in
+boxes get line-height 1.68; chips `.02em`; untracked mono labels `.02em` while tracked caps (`.ftag`, `.tk`, `.k`) keep
+theirs; `.fact .l`/`.stat .l` are 15px. At <=400px the 2x2 `.fact` tiles drop the tracking (they overflowed at 320) and
+at <=380px the deck `.pc .pm` is 17px so "est. 48% less energy" fits. These rules live in one block,
+"type: Sora headings, airy spacing, roomier boxes", just before the hover block.
 
 **Type scale (2026-09-27 redesign): seven steps, nothing in between.** `--t-xs:12px`, `--t-sm:14px`, `--t-md:17px` (body),
 `--t-lg:20px`, `--t-xl:clamp(21px,2.3vw,25px)` (lede, About statements), `--t-2xl:clamp(30px,3.6vw,42px)` (section titles),
@@ -162,6 +180,14 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 - **Education**: M.Sc. AI @ BTU Cottbus, B.Sc. CS @ BVM Holy Cross
 
 ---
+
+## Phone baseline (2026-10-03)
+
+`html` has `-webkit-tap-highlight-color:transparent` and `text-size-adjust:100%`; controls have `touch-action:manipulation`
+and buttons are not text-selectable. Two `theme-color` metas (light `#f6f7fb`, dark `#0a0b10`) follow the OS, and the
+theme toggle rewrites both to the chosen theme. Deliberately NOT added: `viewport-fit=cover` (content would sit under the
+notch in landscape without safe-area padding on `.wrap`/nav) and `interactive-widget=resizes-content` (it would defeat the
+chat window's `visualViewport` keyboard fit).
 
 ## Known Issues (2026-08-14)
 
