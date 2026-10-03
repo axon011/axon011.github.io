@@ -182,6 +182,29 @@ All content is based on the LaTeX resume (moderncv format). Key details:
 
 ---
 
+## Load performance (2026-10-03)
+
+Every `section.block` has `content-visibility:auto`: below-the-fold sections skip layout and paint until
+they near the viewport. Measured on a phone-like load (390px, CPU 4x slower, slow 4G, 5-run medians, two
+sets): longest task 473-579ms -> 180-195ms, blocking from start 532-715ms -> 326-346ms, LCP 2.4-2.6s ->
+1.6-1.7s, layout 1.6-1.8s -> 1.0s. What that requires, and must stay true:
+
+- **Paint containment clips a section to its box.** So each section spans the viewport
+  (`margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%)`) and the full-bleed bands and card
+  shadows stay visible. Content positions are unchanged (screen-by-screen pixel diff: sub-pixel text only).
+- **`contain-intrinsic-size` sizes the CONTENT box.** The per-section estimates are measured heights minus
+  the section's vertical padding, in tiers for >1100, <=1100, <=980, <=820, <=680 and <=560px. Re-measure if a
+  section's content changes a lot. Counting the padding twice made menu jumps overshoot by one padding per
+  unrendered section.
+- **Jumps must call `renderAll()`.** It adds `html.cv-all` for 1.8s so every section renders while a scroll
+  target is computed. In-page `a[href^="#"]` clicks do this automatically (capture-phase listener). The deck
+  card (`goSection`), the chat's "Show on page" (`revealCard`) and the skill rows call it explicitly. Any new
+  programmatic `scrollIntoView` to something below the fold must call it too.
+- **Full-page screenshots** (Playwright `fullPage`) leave far sections blank, because they're skipped. That's
+  a capture artifact. Compare screen by screen instead.
+- **Dead code removed:** the About blur/focus reveal (`.fx`, `fxMeasure`). Its markup went 2026-09-28, but its
+  script still forced layout on load and on every font load.
+
 ## Phone baseline (2026-10-03)
 
 `html` has `-webkit-tap-highlight-color:transparent` and `text-size-adjust:100%`; controls have `touch-action:manipulation`
