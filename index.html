@@ -955,6 +955,41 @@ html.st-on section.block,html.st-on .hero{backface-visibility:hidden}
 /* the chat button steps out of the way while the page scrolls down, and comes back when it stops */
 .ab-launch.ab-away{opacity:0;transform:translateY(14px) scale(.92);pointer-events:none}
 
+/* ================= load performance (2026-10-03) =================
+   Sections below the screen skip layout and paint until they come near it. Measured on a phone-like
+   load (390px, CPU 4x slower, slow 4G): blocking time 555ms -> ~170ms, LCP 2.4s -> ~1.5s. That
+   containment would clip anything a section draws outside its own box (the full-bleed bands, card
+   shadows), so each section's box spans the viewport while its content stays exactly where it was.
+   The intrinsic sizes are measured section heights MINUS the section's own vertical padding (they size
+   the content box only); "auto" keeps the real size once one has rendered, so anchor jumps land true. */
+section.block{content-visibility:auto;contain-intrinsic-size:auto 900px;
+  margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%)}
+#about{contain-intrinsic-size:auto 780px}#experience{contain-intrinsic-size:auto 440px}#publications{contain-intrinsic-size:auto 994px}
+#projects{contain-intrinsic-size:auto 1300px}#skills{contain-intrinsic-size:auto 1494px}#education{contain-intrinsic-size:auto 350px}#contact{contain-intrinsic-size:auto 407px}
+/* content heights measured at 1024, 880, 768 and 600px (the layouts change at 1100, 980, 820 and 680) */
+/* while a jump is computed, every section renders, so the scroll lands on true heights, not estimates */
+html.cv-all section.block{content-visibility:visible}
+@media (max-width:1100px){
+  #about{contain-intrinsic-size:auto 790px}#experience{contain-intrinsic-size:auto 461px}#publications{contain-intrinsic-size:auto 1000px}
+  #projects{contain-intrinsic-size:auto 1376px}#skills{contain-intrinsic-size:auto 1609px}#education{contain-intrinsic-size:auto 344px}#contact{contain-intrinsic-size:auto 399px}
+}
+@media (max-width:980px){
+  #about{contain-intrinsic-size:auto 851px}#experience{contain-intrinsic-size:auto 482px}#publications{contain-intrinsic-size:auto 1063px}
+  #projects{contain-intrinsic-size:auto 1640px}#skills{contain-intrinsic-size:auto 1887px}#education{contain-intrinsic-size:auto 338px}#contact{contain-intrinsic-size:auto 385px}
+}
+@media (max-width:820px){
+  #about{contain-intrinsic-size:auto 920px}#experience{contain-intrinsic-size:auto 535px}#publications{contain-intrinsic-size:auto 1113px}
+  #projects{contain-intrinsic-size:auto 1790px}#skills{contain-intrinsic-size:auto 1347px}#education{contain-intrinsic-size:auto 400px}#contact{contain-intrinsic-size:auto 377px}
+}
+@media (max-width:680px){
+  #about{contain-intrinsic-size:auto 1049px}#experience{contain-intrinsic-size:auto 574px}#publications{contain-intrinsic-size:auto 1553px}
+  #projects{contain-intrinsic-size:auto 2280px}#skills{contain-intrinsic-size:auto 1568px}#education{contain-intrinsic-size:auto 569px}#contact{contain-intrinsic-size:auto 549px}
+}
+@media (max-width:560px){
+  #about{contain-intrinsic-size:auto 1304px}#experience{contain-intrinsic-size:auto 683px}#publications{contain-intrinsic-size:auto 1972px}
+  #projects{contain-intrinsic-size:auto 3080px}#skills{contain-intrinsic-size:auto 1907px}#education{contain-intrinsic-size:auto 661px}#contact{contain-intrinsic-size:auto 639px}
+}
+
 /* ================= small fixes (2026-10-03) ================= */
 /* long unbroken input (a URL, a pasted string) wraps inside its bubble instead of widening the chat */
 .ab-bub{overflow-wrap:anywhere}
@@ -1002,7 +1037,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation:none!important}
   .reveal,html.js .reveal:not(.in){transform:none!important}
-  .card,.fx{transform:none!important}
+  .card{transform:none!important}
   :root{--lift:0px}
   html{scroll-behavior:auto}
   .ab-flash{animation:none;outline:3px solid var(--accent);outline-offset:3px}
@@ -1388,7 +1423,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   document.querySelectorAll('.exp-btn').forEach(function(b){
     b.addEventListener('click',function(e){ e.stopPropagation();
       b.setAttribute('aria-expanded', b.getAttribute('aria-expanded')==='true' ? 'false' : 'true');
-      setTimeout(function(){ measure(); fxMeasure(); },300); });
+      setTimeout(function(){ measure(); },300); });
   });
 
   // show all projects: the grid opens with six, the last three wait behind one button
@@ -1400,7 +1435,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     showBtn.setAttribute('aria-expanded',open);
     showT.textContent=open?'Show fewer projects':'Show all 10 projects';
     if(!open) document.getElementById('projects').scrollIntoView({behavior:reduced?'auto':'smooth'});
-    setTimeout(function(){ measure(); fxMeasure(); },60);
+    setTimeout(function(){ measure(); },60);
   });
 
   // copy email
@@ -1459,54 +1494,9 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     var allClocks=document.querySelectorAll('#berlin-clock,.js-clock'); function tickClock(){ var v=fmt.format(new Date()); allClocks.forEach(function(c){ c.textContent=v; }); } tickClock(); setInterval(tickClock,1000);
   }
 
-  /* focus reveal on the About statements: each visual line below the reading line is soft and
-     faded, and sharpens as it rises to it. Lines above stay sharp. Off under reduced motion. */
-  var fxBlocks=[].slice.call(document.querySelectorAll('.fx')), fxLines=[], fxInfo=[], fxQ=false;
-  function wrapWords(node){
-    [].slice.call(node.childNodes).forEach(function(n){
-      if(n.nodeType===3){ var frag=document.createDocumentFragment();
-        n.textContent.split(/(\s+)/).forEach(function(p){ if(!p) return;
-          if(/^\s+$/.test(p)){ frag.appendChild(document.createTextNode(p)); return; }
-          var s=document.createElement('span'); s.className='w'; s.textContent=p; frag.appendChild(s); });
-        n.parentNode.replaceChild(frag,n);
-      } else if(n.nodeType===1) wrapWords(n);
-    });
-  }
-  function fxMeasure(){
-    if(reduced) return;
-    fxLines=[]; fxInfo=[]; var sy=window.scrollY;
-    fxBlocks.forEach(function(b){
-      var prev=b.style.transform; b.style.transform='none';
-      var br=b.getBoundingClientRect(), top=br.top+sy, map={};
-      fxInfo.push({el:b, top:top});
-      b.querySelectorAll('.w').forEach(function(w){ var key=Math.round(w.offsetTop);
-        (map[key]=map[key]||{y:top+(w.offsetTop-b.offsetTop)+w.offsetHeight/2, words:[], last:null}).words.push(w); });
-      Object.keys(map).forEach(function(k){ fxLines.push(map[k]); });
-      b.style.transform=prev;
-    });
-    fxFrame();
-  }
-  function fxFrame(){
-    fxQ=false; var vh=window.innerHeight, focus=window.scrollY+vh*0.62;
-    fxLines.forEach(function(l){
-      var t=Math.max(0,Math.min(1,((l.y-focus)/vh)/0.3));
-      var blur=Math.round(t*6*4)/4, op=Math.round((1-t*0.72)*100)/100, key=blur+'|'+op;
-      if(key===l.last) return; l.last=key;
-      l.words.forEach(function(w){ w.style.filter=blur?'blur('+blur+'px)':''; w.style.opacity=op<1?op:''; });
-    });
-    fxInfo.forEach(function(bi){ var t=Math.max(0,Math.min(1,((bi.top-focus)/vh)/0.32));
-      bi.el.style.transform=t?'scale('+(1-t*0.04).toFixed(4)+')':''; });
-  }
-  if(!reduced){
-    fxBlocks.forEach(wrapWords);
-    addEventListener('scroll',function(){ if(!fxQ){ fxQ=true; requestAnimationFrame(fxFrame); } },{passive:true});
-    var fxRt; addEventListener('resize',function(){ clearTimeout(fxRt); fxRt=setTimeout(fxMeasure,120); });
-    fxMeasure();
-  }
 
-  function ready(){ root.classList.add('ready'); measure(); prog(); startClock(); fxMeasure(); }
+  function ready(){ root.classList.add('ready'); measure(); prog(); startClock(); }
   if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
-  if(document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ fxMeasure(); });
 
   // preview-only: switch the hero between the three options
   var heroes={b:document.getElementById('hero-b')};
@@ -1575,6 +1565,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     var all=document.getElementById('show-all');
     if(target.hidden && all && all.getAttribute('aria-expanded')!=='true') all.click();
     setTimeout(function(){
+      if(window.renderAll) renderAll();
       target.scrollIntoView({behavior:reduced?'auto':'smooth',block:target.offsetHeight>innerHeight*.8?'start':'center'});
       target.style.setProperty('--flash-h',d.ph);                     // flash in the deck card's own hue, without touching the card's --ph
       target.classList.remove('ab-flash'); void target.offsetWidth; target.classList.add('ab-flash');   // .ab-flash is shared with the chat bot
@@ -1724,7 +1715,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     var ul=el('ul',{},card);
     S[a.id].forEach(function(id){ var p=byId[id], li=el('li',{},ul), b=el('button',{type:'button',style:'--ph:'+p.ph},li);
       el('i',{},b); b.appendChild(document.createTextNode(p.n)); el('span',{text:'see ↓'},b);
-      b.addEventListener('click',function(){ var row=prEl[id]; openProjects(); row.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
+      b.addEventListener('click',function(){ var row=prEl[id]; openProjects(); if(window.renderAll) renderAll(); row.scrollIntoView({behavior:reduced?'auto':'smooth',block:'center'});
         row.classList.remove('flash'); void row.offsetWidth; row.classList.add('flash'); }); });
     group.appendChild(card);
     // bring the whole card on screen, moving no further than needed
@@ -1878,6 +1869,13 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   function tick(){ if(!q){ q=true; requestAnimationFrame(frame); } }
   addEventListener('scroll',tick,{passive:true}); addEventListener('resize',tick); frame();
 })();
+/* sections below the screen skip rendering (content-visibility) and stand in with estimated heights; before any
+   jump, render them all for a moment so the target is computed from true heights, then let them skip again
+   (their real sizes are remembered by contain-intrinsic-size:auto, so nothing moves afterwards) */
+window.renderAll=function(){ var r=document.documentElement; r.classList.add('cv-all'); void r.offsetHeight;
+  clearTimeout(window.renderAll.t); window.renderAll.t=setTimeout(function(){ r.classList.remove('cv-all'); },1800); };
+document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]');
+  if(a&&a.getAttribute('href').length>1) window.renderAll(); },true);
 </script>
 <script>
 /* ================= Ask about me: floating, intent-matched helper. No model, no network. =================
@@ -2450,6 +2448,7 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     if (btn && btn.getAttribute('aria-expanded') !== 'true') btn.click();               // open its Details
     if (phone.matches) close();   // phones: step aside to the round button; reopening restores the conversation
     setTimeout(function(){
+      if (window.renderAll) renderAll();
       card.scrollIntoView({behavior: reduce ? 'auto' : 'smooth', block: phone.matches ? 'start' : 'center'});
       card.classList.remove('ab-flash'); void card.offsetWidth; card.classList.add('ab-flash');
       setTimeout(function(){ card.classList.remove('ab-flash'); }, 1900);
