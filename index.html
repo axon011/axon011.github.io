@@ -172,8 +172,6 @@ html.ready body::after{animation:aur-b 124s ease-in-out infinite alternate}
   background:color-mix(in srgb,var(--bg) 78%,transparent);
   -webkit-backdrop-filter:blur(16px) saturate(150%);backdrop-filter:blur(16px) saturate(150%);
   border-bottom:1px solid var(--line)}
-.nav::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2px;transform-origin:0 50%;
-  transform:scaleX(var(--p,0));background:linear-gradient(90deg,var(--g1),var(--g2),var(--g3))}
 .nav-in{max-width:var(--maxw);margin:0 auto;padding:12px 28px;display:flex;align-items:center;gap:18px}
 .brand{display:flex;align-items:center;gap:10px;font-weight:700;font-size:15px;letter-spacing:-.01em;white-space:nowrap}
 .brand .dot{width:9px;height:9px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px var(--accent-wash)}
@@ -1044,6 +1042,57 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   .ab-panel{transform:none!important}
   .ab-log{scroll-behavior:auto}
 }
+/* ================= content motion (2026-10-05): chat trace, section-aware chat, card flight, FUSION tokens, section map ================= */
+/* chat: under an answer, "matched <id> · 0.92" folds open to the three closest topics and their BM25 scores */
+.ab-why{display:inline-flex;align-items:center;gap:5px;padding:0;border:0;background:none;font:inherit;color:inherit;letter-spacing:inherit;text-align:left;cursor:pointer}
+.ab-why svg{width:9px;height:9px;flex:none;transition:transform 200ms var(--ease-out)}
+.ab-why[aria-expanded="true"] svg{transform:rotate(90deg)}
+.ab-why:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+.ab-trace{margin-top:7px;padding:8px 11px 9px;border:1px solid var(--line);border-radius:var(--r-md);background:var(--surface-solid);display:grid;gap:5px;letter-spacing:0}
+.ab-trace[hidden]{display:none}
+.ab-tl{font:500 10.5px/1.2 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em;color:var(--faint)}
+.ab-tr{display:grid;grid-template-columns:minmax(0,1fr) 32% 2.6em;gap:9px;align-items:center;font:500 12px/1.3 Inter,sans-serif;letter-spacing:.01em;color:var(--muted)}
+.ab-tr .t{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ab-tr .n{font:500 10.5px/1 "JetBrains Mono",ui-monospace,monospace;text-align:right;color:var(--faint)}
+.ab-tr .bar{position:relative;height:4px;border-radius:2px;background:color-mix(in srgb,var(--line) 70%,transparent);overflow:hidden}
+.ab-tr .bar i{position:absolute;left:0;top:0;bottom:0;border-radius:2px;background:var(--line-strong);transform-origin:0 50%}
+.ab-trace.grow .bar i{animation:ab-grow 420ms var(--ease-out) backwards}
+.ab-tr.win .t{color:var(--ink);font-weight:600}
+.ab-tr.win .bar i{background:var(--accent)}
+@keyframes ab-grow{from{transform:scaleX(0)}}
+@media (pointer:coarse){.ab-why{min-height:30px}}
+/* chat: the launcher's label follows the section you're reading (cross-fade, exit faster than entrance) */
+.ab-lbl{display:inline-grid}
+.ab-lbl>span{grid-area:1/1;white-space:nowrap;transition:opacity 180ms var(--ease-out)}
+.ab-lbl>span.pre{opacity:0;transition:none}
+.ab-lbl>span.out{opacity:0;transition-duration:120ms}
+/* hero: the deck card's copy that flies to its section */
+.pc-ghost{will-change:transform,opacity}
+/* publications: FUSION as moving tokens (HTML boxes, so transform/opacity stay on the compositor) */
+.fz{display:grid;justify-items:start;gap:8px;margin:2px 0 4px;overflow:hidden}
+.fz-stage{position:relative;width:100%;contain:layout paint}
+.fz-stage .fz-main,.fz-stage .fz-side{position:absolute;inset:0}
+.fz-stage .fz-t{position:absolute;border-radius:2.5px}
+.fz-stage .fz-l{position:absolute;font:500 11px/14px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em;color:var(--muted);white-space:nowrap}
+.fz-stage .fz-lo{position:absolute;left:0;top:0;color:var(--accent)}
+.fz-stage .fz-chk{position:absolute;display:inline-flex;align-items:center;gap:4px;height:12px;font:500 10px/12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em;color:var(--faint);white-space:nowrap;transform-origin:0 50%}
+.fz-stage .fz-chk path{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.fz .fz-replay{height:30px;padding:0 12px;font-size:13px}
+/* nav: the progress bar is a section map, one segment per section (fixed, outside the nav) */
+.chap{position:fixed;left:0;right:0;top:0;height:2px;display:flex;gap:3px;z-index:51;pointer-events:none}
+.chap-s{position:relative;flex:1;min-width:0;height:2px;margin:0;padding:0;border:0;border-radius:0;background:var(--line);cursor:pointer;pointer-events:auto}
+.chap-s::before{content:"";position:absolute;left:0;right:0;top:-7px;bottom:-4px}
+.chap-s i{position:absolute;inset:0;background:linear-gradient(90deg,var(--g1),var(--g2));transform-origin:0 50%;transform:scaleX(0);will-change:transform}
+.chap.sd .chap-s i{animation-name:chap-fill;animation-duration:auto;animation-timing-function:linear;animation-fill-mode:both;animation-timeline:scroll(root block)}
+@keyframes chap-fill{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+.chap-s .tip{position:absolute;top:calc(100% + 9px);left:50%;translate:-50% 0;padding:5px 8px;border-radius:6px;border:1px solid var(--line);
+  background:var(--surface-solid);box-shadow:var(--shadow);color:var(--ink);font:500 11px/1 "JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em;
+  white-space:nowrap;pointer-events:none;opacity:0;transition:opacity 120ms var(--ease-out)}
+.chap-s:first-child .tip{left:8px;translate:0 0}
+.chap-s:last-child .tip{left:auto;right:8px;translate:0 0}
+@media (pointer:coarse){.chap-s{pointer-events:none}}
+@media (hover:hover) and (pointer:fine){.chap-s:hover .tip{opacity:1;transition-duration:180ms}}
+@media (prefers-reduced-motion:reduce){.ab-trace.grow .bar i{animation:none}.ab-lbl>span{transition:none}}
 </style>
 </head>
 <body>
@@ -1407,12 +1456,36 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   document.querySelectorAll('.nav-links a').forEach(function(a){a.addEventListener('click',function(){setMenu(false);});});
   document.addEventListener('keydown',function(e){if(e.key==='Escape')setMenu(false);});
 
-  // scroll progress, with the scroll height cached
-  var ticking=false, smax=0;
-  function measure(){ var h=document.documentElement; smax=h.scrollHeight-h.clientHeight; }
-  function prog(){ if(!smax)measure(); nav.style.setProperty('--p',smax>0?(scrollY/smax).toFixed(4):0); ticking=false; }
-  addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(prog);}},{passive:true});
-  addEventListener('resize',function(){measure();prog();},{passive:true});
+  // section map (2026-10-05): the progress bar is one short segment per section, each filling as you read it. It is NOT
+  // inside the nav: writing a property on the nav every scroll frame restyled the nav's whole subtree. Where the browser has
+  // scroll-driven animations each segment is a CSS animation on the page's scroll timeline (no script per frame); the fill
+  // of section i is (y + vh*y/smax - top_i) / height_i, which is linear in scrollY, so each range is [top_i/k, (top_i+h_i)/k].
+  var chap=document.createElement('div'), CHN={top:'Intro',about:'About',experience:'Experience',skills:'Skills',publications:'Publications',projects:'Projects',education:'Education',contact:'Contact'};
+  var chSecs=[document.querySelector('.hero')].concat([].slice.call(document.querySelectorAll('section.block'))).filter(Boolean);
+  var SD=!!(window.CSS&&CSS.supports&&CSS.supports('animation-timeline: scroll()')&&CSS.supports('animation-range: 0px 1px'));
+  var tops=[], hs=[], smax=0, ticking=false, chRaf=0;
+  chap.className='chap'+(SD?' sd':''); chap.setAttribute('aria-hidden','true');   // a mouse shortcut; the nav links are the accessible route
+  var segs=chSecs.map(function(sec){ var k=sec.classList.contains('hero')?'top':sec.id, b=document.createElement('button');
+    b.type='button'; b.tabIndex=-1; b.className='chap-s'; b.innerHTML='<i></i><span class="tip">'+(CHN[k]||k)+'</span>';
+    b.addEventListener('click',function(){ if(window.renderAll) renderAll();
+      if(k==='top') scrollTo({top:0,behavior:reduced?'auto':'smooth'}); else sec.scrollIntoView({behavior:reduced?'auto':'smooth',block:'start'}); });
+    chap.appendChild(b); return b; });
+  document.body.appendChild(chap);
+  function absTop(e){ var y=0; while(e){ y+=e.offsetTop; e=e.offsetParent; } return y; }   // offsetTop ignores the scroll transition's transforms
+  function measure(){ chRaf=0; var d=document.documentElement; smax=d.scrollHeight-d.clientHeight;
+    tops=chSecs.map(absTop); hs=chSecs.map(function(x){ return x.offsetHeight; });
+    chap.style.top=(nav.getBoundingClientRect().bottom-1).toFixed(1)+'px';   // the sticky nav never moves, so this is read only here
+    if(SD){ var k=smax>0?1+innerHeight/smax:1;
+      segs.forEach(function(b,i){ var a=tops[i]/k, z=(tops[i]+hs[i])/k; b.firstChild.style.animationRange=a.toFixed(1)+'px '+Math.max(a+1,z).toFixed(1)+'px'; }); }
+    else prog(); }
+  function prog(){ ticking=false; var y=scrollY, ref=y+innerHeight*(smax>0?Math.min(1,y/smax):0);
+    segs.forEach(function(b,i){ var f=hs[i]>0?Math.max(0,Math.min(1,(ref-tops[i])/hs[i])):0; f=Math.round(f*1000)/1000;
+      if(b._p!==f){ b._p=f; b.firstChild.style.transform='scaleX('+f+')'; } }); }
+  function remeasure(){ if(!chRaf) chRaf=requestAnimationFrame(measure); }
+  if(!SD) addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(prog);}},{passive:true});
+  addEventListener('resize',remeasure,{passive:true});
+  if(window.ResizeObserver) new ResizeObserver(remeasure).observe(document.body);   // sections change height as they first render
+  if(document.fonts&&document.fonts.ready) document.fonts.ready.then(remeasure);
 
   // card spotlight, fine pointers only
   function bindSpot(c){ c.addEventListener('pointermove',function(e){var r=c.getBoundingClientRect();
@@ -1495,7 +1568,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   }
 
 
-  function ready(){ root.classList.add('ready'); measure(); prog(); startClock(); }
+  function ready(){ root.classList.add('ready'); measure(); startClock(); }
   if(document.readyState==='complete') ready(); else addEventListener('load',ready,{once:true});
 
   // preview-only: switch the hero between the three options
@@ -1564,14 +1637,39 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     if(!target) target=document.getElementById('projects');
     var all=document.getElementById('show-all');
     if(target.hidden && all && all.getAttribute('aria-expanded')!=='true') all.click();
-    setTimeout(function(){
-      if(window.renderAll) renderAll();
-      target.scrollIntoView({behavior:reduced?'auto':'smooth',block:target.offsetHeight>innerHeight*.8?'start':'center'});
+    var card=null; slots.forEach(function(c){ if(c.getAttribute('data-pos')==='0') card=c; });
+    function flash(){
       target.style.setProperty('--flash-h',d.ph);                     // flash in the deck card's own hue, without touching the card's --ph
       target.classList.remove('ab-flash'); void target.offsetWidth; target.classList.add('ab-flash');   // .ab-flash is shared with the chat bot
       setTimeout(function(){ target.classList.remove('ab-flash'); },1900);
+    }
+    setTimeout(function(){
+      if(window.renderAll) renderAll();
+      var block=target.offsetHeight>innerHeight*.8?'start':'center';
+      if(reduced||!card||!card.animate||flying){ target.scrollIntoView({behavior:reduced?'auto':'smooth',block:block}); flash(); return; }
+      // the card flies (2026-10-05): a copy is pinned where the card is, the page jumps, and the copy travels to the
+      // target's place on screen, fading as the target's flash takes over
+      flying=true;
+      var from=card.getBoundingClientRect(), g=card.cloneNode(true);
+      g.removeAttribute('tabindex'); g.removeAttribute('role'); g.removeAttribute('data-pos'); g.setAttribute('aria-hidden','true');
+      [].forEach.call(g.querySelectorAll('[id]'),function(x){ x.removeAttribute('id'); });
+      g.classList.remove('swapping'); g.classList.add('pc-ghost');
+      g.style.cssText+=';position:fixed;left:'+from.left+'px;top:'+from.top+'px;width:'+from.width+'px;height:'+from.height+'px;margin:0;'+
+        'transform:none;transition:none;z-index:65;pointer-events:none;transform-origin:0 0';
+      document.body.appendChild(g);
+      target.scrollIntoView({behavior:'instant',block:block});
+      requestAnimationFrame(function(){ requestAnimationFrame(function(){   // after the scroll transition has placed the section
+        var to=target.getBoundingClientRect(), dur=matchMedia('(max-width:560px)').matches?380:520;
+        var tf='translate('+(to.left-from.left).toFixed(1)+'px,'+(to.top-from.top).toFixed(1)+'px) scale('+(to.width/from.width).toFixed(4)+','+(to.height/from.height).toFixed(4)+')';
+        var a=g.animate([{transform:'none'},{transform:tf}],{duration:dur,easing:'cubic-bezier(.23,1,.32,1)',fill:'forwards'});
+        g.animate([{opacity:1},{opacity:1,offset:.7},{opacity:0}],{duration:dur,fill:'forwards'});
+        var body=g.querySelector('.pcb'); if(body) body.animate([{opacity:1},{opacity:0}],{duration:dur*.55,easing:'ease-in',fill:'forwards'});   // the text fades first, so it never stretches
+        setTimeout(flash,dur*.7);
+        a.onfinish=function(){ g.remove(); flying=false; };
+      }); });
     },40);
   }
+  var flying=false;
   function restartStack(){ clearInterval(pTimer); size(); var play=!reduced && !heroes.b.hidden; stackWrap.classList.toggle('stack-playing',play); paintCount();
     if(play) pTimer=setInterval(function(){ step(1); },4200); }
   function holdStack(){ clearInterval(pTimer); stackWrap.classList.remove('stack-playing'); paintCount(); }
@@ -1876,6 +1974,83 @@ window.renderAll=function(){ var r=document.documentElement; r.classList.add('cv
   clearTimeout(window.renderAll.t); window.renderAll.t=setTimeout(function(){ r.classList.remove('cv-all'); },1800); };
 document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.closest('a[href^="#"]');
   if(a&&a.getAttribute('href').length>1) window.renderAll(); },true);
+</script>
+<script>
+/* ================= FUSION as moving tokens (2026-10-05) =================
+   A 6x6 token grid plays the paper's own order once, when it is half in view: similar tokens merge (a little at each of
+   three steps), a second, smaller image exits early once confident, then about a third of what is left is pruned.
+   No numbers. Plain HTML boxes, not SVG: WAAPI transforms on SVG forced a page layout every frame. */
+(function(){
+  var how=document.querySelector('#publications .pub-how'); if(!how||!how.animate) return;
+  var reduce=matchMedia('(prefers-reduced-motion: reduce)').matches, EASE='cubic-bezier(.23,1,.32,1)';
+  function h(tag,cls,html){ var e=document.createElement(tag); if(cls) e.className=cls; if(html!=null) e.innerHTML=html; return e; }
+  function clamp(v,a,b){ return v<a?a:v>b?b:v; }
+  function rnd(seed){ return function(){ seed=seed+0x6D2B79F5|0; var t=Math.imul(seed^seed>>>15,1|seed); t=t+Math.imul(t^t>>>7,61|t)^t; return ((t^t>>>14)>>>0)/4294967296; }; }
+  function shuffle(a,r){ a=a.slice(); for(var i=a.length-1;i>0;i--){ var j=Math.floor(r()*(i+1)), t=a[i]; a[i]=a[j]; a[j]=t; } return a; }
+  var box=h('div','fz'), stage=null, played=false, anims=[], L=null, rsT=0, lastW=0, T=3200, COLS=['var(--g1)','var(--g2)','var(--g3)'];
+  function px(e,x,y,w,hh){ e.style.left=x+'px'; e.style.top=y+'px'; if(w!=null){ e.style.width=w+'px'; e.style.height=hh+'px'; } return e; }
+  function tint(c,a){ return 'color-mix(in srgb,'+c+' '+Math.round(a*100)+'%,transparent)'; }
+  function draw(){
+    var W=Math.max(260,Math.round(box.clientWidth)); lastW=W;
+    var col=W/3, cell=clamp(Math.floor((col-40)/6)-3,7,10), gap=3, G=6*cell+5*gap, s=Math.max(6,Math.round(cell*.8));
+    var y0=26, yl=y0+G+9, H=yl+s+4, X=[2,Math.round(col)+2,Math.round(2*col)+2];
+    if(stage) stage.remove();
+    stage=h('div','fz-stage'); stage.setAttribute('role','img'); stage.setAttribute('aria-label','Tokens merge, one image exits early, then low-importance tokens are pruned');
+    stage.style.height=H+'px';
+    var labels=[['01','merge'],['02','exit early'],['03','prune']].map(function(l,i){
+      var w=px(h('span','fz-l'),X[i],0); w.textContent=l[0]+' '+l[1];
+      var on=h('span','fz-lo'); on.textContent=w.textContent; on.style.opacity='0'; w.appendChild(on); stage.appendChild(w); return on; });
+    var main=h('div','fz-main'), side=h('div','fz-side'), r=rnd(48), toks=[];
+    for(var row=0;row<6;row++) for(var p=0;p<3;p++){ var c=COLS[Math.floor(r()*3)];
+      for(var q=0;q<2;q++){ var t=px(h('i','fz-t'),X[0]+(2*p+q)*(cell+gap),y0+row*(cell+gap),cell,cell); t.style.background=tint(c,.6+r()*.2); main.appendChild(t); toks.push(t); } }
+    var pairs=shuffle(Array.from({length:18},function(_,i){ return i; }),r).slice(0,12);     // 12 of 18 pairs merge, 4 at each of three steps
+    var merged={}; pairs.forEach(function(i){ merged[2*i+1]=1; });
+    var left=toks.map(function(_,i){ return i; }).filter(function(i){ return !merged[i]; });
+    var pruned=shuffle(left,r).slice(0,Math.round(left.length/3));                            // about a third of what is left
+    for(var i=0;i<4;i++){ var t2=px(h('i','fz-t'),X[0]+i*(s+3),yl,s,s); t2.style.background=tint(COLS[i%3],.72); side.appendChild(t2); }
+    var check=px(h('span','fz-chk','<svg width="11" height="9" viewBox="0 0 11 9" aria-hidden="true"><path d="M1.2 4.6l3 3.1 5.6-6.4"/></svg>confident'),X[0]+4*(s+3)+3,yl+s/2-6);
+    check.style.opacity='0'; side.appendChild(check);
+    stage.appendChild(main); stage.appendChild(side);
+    L={X:X,cell:cell,gap:gap,toks:toks,pairs:pairs,pruned:pruned,main:main,side:side,check:check,labels:labels};
+    box.insertBefore(stage,box.firstChild);
+  }
+  function clear(){ anims.forEach(function(a){ a.cancel(); }); anims=[]; }
+  function A(e,k,o){ var a=e.animate(k,o); anims.push(a); return a; }
+  function endState(){ clear(); var dx=L.cell+L.gap;
+    L.pairs.forEach(function(i){ var t=L.toks[2*i+1]; t.style.transform='translateX('+(-dx)+'px)'; t.style.opacity='0'; });
+    L.pruned.forEach(function(i){ var t=L.toks[i]; t.style.transform='scale(.6)'; t.style.opacity='.15'; });
+    L.main.style.transform='translateX('+(L.X[2]-L.X[0])+'px)'; L.side.style.transform='translateX('+(L.X[1]-L.X[0])+'px)';
+    L.check.style.opacity='1'; L.labels.forEach(function(l,i){ l.style.opacity=i===2?'1':'0'; });
+    box.dataset.state='done'; }
+  function play(){
+    clear(); played=true; box.dataset.state='playing'; var dx=L.cell+L.gap, f=function(ms){ return ms/T; };
+    L.pairs.forEach(function(pi,k){ var st=Math.floor(k/4), at=80+st*340, t=L.toks[2*pi+1], keep=L.toks[2*pi];   // merge, a little at each of three steps
+      A(t,[{transform:'translateX(0px)',opacity:1},{transform:'translateX('+(-dx)+'px)',opacity:0}],{duration:300,delay:at+(k%4)*30,easing:EASE,fill:'both'});
+      A(keep,[{transform:'scale(1)'},{transform:'scale(1.14)',offset:.5},{transform:'scale(1)'}],{duration:300,delay:at+(k%4)*30+120,easing:EASE}); });
+    var X1=L.X[1]-L.X[0], X2=L.X[2]-L.X[0];   // the small image stops at "exit early", the main one continues
+    A(L.main,[{transform:'translateX(0px)',offset:0},{transform:'translateX(0px)',offset:f(1100),easing:EASE},{transform:'translateX('+X1+'px)',offset:f(1500)},
+      {transform:'translateX('+X1+'px)',offset:f(1880),easing:EASE},{transform:'translateX('+X2+'px)',offset:f(2300)},{transform:'translateX('+X2+'px)',offset:1}],{duration:T,fill:'both'});
+    A(L.side,[{transform:'translateX(0px)',offset:0},{transform:'translateX(0px)',offset:f(1100),easing:EASE},{transform:'translateX('+X1+'px)',offset:f(1500)},
+      {transform:'translateX('+X1+'px)',offset:1}],{duration:T,fill:'both'});
+    A(L.check,[{opacity:0,transform:'scale(.6)'},{opacity:1,transform:'scale(1)'}],{duration:320,delay:1600,easing:EASE,fill:'both'});
+    L.pruned.forEach(function(i,k){ A(L.toks[i],[{transform:'scale(1)',opacity:1},{transform:'scale(.6)',opacity:.15}],{duration:420,delay:2380+k*45,easing:EASE,fill:'both'}); });
+    [[0,1100],[1500,2250],[2300,T]].forEach(function(w,i){ var k=[{opacity:0,offset:0},{opacity:0,offset:f(w[0])},{opacity:1,offset:f(w[0]+140)}];
+      if(i<2){ k.push({opacity:1,offset:f(w[1])}); k.push({opacity:0,offset:f(w[1]+120)}); } k.push({opacity:i<2?0:1,offset:1});
+      A(L.labels[i],k,{duration:T,fill:'both'}); });
+    anims[anims.length-1].onfinish=function(){ box.dataset.state='done'; };
+  }
+  function reset(){ L.toks.concat([L.main,L.side]).forEach(function(e){ e.style.transform=''; e.style.opacity=''; }); L.check.style.opacity='0'; L.check.style.transform=''; L.labels.forEach(function(l){ l.style.opacity='0'; }); }
+  function replay(){ if(reduce){ endState(); return; } reset(); play(); }
+  var b=h('button','btn btn-ghost btn-sm fz-replay','Replay'); b.type='button'; b.addEventListener('click',replay);
+  box.dataset.state='idle'; box.appendChild(b); how.parentNode.insertBefore(box,how); draw();
+  if(reduce) endState();
+  else { var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&!played){
+      if(Math.abs(box.clientWidth-lastW)>=16) draw();          // first measured while the section skipped rendering
+      play(); io.disconnect(); } }); },{threshold:.5});
+    io.observe(box); }
+  addEventListener('resize',function(){ clearTimeout(rsT); rsT=setTimeout(function(){ if(Math.abs(box.clientWidth-lastW)<16) return; clear(); draw(); if(played||reduce) endState(); },150); });
+  window.FusionTokens={replay:replay,anims:function(){ return anims; },state:function(){ return box.dataset.state; }};
+})();
 </script>
 <script>
 /* ================= Ask about me: floating, intent-matched helper. No model, no network. =================
@@ -2326,13 +2501,32 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     copy:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h8"/></svg>',
     check:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12.5l4.5 4.5L19 7.5"/></svg>',
     min:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9.5l6 6 6-6"/></svg>',
-    grip:'<svg viewBox="0 0 10 16" fill="currentColor" aria-hidden="true"><circle cx="2" cy="2" r="1.4"/><circle cx="8" cy="2" r="1.4"/><circle cx="2" cy="8" r="1.4"/><circle cx="8" cy="8" r="1.4"/><circle cx="2" cy="14" r="1.4"/><circle cx="8" cy="14" r="1.4"/></svg>'
+    grip:'<svg viewBox="0 0 10 16" fill="currentColor" aria-hidden="true"><circle cx="2" cy="2" r="1.4"/><circle cx="8" cy="2" r="1.4"/><circle cx="2" cy="8" r="1.4"/><circle cx="8" cy="8" r="1.4"/><circle cx="2" cy="14" r="1.4"/><circle cx="8" cy="14" r="1.4"/></svg>',
+    caret:'<svg viewBox="0 0 10 10" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 1.8L6.7 5 3.5 8.2"/></svg>'
   };
+  /* the page's sections, for the section-aware launcher and for answers that take you to their section (2026-10-05) */
+  var SECS = {
+    top:         {name:'Aravind',      lbl:'Ask about me'},
+    about:       {name:'About',        lbl:'Ask about me'},
+    experience:  {name:'Experience',   lbl:'Ask about Perinet',      q:['What did he do at Perinet?','Does he know Kubernetes?','How long has he worked?']},
+    skills:      {name:'Skills',       lbl:'Ask about his tools',    q:['Which projects use FastAPI?','Does he know LangGraph?','Has he used Qdrant?']},
+    publications:{name:'Publications', lbl:'Ask about FUSION',       q:['What is FUSION?','How does FUSION work?','What is his ML experience?']},
+    projects:    {name:'Projects',     lbl:'Ask about a project',    q:['What is his LLM experience?','Which project is live?','Tell me about the wind-farm planner']},
+    education:   {name:'Education',    lbl:'Ask about his degree',   q:['Where did he study?','What is his thesis about?','What languages does he speak?']},
+    contact:     {name:'Contact',      lbl:"Ask if he's available",  q:['Is he available?','Does he need a visa?','How do I contact him?']}
+  };
+  // an answer's section is read from its intent's own source, e.g. "Publications · FUSION camera-ready"
+  function secOf(r){
+    if (!r || r.kind !== 'answer' || !r.intent) return null;
+    var parts = String(r.intent.source || '').split(' · ');
+    for (var i = 0; i < parts.length; i++){ var w = parts[i].trim().split(/\s+/)[0].toLowerCase(); if (w !== 'top' && SECS[w] && document.getElementById(w)) return w; }
+    return null;
+  }
   function el(tag, cls, html){ var e = document.createElement(tag); if (cls) e.className = cls; if (html != null) e.innerHTML = html; return e; }
   function esc(s){ return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
   function store(k, v){ try { if (v === undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k, v); } catch(e){ return null; } }
 
-  var launch = el('button','ab-launch', ICON.chat + '<span class="ab-lbl">Ask about me</span><span class="ab-pip" aria-hidden="true"></span>');
+  var launch = el('button','ab-launch', ICON.chat + '<span class="ab-lbl"><span>Ask about me</span></span><span class="ab-pip" aria-hidden="true"></span>');
   launch.type = 'button'; launch.setAttribute('aria-expanded','false'); launch.setAttribute('aria-controls','ab-panel'); launch.setAttribute('aria-label','Ask about Aravind');
   var panel = el('section','ab-panel'); panel.id = 'ab-panel'; panel.setAttribute('role','dialog'); panel.setAttribute('aria-modal','false'); panel.setAttribute('aria-label','Ask about Aravind');
   panel.innerHTML =
@@ -2365,8 +2559,9 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     opts = opts || {};
     var m = el('div','ab-msg ab-bot'), bub = el('div','ab-bub', BotEngine.render(r.text));
     m.appendChild(bub);
-    var acts = el('div','ab-acts'), any = false;
-    (r.links || []).forEach(function(l){
+    var acts = el('div','ab-acts'), any = false, links = (r.links || []).slice(), sec = r._go ? secOf(r) : null;
+    if (sec && !links.some(function(l){ return l[1] === '#' + sec; })) links.unshift(['Go to ' + SECS[sec].name + ' ↓', '#' + sec]);   // every on-page answer can take you there
+    links.forEach(function(l){
       var a = el('a','ab-link', esc(l[0])); a.href = l[1];
       if (/^https?:/.test(l[1])) { a.target = '_blank'; a.rel = 'noopener'; }
       else a.addEventListener('click', function(){ if (matchMedia('(max-width:560px)').matches) close(); });   // phones: step aside to the round button so the section is fully visible; the chat is kept
@@ -2382,8 +2577,9 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     }
     if (any) bub.appendChild(acts);
     if (r.proj && r.proj.length > 1) bub.appendChild(projRow(r.proj));
-    if (opts.meta) m.appendChild(el('div','ab-meta', opts.meta));
+    if (opts.meta) m.appendChild(r.top && r.top.length ? why(r, opts.meta) : el('div','ab-meta', opts.meta));
     log.appendChild(m);
+    if (sec) goTo(sec);
     if (r.suggest && r.suggest.length) log.appendChild(chips(r.suggest.map(function(i){ return {label: i.title, intent: i.id}; }), 'Did you mean'));
     else if (r.rel && r.rel.length && !opts.noRel) log.appendChild(chips(relChips(r.rel, r.intent && r.intent.id), 'Related'));
     scrollEnd();
@@ -2473,6 +2669,25 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
       }
     } else close();   // no room beside the card: step aside to the button rather than park a bar over it
   }
+  // the retrieval trace (2026-10-05): folded under the answer's meta line; opening it shows the three closest topics, the
+  // winner in the accent colour, bars relative to the best score. Only real questions have one (chip picks ran no retrieval).
+  function why(r, metaHtml){
+    var w = el('div','ab-meta'), b = el('button','ab-why', ICON.caret + '<span>' + metaHtml + '</span>'), t = el('div','ab-trace');
+    var top = r.top.slice(0,3), max = top[0].conf || 1;
+    b.type = 'button'; b.setAttribute('aria-expanded','false'); t.id = 'ab-tr-' + (++why.n); b.setAttribute('aria-controls', t.id); t.hidden = true;
+    b.title = 'How this answer was matched';
+    t.innerHTML = '<div class="ab-tl">closest topics · BM25, in your browser</div>' + top.map(function(x, i){
+      return '<div class="ab-tr' + (i === 0 && r.kind === 'answer' ? ' win' : '') + '"><span class="t">' + esc(x.intent.title) + '</span>' +
+        '<span class="bar"><i style="width:' + (x.conf / max * 100).toFixed(1) + '%;animation-delay:' + ((top.length - 1 - i) * 60) + 'ms"></i></span>' +
+        '<span class="n">' + x.conf.toFixed(2) + '</span></div>'; }).join('');
+    b.addEventListener('click', function(){
+      var open = b.getAttribute('aria-expanded') !== 'true'; b.setAttribute('aria-expanded', String(open)); t.hidden = !open;
+      if (open && !reduce){ t.classList.remove('grow'); void t.offsetWidth; t.classList.add('grow'); }   // runners-up grow first, the winner last
+      if (open && log.scrollHeight - log.scrollTop - log.clientHeight < t.offsetHeight + 60) scrollEnd();
+    });
+    w.appendChild(b); w.appendChild(t); return w;
+  }
+  why.n = 0;
   function meta(r){
     if (r.kind === 'answer') return 'matched <i>' + r.intent.id + '</i> · ' + r.conf.toFixed(2);
     if (r.kind === 'tool') return 'tool lookup <i>' + esc(r.tools.slice(0,3).join(', ')) + '</i>';
@@ -2489,12 +2704,12 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
   function ask(q){
     q = String(q).trim(); if (!q) return;
     addMe(q); remember({q:q});
-    reply(bot.ask(q), q);
+    var r = bot.ask(q); r._go = true; reply(r, q);
   }
   function answerIntent(id, label){
     var it = bot.byId[id]; if (!it) return;
     addMe(label); remember({i:id, l:label});
-    reply({kind:'answer', intent:it, conf:1, text:it.a, links:it.links || [], rel:it.rel || [], copy:it.copy, proj:it.proj || []}, label);
+    reply({kind:'answer', intent:it, conf:1, text:it.a, links:it.links || [], rel:it.rel || [], copy:it.copy, proj:it.proj || [], _go:true}, label);
   }
   function greet(){
     if (greeted) return; greeted = true;
@@ -2617,7 +2832,7 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
     animating(); anchor();
     panel.classList.add('open'); launch.setAttribute('aria-expanded','true'); store('ab-open','1');
     // let the slide-in paint first; the greeting (with its own fade) is built on the next frame
-    if (greeted) scrollEnd(); else requestAnimationFrame(function(){ requestAnimationFrame(function(){ greet(); scrollEnd(); }); });
+    if (greeted){ seed(); scrollEnd(); } else requestAnimationFrame(function(){ requestAnimationFrame(function(){ greet(); seed(); scrollEnd(); }); });
     if (!panel.classList.contains('min') && !coarse.matches) setTimeout(function(){ input.focus({preventScroll:true}); }, reduce ? 0 : 120);   // touch: no keyboard until the input is tapped
   }
   function close(keepFocus){
@@ -2630,6 +2845,45 @@ if (typeof module !== 'undefined') module.exports = BotEngine;
   document.addEventListener('keydown', function(e){ if (e.key === 'Escape' && panel.classList.contains('open') && panel.contains(document.activeElement)) close(); });
   input.addEventListener('input', function(){ send.disabled = !input.value.trim(); });
   form.addEventListener('submit', function(e){ e.preventDefault(); var q = input.value; input.value = ''; send.disabled = true; ask(q); });
+
+  /* ---- the window knows where you are (2026-10-05) ----
+     The launcher's label follows the section in the middle of the screen; the section's questions are offered on open and
+     follow you while the window stays open; an answer about a section takes the page there (wider screens: the window
+     floats beside the page; phones get the "Go to" button instead, because the window covers half the screen). */
+  var cur = 'top', lblT = 0, lblPending = false;
+  function setLabel(k){
+    var box = launch.querySelector('.ab-lbl'), txt = (SECS[k] || SECS.top).lbl, old = box.querySelector('span:not(.out)');
+    launch.setAttribute('aria-label', txt);
+    if (old && old.textContent === txt) return;
+    var s = el('span', null); s.textContent = txt;
+    if (reduce || !old){ box.textContent = ''; box.appendChild(s); return; }
+    [].forEach.call(box.querySelectorAll('span.out'), function(x){ x.remove(); });
+    s.className = 'pre'; box.appendChild(s); old.classList.add('out');
+    requestAnimationFrame(function(){ requestAnimationFrame(function(){ s.className = ''; }); });
+    setTimeout(function(){ if (old.parentNode) old.remove(); }, 130);
+  }
+  // section questions: an unused row at the end of the log is replaced; a row you've used stays as history
+  function seed(){
+    var last = log.lastElementChild; if (last && last.classList.contains('ab-sec')) last.remove();
+    seeded = cur; var S = SECS[cur]; if (!S || !S.q) return;   // the intro is covered by the greeting's "Try" row
+    var w = chips(S.q.map(function(q){ return {label:q}; }), 'About ' + S.name); w.classList.add('ab-sec');
+    log.appendChild(w); scrollEnd();
+  }
+  var seeded = null;
+  function settle(){ lblPending = true; clearTimeout(lblT);   // labels change once scrolling settles: a change re-lays out the fixed button
+    lblT = setTimeout(function(){ lblPending = false; setLabel(cur);
+      if (panel.classList.contains('open') && !panel.classList.contains('min') && greeted && seeded !== cur) seed(); }, 260); }
+  addEventListener('scroll', function(){ if (lblPending) settle(); }, {passive: true});
+  if (window.IntersectionObserver){
+    var sio = new IntersectionObserver(function(es){ es.forEach(function(e){ if (e.isIntersecting){ cur = e.target.classList.contains('hero') ? 'top' : e.target.id; settle(); } }); },
+      {rootMargin:'-45% 0px -50% 0px'});
+    [document.querySelector('.hero')].concat([].slice.call(document.querySelectorAll('section.block'))).forEach(function(x){ if (x) sio.observe(x); });
+  }
+  function goTo(sec){
+    if (phone.matches || sec === cur) return;
+    setTimeout(function(){ var t = document.getElementById(sec); if (!t) return; if (window.renderAll) renderAll();
+      scrollTo({top: Math.max(0, t.getBoundingClientRect().top + scrollY - 76), behavior: reduce ? 'auto' : 'smooth'}); }, reduce ? 0 : 450);
+  }
 
   restore();
   if (store('ab-min') === '1'){ panel.classList.add('min'); minB.setAttribute('aria-expanded','false'); minB.setAttribute('aria-label','Restore'); }
