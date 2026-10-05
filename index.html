@@ -1086,7 +1086,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 @media (pointer:coarse){.ab-down{width:40px;height:40px;top:-52px}}
 /* hero: the deck card's copy that flies to its section */
 .pc-ghost{will-change:transform,opacity}
-/* publications: FUSION as moving tokens (HTML boxes, so transform/opacity stay on the compositor) */
+/* publications: FUSION as moving tokens, looping while in view (HTML boxes, so transform/opacity stay on the compositor) */
 .fz{display:grid;justify-items:start;gap:8px;margin:2px 0 4px;overflow:hidden}
 .fz-stage{position:relative;width:100%;contain:layout paint}
 .fz-stage .fz-main,.fz-stage .fz-side{position:absolute;inset:0}
@@ -1095,7 +1095,6 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 .fz-stage .fz-lo{position:absolute;left:0;top:0;color:var(--accent)}
 .fz-stage .fz-chk{position:absolute;display:inline-flex;align-items:center;gap:4px;height:12px;font:500 10px/12px "JetBrains Mono",ui-monospace,monospace;letter-spacing:.02em;color:var(--faint);white-space:nowrap;transform-origin:0 50%}
 .fz-stage .fz-chk path{fill:none;stroke:var(--accent);stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-.fz .fz-replay{height:30px;padding:0 12px;font-size:13px}
 /* nav: the progress bar is a section map, one segment per section (fixed, outside the nav) */
 .chap{position:fixed;left:0;right:0;top:0;height:2px;display:flex;gap:3px;z-index:51;pointer-events:none}
 .chap-s{position:relative;flex:1;min-width:0;height:2px;margin:0;padding:0;border:0;border-radius:0;background:var(--line);cursor:pointer;pointer-events:auto}
@@ -1995,7 +1994,8 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
 </script>
 <script>
 /* ================= FUSION as moving tokens (2026-10-05) =================
-   A 6x6 token grid plays the paper's own order once, when it is half in view: similar tokens merge (a little at each of
+   A 6x6 token grid plays the paper's own order, looping while it is half in view (play ~3.2s, hold the end state 2s,
+   fade, play again; paused off screen, resumed where it stopped): similar tokens merge (a little at each of
    three steps), a second, smaller image exits early once confident, then about a third of what is left is pruned.
    No numbers. Plain HTML boxes, not SVG: WAAPI transforms on SVG forced a page layout every frame. */
 (function(){
@@ -2058,16 +2058,33 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
     anims[anims.length-1].onfinish=function(){ box.dataset.state='done'; };
   }
   function reset(){ L.toks.concat([L.main,L.side]).forEach(function(e){ e.style.transform=''; e.style.opacity=''; }); L.check.style.opacity='0'; L.check.style.transform=''; L.labels.forEach(function(l){ l.style.opacity='0'; }); }
-  function replay(){ if(reduce){ endState(); return; } reset(); play(); }
-  var b=h('button','btn btn-ghost btn-sm fz-replay','Replay'); b.type='button'; b.addEventListener('click',replay);
-  box.dataset.state='idle'; box.appendChild(b); how.parentNode.insertBefore(box,how); draw();
+  // the loop: while half in view, play, hold the end state 2s, fade out, reset and play again
+  var vis=false, paused=false, holdT=0, loops=0;
+  function cycle(){
+    clearTimeout(holdT); holdT=0; if(reduce){ endState(); return; }
+    reset(); play(); loops++; paused=false;
+    stage.animate([{opacity:0},{opacity:1}],{duration:240,easing:'ease-out'});
+    anims[anims.length-1].onfinish=function(){ box.dataset.state='done'; hold(); };
+  }
+  function hold(){ clearTimeout(holdT); holdT=vis?setTimeout(fadeOut,2000):0; }
+  function fadeOut(){ holdT=0; if(!vis) return;
+    var a=stage.animate([{opacity:1},{opacity:0}],{duration:160,easing:'ease-in',fill:'forwards'});
+    a.onfinish=function(){ cycle(); a.cancel(); }; }
+  box.dataset.state='idle'; how.parentNode.insertBefore(box,how); draw();
   if(reduce) endState();
-  else { var io=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&!played){
-      if(Math.abs(box.clientWidth-lastW)>=16) draw();          // first measured while the section skipped rendering
-      play(); io.disconnect(); } }); },{threshold:.5});
-    io.observe(box); }
-  addEventListener('resize',function(){ clearTimeout(rsT); rsT=setTimeout(function(){ if(Math.abs(box.clientWidth-lastW)<16) return; clear(); draw(); if(played||reduce) endState(); },150); });
-  window.FusionTokens={replay:replay,anims:function(){ return anims; },state:function(){ return box.dataset.state; }};
+  else { new IntersectionObserver(function(es){ es.forEach(function(e){
+      vis=e.isIntersecting;
+      if(vis){
+        if(!played){ if(Math.abs(box.clientWidth-lastW)>=16) draw(); cycle(); }   // first measured while the section skipped rendering
+        else if(paused){ anims.forEach(function(a){ a.play(); }); paused=false; }
+        else if(box.dataset.state==='done') hold();
+      } else {
+        clearTimeout(holdT); holdT=0;
+        if(box.dataset.state==='playing'){ anims.forEach(function(a){ a.pause(); }); paused=true; }   // off screen: nothing runs
+      } }); },{threshold:.5}).observe(box); }
+  addEventListener('resize',function(){ clearTimeout(rsT); rsT=setTimeout(function(){ if(Math.abs(box.clientWidth-lastW)<16) return;
+    clear(); draw(); if(reduce||!vis){ endState(); played=played||reduce; } else cycle(); },150); });
+  window.FusionTokens={replay:cycle,anims:function(){ return anims; },state:function(){ return (paused?'paused':box.dataset.state); },loops:function(){ return loops; }};
 })();
 </script>
 <script>
