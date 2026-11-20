@@ -1162,8 +1162,8 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
         </div>
         <div class="deck-nav">
           <button type="button" id="deck-prev" aria-label="Previous project">‹</button>
-          <span class="deck-count" aria-live="polite"><b id="deck-cur">01</b> / 11</span>
-          <div class="deck-scrub" id="deck-scrub" role="slider" tabindex="0" aria-label="Choose a project" aria-valuemin="1" aria-valuemax="11" aria-valuenow="1"><span class="segs"></span><div class="scrub-tip" id="scrub-tip" hidden></div></div>
+          <span class="deck-count" aria-live="polite"><b id="deck-cur">01</b> / 12</span>
+          <div class="deck-scrub" id="deck-scrub" role="slider" tabindex="0" aria-label="Choose a project" aria-valuemin="1" aria-valuemax="12" aria-valuenow="1"><span class="segs"></span><div class="scrub-tip" id="scrub-tip" hidden></div></div>
           <button type="button" id="deck-next" aria-label="Next project">›</button>
         </div>
       </div>
@@ -1184,7 +1184,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
         <div class="fact glass sreveal" style="--i:0"><div class="n">M.Sc.</div><div class="l">Artificial Intelligence, BTU</div></div>
         <div class="fact glass sreveal" style="--i:1"><div class="n">~3 yrs</div><div class="l">professional software</div></div>
         <div class="fact glass sreveal" style="--i:2"><div class="n">2 yrs</div><div class="l">AI engineering at Perinet</div></div>
-        <div class="fact glass sreveal" style="--i:3"><div class="n">10</div><div class="l">projects shipped</div></div>
+        <div class="fact glass sreveal" style="--i:3"><div class="n">11</div><div class="l">projects shipped</div></div>
         <div class="a-stack glass">
           <div class="k">stack</div>
           <div class="marquee"><div class="mtrack">
@@ -1200,9 +1200,21 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     <div class="sec-head"><span class="sec-idx">02</span><h2 class="sec-title">Experience</h2><span class="sec-note">// where I've worked</span></div>
     <div class="tl">
       <div class="job">
+        <div class="when">Jun 2026 – Present</div>
+        <div>
+          <h3>Technical Lead &amp; AI Engineer</h3>
+          <div class="org">Pre-seed startup (circular fashion marketplace) · Germany</div>
+          <ul>
+            <li>Own the technical side of a peer-to-peer second-hand fashion marketplace: system design, AI vendor selection, and planning the team's tasks.</li>
+            <li>Designed the AI trust pipeline: an append-only signals record per listing (PostgreSQL JSONB), a versioned rules engine, a seller-risk scorecard and a human review queue, so models only add signals and a person makes every rejection.</li>
+            <li>Benchmarked and costed the AI stack per module (listing autofill, image embeddings on pgvector, OCR, image safety) at about €1,580 a month for 10,000 listings; specified the core app flows as clickable prototypes.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="job">
         <div class="when">Jul 2024 – May 2026</div>
         <div>
-          <h3>AI Engineer (Working Student)</h3>
+          <h3>AI Engineer</h3>
           <div class="org">Perinet GmbH · Cottbus</div>
           <ul>
             <li>Python &amp; Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s, GitHub Actions and GitLab CI/CD.</li>
@@ -1240,7 +1252,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
         <div class="sm-projects" id="sm-projects"></div>
         <button class="sm-more" id="sm-more" type="button" aria-expanded="false" aria-controls="sm-projects">See tools by project <span class="car" aria-hidden="true">▾</span></button>
       </div>
-      <div class="tk-panel" id="toolkit"><div class="tk-head"><span class="tk-title">Also in my toolkit</span><span class="tk-legend"><span class="tk-dot" aria-hidden="true"></span>used at Perinet, tap to see where</span></div><div class="tk-rows"><div class="tk-row"><span class="tk-cat">AI &amp; agents</span><div class="tk-chips"><button type="button" class="tkc work" data-k="RAG" data-q="RAG" data-l="b" aria-expanded="false" aria-controls="tk-note">RAG<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Agentic AI">Agentic AI</span><span class="tkc" data-k="Prompt Engineering">Prompt Engineering</span><span class="tkc" data-k="Structured Outputs">Structured Outputs</span><span class="tkc" data-k="MCP">MCP</span><span class="tkc" data-k="Tool Use">Tool Use</span></div></div><div class="tk-row"><span class="tk-cat">LLMOps &amp; retrieval</span><div class="tk-chips"><span class="tkc" data-k="Langfuse">Langfuse</span><span class="tkc" data-k="LLM-as-Judge">LLM-as-Judge</span><span class="tkc" data-k="Hybrid Retrieval">Hybrid Retrieval</span><span class="tkc" data-k="ChromaDB">ChromaDB</span><span class="tkc" data-k="pgvector">pgvector</span></div></div><div class="tk-row"><span class="tk-cat">Edge AI &amp; speech</span><div class="tk-chips"><button type="button" class="tkc work" data-k="TensorFlow Lite" data-q="TensorFlow Lite" data-l="c" aria-expanded="false" aria-controls="tk-note">TensorFlow Lite<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Object Detection" data-q="MobileNet-SSD person detection" data-l="c" aria-expanded="false" aria-controls="tk-note">Object Detection<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Coral USB Accelerator" data-q="Coral USB Accelerator" data-l="c" aria-expanded="false" aria-controls="tk-note">Coral USB Accelerator<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Speech-to-Text" data-q="speech-to-text" data-l="c" aria-expanded="false" aria-controls="tk-note">Speech-to-Text<span class="tk-dot" aria-hidden="true"></span></button></div></div><div class="tk-row"><span class="tk-cat">Backend &amp; data</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Go" data-q="Go" data-l="a" aria-expanded="false" aria-controls="tk-note">Go<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="REST / gRPC">REST / gRPC</span><span class="tkc" data-k="SQL">SQL</span></div></div><div class="tk-row"><span class="tk-cat">Infra &amp; cloud</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Kubernetes" data-q="K8s" data-l="a" aria-expanded="false" aria-controls="tk-note">Kubernetes<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitHub Actions" data-q="GitHub Actions" data-l="a" aria-expanded="false" aria-controls="tk-note">GitHub Actions<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitLab CI/CD" data-q="GitLab CI/CD" data-l="a" aria-expanded="false" aria-controls="tk-note">GitLab CI/CD<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="MQTT" data-q="MQTT" data-l="a" aria-expanded="false" aria-controls="tk-note">MQTT<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Azure">Azure</span><span class="tkc" data-k="AWS">AWS</span><span class="tkc" data-k="Linux">Linux</span></div></div></div><div class="tk-note" id="tk-note" aria-live="polite" hidden></div></div>
+      <div class="tk-panel" id="toolkit"><div class="tk-head"><span class="tk-title">Also in my toolkit</span><span class="tk-legend"><span class="tk-dot" aria-hidden="true"></span>used at Perinet, tap to see where</span></div><div class="tk-rows"><div class="tk-row"><span class="tk-cat">AI &amp; agents</span><div class="tk-chips"><button type="button" class="tkc work" data-k="RAG" data-q="RAG" data-l="b" aria-expanded="false" aria-controls="tk-note">RAG<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Agentic AI">Agentic AI</span><span class="tkc" data-k="Prompt Engineering">Prompt Engineering</span><span class="tkc" data-k="Structured Outputs">Structured Outputs</span><span class="tkc" data-k="MCP">MCP</span><span class="tkc" data-k="Tool Use">Tool Use</span></div></div><div class="tk-row"><span class="tk-cat">LLMOps &amp; retrieval</span><div class="tk-chips"><span class="tkc" data-k="LLM-as-Judge">LLM-as-Judge</span><span class="tkc" data-k="Hybrid Retrieval">Hybrid Retrieval</span><span class="tkc" data-k="ChromaDB">ChromaDB</span><span class="tkc" data-k="pgvector">pgvector</span></div></div><div class="tk-row"><span class="tk-cat">Edge AI &amp; speech</span><div class="tk-chips"><button type="button" class="tkc work" data-k="TensorFlow Lite" data-q="TensorFlow Lite" data-l="c" aria-expanded="false" aria-controls="tk-note">TensorFlow Lite<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Object Detection" data-q="MobileNet-SSD person detection" data-l="c" aria-expanded="false" aria-controls="tk-note">Object Detection<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Coral USB Accelerator" data-q="Coral USB Accelerator" data-l="c" aria-expanded="false" aria-controls="tk-note">Coral USB Accelerator<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="Speech-to-Text" data-q="speech-to-text" data-l="c" aria-expanded="false" aria-controls="tk-note">Speech-to-Text<span class="tk-dot" aria-hidden="true"></span></button></div></div><div class="tk-row"><span class="tk-cat">Backend &amp; data</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Go" data-q="Go" data-l="a" aria-expanded="false" aria-controls="tk-note">Go<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="REST / gRPC">REST / gRPC</span><span class="tkc" data-k="SQL">SQL</span></div></div><div class="tk-row"><span class="tk-cat">Infra &amp; cloud</span><div class="tk-chips"><button type="button" class="tkc work" data-k="Kubernetes" data-q="K8s" data-l="a" aria-expanded="false" aria-controls="tk-note">Kubernetes<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitHub Actions" data-q="GitHub Actions" data-l="a" aria-expanded="false" aria-controls="tk-note">GitHub Actions<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="GitLab CI/CD" data-q="GitLab CI/CD" data-l="a" aria-expanded="false" aria-controls="tk-note">GitLab CI/CD<span class="tk-dot" aria-hidden="true"></span></button><button type="button" class="tkc work" data-k="MQTT" data-q="MQTT" data-l="a" aria-expanded="false" aria-controls="tk-note">MQTT<span class="tk-dot" aria-hidden="true"></span></button><span class="tkc" data-k="Azure">Azure</span><span class="tkc" data-k="AWS">AWS</span><span class="tkc" data-k="Linux">Linux</span></div></div></div><div class="tk-note" id="tk-note" aria-live="polite" hidden></div></div>
     </div>
   </section>
 
@@ -1307,22 +1319,22 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-tutor">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1;--ph:200">
+      <article class="card glass sreveal" style="--i:1;--ph:140">
+        <h3><a class="card-link" href="https://github.com/axon011/llm-gateway" target="_blank" rel="noopener">LLM Gateway</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
+        <p class="pitch">Async FastAPI proxy in front of the live tutor: one Langfuse trace and a real cost for every LLM call.</p>
+        <span class="metric">21 tests · cost from provider tokens, nothing estimated</span>
+        <div class="more" id="more-gateway"><div><p class="origin">The Deutsch-Tutor routes its LLM calls through it.</p><p>Each call to Groq or Gemini gets one Langfuse trace tagged by session, user and route, with the provider's own token counts. Cost is those tokens times a dated per-model price list, written to the trace, the API response and a SQLite usage ledger; a usage endpoint reports it by day, route, model and session. SSE streaming, constant-time bearer-key auth, a model allowlist and request size limits, a non-root Docker image, CI on every push.</p></div></div>
+        <div class="card-foot"><div class="chips"><span class="chip">FastAPI</span><span class="chip">Langfuse</span><span class="chip">SQLite</span><span class="chip">Docker</span></div>
+          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-gateway">Details <span class="car" aria-hidden="true">▾</span></button></div>
+      </article>
+
+      <article class="card glass sreveal" style="--i:0;--ph:200">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
         <div class="more" id="more-graphrag-agent"><div><p>Entity and relation extraction builds a typed graph first, so a question that spans three documents is answered by walking edges instead of hoping one chunk contains everything.</p></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">GraphRAG</span><span class="chip">networkx</span><span class="chip">Pydantic</span><span class="chip">LLM extraction</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-graphrag-agent">Details <span class="car" aria-hidden="true">▾</span></button></div>
-      </article>
-
-      <article class="card glass sreveal" style="--i:0;--ph:210">
-        <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
-        <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
-        <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
-        <div class="more" id="more-graphrag-studio"><div><p>An interactive force-graph front end over the GraphRAG Agent core, so the retrieval path behind every cited answer is something you can actually see.</p></div></div>
-        <div class="card-foot"><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">FastAPI</span><span class="chip">GraphRAG</span></div>
-          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-graphrag-studio">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
       <article class="card glass sreveal" style="--i:1;--ph:265">
@@ -1352,7 +1364,16 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-llmops">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:0;--ph:245" hidden>
+      <article class="card glass sreveal extra" style="--i:0;--ph:210" hidden>
+        <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
+        <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
+        <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
+        <div class="more" id="more-graphrag-studio"><div><p>An interactive force-graph front end over the GraphRAG Agent core, so the retrieval path behind every cited answer is something you can actually see.</p></div></div>
+        <div class="card-foot"><div class="chips"><span class="chip">Next.js</span><span class="chip">React</span><span class="chip">FastAPI</span><span class="chip">GraphRAG</span></div>
+          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-graphrag-studio">Details <span class="car" aria-hidden="true">▾</span></button></div>
+      </article>
+
+      <article class="card glass sreveal extra" style="--i:1;--ph:245" hidden>
         <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
@@ -1361,7 +1382,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-news">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:1;--ph:252" hidden>
+      <article class="card glass sreveal extra" style="--i:0;--ph:252" hidden>
         <h3><a class="card-link" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">LLM Fine-Tuning: JD Extractor</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
@@ -1370,7 +1391,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-finetune">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:0;--ph:162" hidden>
+      <article class="card glass sreveal extra" style="--i:1;--ph:162" hidden>
         <h3><a class="card-link" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">Resume Tailor</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</p>
         <span class="metric">3 gates before pdflatex · 106 tests · profile-driven, no personal data in code</span>
@@ -1379,7 +1400,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
     </div>
-    <div class="more-row"><button class="btn btn-ghost show-all" id="show-all" type="button" aria-expanded="false" aria-controls="proj-grid"><span id="show-all-t">Show all 10 projects</span> <span class="car" aria-hidden="true">▾</span></button></div>
+    <div class="more-row"><button class="btn btn-ghost show-all" id="show-all" type="button" aria-expanded="false" aria-controls="proj-grid"><span id="show-all-t">Show all 11 projects</span> <span class="car" aria-hidden="true">▾</span></button></div>
   </section>
 
   <section class="block band reveal" id="education">
@@ -1524,7 +1545,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
     var open=showBtn.getAttribute('aria-expanded')!=='true';
     extras.forEach(function(c){ c.hidden=!open; if(open) io.observe(c); });
     showBtn.setAttribute('aria-expanded',open);
-    showT.textContent=open?'Show fewer projects':'Show all 10 projects';
+    showT.textContent=open?'Show fewer projects':'Show all 11 projects';
     if(!open) document.getElementById('projects').scrollIntoView({behavior:reduced?'auto':'smooth'});
     setTimeout(function(){ measure(); },60);
   });
@@ -1594,7 +1615,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 
   // option B: a cycling deck. Three card slots show the current project (front), the next (right) and the
   // previous (left). Each step rotates the slots and refills the one that has moved out of sight.
-  var DECK=[{"ph": 225, "k": "Featured project", "t": "Wind-Farm Installation Planner", "p": "Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.", "m": "€5.59M → €3.56M", "ms": "189 → 64 days · 19/19 weather-years", "go": "See the project ↓", "href": "#projects", "vizHtml": "<span class=\"viz viz-bars\" role=\"img\" aria-label=\"189 days before, 64 days after\"><span class=\"b\"><i style=\"width:100%\"></i><span>189 d</span></span><span class=\"b after\"><i style=\"width:33.9%\"></i><span>64 d</span></span></span>"}, {"ph": 290, "k": "First-author paper · DSD 2026", "t": "Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers", "p": "", "m": "est. 48% less energy", "ms": "31.8% fewer FLOPs for 0.09 pp of accuracy", "go": "Read about it ↓", "href": "#publications", "vizHtml": "<span class=\"viz viz-tok\" aria-hidden=\"true\"><i></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i></i><span>merge · exit · prune</span></span>"}, {"ph": 262, "k": "Live app", "t": "Deutsch-Tutor", "p": "AI German tutor that builds your curriculum from your own mistakes.", "m": "two-agent SSE turn", "ms": "explainable recommender", "go": "Open the app ↗", "href": "https://tutor.aravindpradee.me", "vizHtml": "<span class=\"viz viz-live\"><i aria-hidden=\"true\"></i>live at tutor.aravindpradee.me</span>"}, {"ph": 200, "k": "Open source", "t": "GraphRAG Agent", "p": "Multi-hop answers by traversing a built knowledge graph, with citations.", "m": "k-hop retrieval", "ms": "knowledge graph · cited answers", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-agent", "vizHtml": ""}, {"ph": 210, "k": "Open source", "t": "GraphRAG Studio", "p": "Full-stack app: upload docs, watch the graph build, chat over it.", "m": "live graph viz", "ms": "k-hop retrieval · cited chat", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-studio", "vizHtml": ""}, {"ph": 265, "k": "Open source", "t": "Multi-Agent Research Pipeline", "p": "Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.", "m": "2,000+ words", "ms": "cited reports · self-correcting Critic", "go": "View on GitHub ↗", "href": "https://github.com/axon011/multi-agent-pipeline", "vizHtml": ""}, {"ph": 188, "k": "Open source", "t": "RAG Evaluation System", "p": "Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.", "m": "0.94 hit@5", "ms": "0.96 citation presence", "go": "View on GitHub ↗", "href": "https://github.com/axon011/rag-eval-system", "vizHtml": ""}, {"ph": 172, "k": "Open source", "t": "LLMOps Observability Dashboard", "p": "Self-hosted tracing of latency, tokens and cost per model call.", "m": "12 tests", "ms": "full-stack · multi-stage Docker", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llmops-dashboard", "vizHtml": ""}, {"ph": 245, "k": "Open source", "t": "Multilingual News NLP Pipeline", "p": "Whisper → NER → event classification → summary, on a 4 GB GPU.", "m": "+13% F1", "ms": "8.4× faster inference", "go": "View on GitHub ↗", "href": "https://github.com/axon011/Multilingual-News-NLP-Pipeline", "vizHtml": ""}, {"ph": 252, "k": "Open source", "t": "LLM Fine-Tuning: JD Extractor", "p": "QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.", "m": "100% JSON validity", "ms": "<4 min on 4 GB GPU", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-fine-tuning", "vizHtml": ""}, {"ph": 162, "k": "Open source", "t": "Resume Tailor", "p": "Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.", "m": "106 tests", "ms": "3 gates before pdflatex", "go": "View on GitHub ↗", "href": "https://github.com/axon011/resume-tailor-public", "vizHtml": ""}];
+  var DECK=[{"ph": 225, "k": "Featured project", "t": "Wind-Farm Installation Planner", "p": "Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.", "m": "€5.59M → €3.56M", "ms": "189 → 64 days · 19/19 weather-years", "go": "See the project ↓", "href": "#projects", "vizHtml": "<span class=\"viz viz-bars\" role=\"img\" aria-label=\"189 days before, 64 days after\"><span class=\"b\"><i style=\"width:100%\"></i><span>189 d</span></span><span class=\"b after\"><i style=\"width:33.9%\"></i><span>64 d</span></span></span>"}, {"ph": 290, "k": "First-author paper · DSD 2026", "t": "Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers", "p": "", "m": "est. 48% less energy", "ms": "31.8% fewer FLOPs for 0.09 pp of accuracy", "go": "Read about it ↓", "href": "#publications", "vizHtml": "<span class=\"viz viz-tok\" aria-hidden=\"true\"><i></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i></i><span>merge · exit · prune</span></span>"}, {"ph": 262, "k": "Live app", "t": "Deutsch-Tutor", "p": "AI German tutor that builds your curriculum from your own mistakes.", "m": "two-agent SSE turn", "ms": "explainable recommender", "go": "Open the app ↗", "href": "https://tutor.aravindpradee.me", "vizHtml": "<span class=\"viz viz-live\"><i aria-hidden=\"true\"></i>live at tutor.aravindpradee.me</span>"}, {"ph": 140, "k": "Open source", "t": "LLM Gateway", "p": "Async FastAPI proxy that traces every LLM call to Langfuse and prices it from the provider's own token counts.", "m": "21 tests", "ms": "Langfuse traces · per-call cost", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-gateway", "vizHtml": ""}, {"ph": 200, "k": "Open source", "t": "GraphRAG Agent", "p": "Multi-hop answers by traversing a built knowledge graph, with citations.", "m": "k-hop retrieval", "ms": "knowledge graph · cited answers", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-agent", "vizHtml": ""}, {"ph": 210, "k": "Open source", "t": "GraphRAG Studio", "p": "Full-stack app: upload docs, watch the graph build, chat over it.", "m": "live graph viz", "ms": "k-hop retrieval · cited chat", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-studio", "vizHtml": ""}, {"ph": 265, "k": "Open source", "t": "Multi-Agent Research Pipeline", "p": "Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.", "m": "2,000+ words", "ms": "cited reports · self-correcting Critic", "go": "View on GitHub ↗", "href": "https://github.com/axon011/multi-agent-pipeline", "vizHtml": ""}, {"ph": 188, "k": "Open source", "t": "RAG Evaluation System", "p": "Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.", "m": "0.94 hit@5", "ms": "0.96 citation presence", "go": "View on GitHub ↗", "href": "https://github.com/axon011/rag-eval-system", "vizHtml": ""}, {"ph": 172, "k": "Open source", "t": "LLMOps Observability Dashboard", "p": "Self-hosted tracing of latency, tokens and cost per model call.", "m": "12 tests", "ms": "full-stack · multi-stage Docker", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llmops-dashboard", "vizHtml": ""}, {"ph": 245, "k": "Open source", "t": "Multilingual News NLP Pipeline", "p": "Whisper → NER → event classification → summary, on a 4 GB GPU.", "m": "+13% F1", "ms": "8.4× faster inference", "go": "View on GitHub ↗", "href": "https://github.com/axon011/Multilingual-News-NLP-Pipeline", "vizHtml": ""}, {"ph": 252, "k": "Open source", "t": "LLM Fine-Tuning: JD Extractor", "p": "QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.", "m": "100% JSON validity", "ms": "<4 min on 4 GB GPU", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-fine-tuning", "vizHtml": ""}, {"ph": 162, "k": "Open source", "t": "Resume Tailor", "p": "Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.", "m": "106 tests", "ms": "3 gates before pdflatex", "go": "View on GitHub ↗", "href": "https://github.com/axon011/resume-tailor-public", "vizHtml": ""}];
   var stackEl=document.getElementById('stack'), stackWrap=stackEl.parentNode, slots=[].slice.call(stackEl.querySelectorAll('.pc')),
       cntEl=document.getElementById('deck-cur'), pTimer=null, cur=0, N=DECK.length;
   stackWrap.classList.add('stack-wrap');
@@ -1751,6 +1772,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   var P=[
     {id:'wind',n:'Wind-Farm Installation Planner',ph:225,k:['Python','NumPy','pandas','Pydantic','FastAPI','Optimization']},
     {id:'tutor',n:'Deutsch-Tutor',ph:262,k:['Next.js','TypeScript','SSE streaming','Zod','Tailwind']},
+    {id:'gateway',n:'LLM Gateway',ph:140,k:['FastAPI','Langfuse','SSE streaming','SQLite','Docker']},
     {id:'gagent',n:'GraphRAG Agent',ph:200,k:['GraphRAG','networkx','Pydantic','LLM extraction','Python']},
     {id:'gstudio',n:'GraphRAG Studio',ph:210,k:['Next.js','TypeScript','React','FastAPI','GraphRAG']},
     {id:'multi',n:'Multi-Agent Research Pipeline',ph:265,k:['LangGraph','CrewAI','Pydantic','FastAPI','Docker']},
@@ -1764,7 +1786,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   var G=[
     {n:'AI & Agents',k:['LangGraph','CrewAI','LangChain','GraphRAG','LLM extraction','LLM']},
     {n:'Models & ML',k:['PyTorch','QLoRA','PEFT','Qwen2','Whisper','XLM-RoBERTa','networkx','Optimization']},
-    {n:'Eval & Data',k:['MLflow','RAGAs','Qdrant','PostgreSQL','NumPy','pandas']},
+    {n:'Eval & Data',k:['MLflow','RAGAs','Langfuse','Qdrant','PostgreSQL','SQLite','NumPy','pandas']},
     {n:'Backend & Infra',k:['FastAPI','Python','Pydantic','Docker','pytest','Jinja2','LaTeX']},
     {n:'Frontend',k:['TypeScript','Next.js','React','SSE streaming','Zod','Tailwind']}
   ];
@@ -1814,7 +1836,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
       b.setAttribute('aria-pressed',String(!!(pinned&&pinned.t==='p'&&pinned.id===p.id)));
       p.stEl.innerHTML=p.k.map(function(k){ return (a&&a.t==='s'&&a.id===k)?'<mark>'+k+'</mark>':k; }).join(' · '); });
     resetB.hidden=!pinned;
-    if(!a) status.textContent=nSkills+' skills across 10 projects. Pick one to see where it was used.';
+    if(!a) status.textContent=nSkills+' skills across '+P.length+' projects. Pick one to see where it was used.';
     else if(a.t==='s'){ var n=S[a.id].length; status.innerHTML='<b>'+a.id+'</b> is used in '+n+' project'+(n>1?'s':'')+'.'; }
     else { var p=byId[a.id]; status.innerHTML='<b>'+p.n+'</b> uses '+p.k.length+' skills.'; }
     drawLinks(a);
@@ -1871,7 +1893,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 
 
   // search that matches no project chip still answers: the toolkit line lists the rest
-  var ALSO=['RAG','Agentic AI','Prompt Engineering','Structured Outputs','MCP','Tool Use','Langfuse','LLM-as-Judge','Hybrid Retrieval','ChromaDB','pgvector','TensorFlow Lite','Object Detection','Coral USB Accelerator','Speech-to-Text','Go','REST / gRPC','SQL','Kubernetes','GitHub Actions','GitLab CI/CD','MQTT','Azure','AWS','Linux'];
+  var ALSO=['RAG','Agentic AI','Prompt Engineering','Structured Outputs','MCP','Tool Use','LLM-as-Judge','Hybrid Retrieval','ChromaDB','pgvector','TensorFlow Lite','Object Detection','Coral USB Accelerator','Speech-to-Text','Go','REST / gRPC','SQL','Kubernetes','GitHub Actions','GitLab CI/CD','MQTT','Azure','AWS','Linux'];
   smQ.addEventListener('input',function(){
     var v=smQ.value.trim().toLowerCase(); if(!v) return;
     var hit=Object.keys(S).some(function(k){ return k.toLowerCase().indexOf(v)>-1; }); if(hit) return;
@@ -2098,7 +2120,7 @@ document.addEventListener('click',function(e){ var a=e.target.closest&&e.target.
    "needs" = only Aravind can answer, so the bot deflects. */
 var BOT_EMAIL = 'aravindpradeep001@gmail.com';
 var BOT_PID = {wind:'Wind-Farm Installation Planner', tutor:'Deutsch-Tutor', gagent:'GraphRAG Agent', gstudio:'GraphRAG Studio',
-  multi:'Multi-Agent Research Pipeline', rag:'RAG Evaluation System', llmops:'LLMOps Observability Dashboard',
+  multi:'Multi-Agent Research Pipeline', rag:'RAG Evaluation System', llmops:'LLMOps Observability Dashboard', gateway:'LLM Gateway',
   news:'Multilingual News NLP Pipeline', jd:'LLM Fine-Tuning: JD Extractor', resume:'Resume Tailor'};
 var BOT_INTENTS = [
  {id:'greet', title:'Greeting', status:'site', source:'(conversation)',
@@ -2115,12 +2137,16 @@ var BOT_INTENTS = [
   rel:['experience','projects','publication']},
  {id:'experience', title:'Work experience', status:'site', source:'Experience',
   ex:['work experience','where has he worked','job history','previous jobs','employment history','career so far','companies he worked for','professional experience','work history','what jobs has he had'],
-  a:"- **AI Engineer (Working Student), Perinet GmbH, Cottbus** · Jul 2024 – May 2026\n- **Software Engineer Trainee, Cognizant, India** · Oct 2021 – May 2022",
-  links:[['See Experience','#experience']], rel:['perinet','years','cognizant']},
+  a:"- **Technical Lead & AI Engineer, pre-seed startup (circular fashion marketplace)** · Jun 2026 – Present\n- **AI Engineer, Perinet GmbH, Cottbus** · Jul 2024 – May 2026\n- **Software Engineer Trainee, Cognizant, India** · Oct 2021 – May 2022",
+  links:[['See Experience','#experience']], rel:['current','perinet','years','cognizant']},
  {id:'perinet', title:'Perinet role', status:'site', source:'Experience · Perinet bullets',
-  ex:['what did he do at perinet','perinet','his latest job','most recent role','industrial iot work','working student job','what was his role at perinet','perinet responsibilities','voice assistant','edge computing demo'],
+  ex:['what did he do at perinet','perinet','industrial iot work','working student job','what was his role at perinet','perinet responsibilities','voice assistant','edge computing demo'],
   a:"At Perinet GmbH (Jul 2024 – May 2026) he:\n- built Python & Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s, GitHub Actions and GitLab CI/CD\n- led containerization of the AI platform (chatbot, anomaly detection, sensor explorer)\n- co-developed a voice-assistant demo for Perinet’s edge computing platform: MobileNet-SSD person detection on TensorFlow Lite with a Coral USB Accelerator, plus the speech-to-text → LLM → text-to-speech pipeline\n- owned RAG evaluation and model benchmarking: retrieval speed vs generation quality across variants",
   links:[['See Experience','#experience']], rel:['rag','skills','years']},
+ {id:'current', title:'Current role', status:'site', source:'Experience · startup role',
+  ex:['what is he doing now','current job','current role','his latest job','most recent role','where does he work now','startup','technical lead','tech lead','fashion marketplace'],
+  a:"Since Jun 2026 he's **Technical Lead & AI Engineer** at a pre-seed startup building a peer-to-peer second-hand fashion marketplace. He owns system design, AI vendor selection and planning the team's tasks; designed the AI trust pipeline (a signals record per listing, a versioned rules engine, a seller-risk scorecard, a human review queue, so a person makes every rejection); and costed the AI stack at about €1,580 a month for 10,000 listings.",
+  links:[['See Experience','#experience']], rel:['experience','perinet','availability']},
  {id:'cognizant', title:'Cognizant role', status:'site', source:'Experience · Cognizant',
   ex:['cognizant','his first job','cobol','banking work','trainee role','mainframe','what did he do at cognizant','it services company in india','work in india'],
   a:"Software Engineer Trainee at Cognizant in India, Oct 2021 – May 2022: enterprise banking apps (COBOL/JCL/DB2) in agile sprints.",
@@ -2172,8 +2198,8 @@ var BOT_INTENTS = [
   links:[['See the paper card','#publications']], rel:['publication']},
  {id:'projects', title:'Projects overview', status:'site', source:'Projects',
   ex:['projects','portfolio','what has he built','show me his work','side projects','github projects','list of projects','things he made'],
-  a:"Ten projects. The featured one is the **Wind-Farm Installation Planner**. The others: Deutsch-Tutor (a live app), GraphRAG Agent, GraphRAG Studio, Multi-Agent Research Pipeline, RAG Evaluation System, LLMOps Observability Dashboard, Multilingual News NLP Pipeline, LLM Fine-Tuning: JD Extractor and Resume Tailor.",
-  links:[['See Projects','#projects']], proj:['wind','tutor','gagent','gstudio','multi','rag','llmops','news','jd','resume'], rel:['featured','live_demo','rag','agents']},
+  a:"Eleven projects. The featured one is the **Wind-Farm Installation Planner**. The others: Deutsch-Tutor (a live app), LLM Gateway, GraphRAG Agent, GraphRAG Studio, Multi-Agent Research Pipeline, RAG Evaluation System, LLMOps Observability Dashboard, Multilingual News NLP Pipeline, LLM Fine-Tuning: JD Extractor and Resume Tailor.",
+  links:[['See Projects','#projects']], proj:['wind','tutor','gateway','gagent','gstudio','multi','rag','llmops','news','jd','resume'], rel:['featured','live_demo','rag','agents']},
  {id:'featured', title:'Featured project', status:'site', source:'Projects · Wind-Farm card',
   ex:['best project','favourite project','most impressive project','featured project','wind farm','scheduler','optimization project','his strongest work'],
   a:"The **Wind-Farm Installation Planner**: a weather-aware scheduler for a 12-turbine build, 48 campaigns × 20 years of hourly wind, priced as risk. Result: **€5.59M → €3.56M** and 189 → 64 days, across 19/19 weather-years. Crane lifts can't be paused, have wind limits and must fit working hours; the scheduling maths stays deterministic, and the LLM handles only the human edges.",
@@ -2187,9 +2213,9 @@ var BOT_INTENTS = [
   a:"- **Multi-Agent Research Pipeline:** Planner → Researcher → Writer → Critic on LangGraph. The Critic checks every cited sentence against its source and triggers at most one repair pass; a YAML eval harness scores runs over a 10-topic set\n- **Deutsch-Tutor:** a two-agent turn, where the reply streams while a parallel corrector marks the exact errors",
   links:[['See Projects','#projects']], proj:['multi','tutor'], rel:['rag','live_demo']},
  {id:'llmops', title:'LLMOps experience', status:'site', source:'Projects',
-  ex:['llmops','observability','monitoring llms','tracing','mlflow','cost tracking','token costs','evaluation pipeline'],
-  a:"- **LLMOps Observability Dashboard:** self-hosted tracing of latency, tokens and cost per model call. Traces land in PostgreSQL rather than a third-party service; full-stack, multi-stage Docker, 12 tests\n- **RAG Evaluation System:** a RAGAs/MLflow regression harness, and a check script that flags any metric dropping more than 5% between runs",
-  links:[['See Projects','#projects']], proj:['llmops','rag'], rel:['rag','skills']},
+  ex:['llmops','observability','monitoring llms','tracing','mlflow','cost tracking','token costs','evaluation pipeline','langfuse','llm gateway','gateway','proxy'],
+  a:"- **LLM Gateway:** an async FastAPI proxy in front of the live Deutsch-Tutor. One Langfuse trace per call with the provider's own token counts, cost priced from a dated per-model list into a SQLite usage ledger; 21 tests, CI on every push\n- **LLMOps Observability Dashboard:** self-hosted tracing of latency, tokens and cost per model call. Traces land in PostgreSQL rather than a third-party service; full-stack, multi-stage Docker, 12 tests\n- **RAG Evaluation System:** a RAGAs/MLflow regression harness, and a check script that flags any metric dropping more than 5% between runs",
+  links:[['See Projects','#projects']], proj:['gateway','llmops','rag'], rel:['rag','skills']},
  {id:'finetune', title:'Fine-tuning', status:'site', source:'Projects · JD Extractor card',
   ex:['fine tuning','qlora','lora','peft','has he trained a model','small language model','json extraction model','train an llm'],
   a:"**LLM Fine-Tuning: JD Extractor.** QLoRA on Qwen2-0.5B, extracting structured JSON from job descriptions: 100% JSON validity, in under 4 minutes on a 4 GB GPU. Training roughly 0.44% of the parameters was enough.",
@@ -2223,7 +2249,7 @@ var BOT_INTENTS = [
   links:[['See Experience','#experience']], proj:['llmops','tutor'], rel:['perinet','llmops','live_demo']},
  {id:'skills', title:'Skills overview', status:'site', source:'Skills · skill map',
   ex:['skills','tech stack','technologies','tools he uses','programming languages','what can he code in','technical skills','frameworks'],
-  a:"Across his 10 projects, **FastAPI** comes up most (5 projects), then **Python**, **Pydantic** and **TypeScript** (3 each). Ask about any tool, for example \"Has he used Docker?\", and I'll say where.",
+  a:"Across his 11 projects, **FastAPI** comes up most (6 projects), then **Python**, **Pydantic**, **TypeScript** and **Docker** (3 each). Ask about any tool, for example \"Has he used Docker?\", and I'll say where.",
   links:[['See the skill map','#skills']], rel:['rag','agents','llmops']},
  {id:'contact', title:'Contact', status:'site', source:'Contact',
   ex:['contact','email address','how can i reach him','get in touch','hire him','phone number','linkedin','send him a message','talk to him'],
@@ -2262,6 +2288,7 @@ BOT_INTENTS.forEach(function(it){ it.a = it.a.replace('{N}', BOT_INTENTS.length)
 var BOT_PROJECTS = [
  ['Wind-Farm Installation Planner',['Python','NumPy','pandas','Pydantic','FastAPI','Optimization']],
  ['Deutsch-Tutor',['Next.js','TypeScript','SSE streaming','Zod','Tailwind']],
+ ['LLM Gateway',['FastAPI','Langfuse','SSE streaming','SQLite','Docker']],
  ['GraphRAG Agent',['GraphRAG','networkx','Pydantic','LLM extraction','Python']],
  ['GraphRAG Studio',['Next.js','TypeScript','React','FastAPI','GraphRAG']],
  ['Multi-Agent Research Pipeline',['LangGraph','CrewAI','Pydantic','FastAPI','Docker']],
@@ -2271,7 +2298,7 @@ var BOT_PROJECTS = [
  ['LLM Fine-Tuning: JD Extractor',['QLoRA','Qwen2','PEFT','PyTorch']],
  ['Resume Tailor',['Python','LLM','LaTeX','Jinja2','pytest']]
 ];
-var BOT_TOOLKIT = ['RAG','Agentic AI','Prompt Engineering','Structured Outputs','MCP','Tool Use','Langfuse','LLM-as-Judge','Hybrid Retrieval',
+var BOT_TOOLKIT = ['RAG','Agentic AI','Prompt Engineering','Structured Outputs','MCP','Tool Use','LLM-as-Judge','Hybrid Retrieval',
   'ChromaDB','pgvector','TensorFlow Lite','Object Detection','Coral USB Accelerator','Speech-to-Text','Go','REST / gRPC','SQL','Kubernetes','GitHub Actions','GitLab CI/CD','MQTT','Azure','AWS','Linux'];
 var BOT_LINES = {  // the three Perinet bullets (Experience section) that name tools
   a:'Python & Go services linking LLM workflows to real-time MQTT streams, with FastAPI, Docker/K8s, GitHub Actions and GitLab CI/CD.',
