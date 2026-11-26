@@ -526,6 +526,17 @@ html.ready .mtrack{animation:mq 40s linear infinite}
 @media(max-width:760px){.proj-grid{grid-template-columns:1fr}}
 .proj-grid>.card:last-child:nth-child(odd):not([hidden]){grid-column:1/-1}
 .more-row{display:flex;justify-content:center;margin-top:26px}
+.ow-h{margin:44px 0 16px;font-size:var(--t-lg)}
+.ow .card{display:grid;grid-template-columns:minmax(0,1fr) auto;grid-template-rows:auto 1fr auto auto;
+  grid-template-areas:"t t" "p p" "m f" "x x";column-gap:12px;row-gap:8px;padding:20px 22px}
+.ow .card>h3{grid-area:t;font-size:17px}
+.ow .card>.pitch{grid-area:p;font-size:var(--t-sm)}
+.ow .card>.metric{grid-area:m;align-self:center;justify-self:start;font-size:12px}
+.ow .card>.card-foot{grid-area:f;margin:0;padding:0;align-self:center}
+.ow .card>.more{grid-area:x}
+.ow .card .chips{display:none}
+.lim{color:var(--muted)}
+.lim a{color:var(--accent-ink);text-underline-offset:3px}
 .show-all .car{display:inline-block;transition:transform .26s var(--ease-out)}
 .show-all[aria-expanded="true"] .car{transform:rotate(180deg)}
 
@@ -971,29 +982,29 @@ html.st-on section.block,html.st-on .hero{backface-visibility:hidden}
 section.block{content-visibility:auto;contain-intrinsic-size:auto 900px;
   margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%)}
 #about{contain-intrinsic-size:auto 780px}#experience{contain-intrinsic-size:auto 440px}#publications{contain-intrinsic-size:auto 994px}
-#projects{contain-intrinsic-size:auto 1300px}#skills{contain-intrinsic-size:auto 1494px}#education{contain-intrinsic-size:auto 350px}#contact{contain-intrinsic-size:auto 407px}
+#projects{contain-intrinsic-size:auto 1450px}#skills{contain-intrinsic-size:auto 1494px}#education{contain-intrinsic-size:auto 350px}#contact{contain-intrinsic-size:auto 407px}
 /* content heights measured at 1024, 880, 768 and 600px (the layouts change at 1100, 980, 820 and 680) */
 /* while a jump is computed, every section renders, so the scroll lands on true heights, not estimates */
 html.cv-all section.block{content-visibility:visible}
 @media (max-width:1100px){
   #about{contain-intrinsic-size:auto 790px}#experience{contain-intrinsic-size:auto 461px}#publications{contain-intrinsic-size:auto 1000px}
-  #projects{contain-intrinsic-size:auto 1376px}#skills{contain-intrinsic-size:auto 1609px}#education{contain-intrinsic-size:auto 344px}#contact{contain-intrinsic-size:auto 399px}
+  #projects{contain-intrinsic-size:auto 1536px}#skills{contain-intrinsic-size:auto 1609px}#education{contain-intrinsic-size:auto 344px}#contact{contain-intrinsic-size:auto 399px}
 }
 @media (max-width:980px){
   #about{contain-intrinsic-size:auto 851px}#experience{contain-intrinsic-size:auto 482px}#publications{contain-intrinsic-size:auto 1063px}
-  #projects{contain-intrinsic-size:auto 1640px}#skills{contain-intrinsic-size:auto 1887px}#education{contain-intrinsic-size:auto 338px}#contact{contain-intrinsic-size:auto 385px}
+  #projects{contain-intrinsic-size:auto 1619px}#skills{contain-intrinsic-size:auto 1887px}#education{contain-intrinsic-size:auto 338px}#contact{contain-intrinsic-size:auto 385px}
 }
 @media (max-width:820px){
   #about{contain-intrinsic-size:auto 920px}#experience{contain-intrinsic-size:auto 535px}#publications{contain-intrinsic-size:auto 1113px}
-  #projects{contain-intrinsic-size:auto 1790px}#skills{contain-intrinsic-size:auto 1347px}#education{contain-intrinsic-size:auto 400px}#contact{contain-intrinsic-size:auto 377px}
+  #projects{contain-intrinsic-size:auto 1736px}#skills{contain-intrinsic-size:auto 1347px}#education{contain-intrinsic-size:auto 400px}#contact{contain-intrinsic-size:auto 377px}
 }
 @media (max-width:680px){
   #about{contain-intrinsic-size:auto 1049px}#experience{contain-intrinsic-size:auto 574px}#publications{contain-intrinsic-size:auto 1553px}
-  #projects{contain-intrinsic-size:auto 2280px}#skills{contain-intrinsic-size:auto 1568px}#education{contain-intrinsic-size:auto 569px}#contact{contain-intrinsic-size:auto 549px}
+  #projects{contain-intrinsic-size:auto 2423px}#skills{contain-intrinsic-size:auto 1568px}#education{contain-intrinsic-size:auto 569px}#contact{contain-intrinsic-size:auto 549px}
 }
 @media (max-width:560px){
   #about{contain-intrinsic-size:auto 1304px}#experience{contain-intrinsic-size:auto 683px}#publications{contain-intrinsic-size:auto 1972px}
-  #projects{contain-intrinsic-size:auto 3080px}#skills{contain-intrinsic-size:auto 1907px}#education{contain-intrinsic-size:auto 661px}#contact{contain-intrinsic-size:auto 639px}
+  #projects{contain-intrinsic-size:auto 3088px}#skills{contain-intrinsic-size:auto 1907px}#education{contain-intrinsic-size:auto 661px}#contact{contain-intrinsic-size:auto 639px}
 }
 
 /* ================= small fixes (2026-10-03) ================= */
@@ -1007,9 +1018,14 @@ a,button,[role="button"],summary{touch-action:manipulation}
 button,[role="button"]{-webkit-user-select:none;user-select:none}
 
 /* ================= hero: career rail (the Experience timeline in miniature, 2026-11-20) ================= */
+.niche{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin:14px 0 0;font-size:var(--t-lg);font-weight:600;line-height:1.35;color:var(--ink);letter-spacing:.005em}
+.niche .k{font:500 12px/1 "JetBrains Mono",monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-ink)}
+.niche+.hero-rail{margin-top:14px}
+.niche~.hero-rail a{padding-top:8px;padding-bottom:8px}
 .hero-rail{list-style:none;position:relative;margin:30px 0 0;padding:0 0 0 26px;max-width:540px;
   animation:fadeup .7s var(--ease-out) both;animation-delay:.37s}
 .hero-rail~.hero-cta{margin-top:30px}
+.niche~.hero-cta{margin-top:24px}
 /* the rail runs dot to dot, one segment per row, so it never overshoots the last dot at any width */
 .hero-rail li:not(:last-child)::after{content:"";position:absolute;left:-21px;width:1px;top:calc(var(--dot) + 5.5px);bottom:calc(-7.5px - var(--dot));
   background:var(--line-strong)}
@@ -1041,6 +1057,10 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   .hero{padding-top:32px}
   .hero-rail{margin-top:22px}
   .hero-rail~.hero-cta{margin-top:24px}
+  .hero.hero{padding-top:24px}
+  .niche{margin-top:10px}
+  .niche+.hero-rail{margin-top:10px}
+  .niche~.hero-cta{margin-top:16px}
 }
 
 /* ================= press + hover (fine pointers only) ================= */
@@ -1188,20 +1208,21 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
       <div class="hero-copy">
         <div class="strip glass"><span class="pip"></span><span class="role">AI Engineer</span><span class="sep" aria-hidden="true"></span><span class="where">Cottbus, Germany</span><span class="sep" aria-hidden="true"></span><span class="clock js-clock" id="berlin-clock">--:--:--</span></div>
         <h1 class="title"><span class="w" style="--i:0">I</span> <span class="w" style="--i:1">build</span> <span class="w" style="--i:2">AI</span> <span class="w" style="--i:3">systems</span> <span class="w" style="--i:4">that</span> <span class="w" style="--i:5">get</span> <span class="w" style="--i:6"><em>used</em>.</span></h1>
+        <p class="niche"><span class="k">Focus</span>RAG &amp; LLM evaluation</p>
         <ol class="hero-rail"><li style="--i:0"><a href="#experience"><span class="d">Now</span><span class="t">Technical Lead &amp; AI Engineer</span><span class="x">Pre-seed startup, circular fashion marketplace</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></li><li style="--i:1"><a href="#experience"><span class="d">2024 – 26</span><span class="t">AI Engineer, Perinet</span><span class="x">Python and Go services on live MQTT streams, RAG evaluation</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></li><li style="--i:2"><a href="#publications"><span class="d">2026</span><span class="t">First-author paper, DSD 2026</span><span class="x">Fusion: est. 48% less energy on ViT inference</span><span class="go"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span></a></li></ol>
         <div class="hero-cta"><a class="btn btn-primary" href="#projects">View projects</a><a class="btn btn-ghost" href="https://github.com/axon011" target="_blank" rel="noopener">GitHub</a><a class="btn btn-ghost" href="mailto:aravindpradeep001@gmail.com">Email</a></div>
         <div class="status"><span class="led"></span>Available full-time from November 2026 · open to relocate</div>
       </div>
       <div>
         <div class="stack" id="stack" aria-roledescription="carousel" aria-label="Projects, one at a time">
-          <div class="pc" data-pos="0" style="--ph:225" tabindex="0" role="button" aria-label="Wind-Farm Installation Planner"><div class="pcb"><span class="tk">Featured project</span><span class="pt">Wind-Farm Installation Planner</span><span class="pp">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</span><span class="pm">€5.59M → €3.56M</span><span class="pms">189 → 64 days · 19/19 weather-years</span><span class="viz viz-bars" role="img" aria-label="189 days before, 64 days after"><span class="b"><i style="width:100%"></i><span>189 d</span></span><span class="b after"><i style="width:33.9%"></i><span>64 d</span></span></span><a class="pgo" href="#projects">See the project ↓</a></div></div>
-          <div class="pc" data-pos="1" style="--ph:290" tabindex="0" role="button" aria-label="Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers"><div class="pcb"><span class="tk">First-author paper · DSD 2026</span><span class="pt">Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers</span><span class="pm">est. 48% less energy</span><span class="pms">31.8% fewer FLOPs for 0.09 pp of accuracy</span><span class="viz viz-tok" aria-hidden="true"><i></i><i class="m"></i><i></i><i class="x"></i><i class="m"></i><i></i><i class="x"></i><i></i><span>merge · exit · prune</span></span><a class="pgo" href="#publications">Read about it ↓</a></div></div>
-          <div class="pc" data-pos="2" style="--ph:162" tabindex="0" role="button" aria-label="Resume Tailor"><div class="pcb"><span class="tk">Open source</span><span class="pt">Resume Tailor</span><span class="pp">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</span><span class="pm">106 tests</span><span class="pms">3 gates before pdflatex</span><a class="pgo" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">View on GitHub ↗</a></div></div>
+          <div class="pc" data-pos="0" style="--ph:188" tabindex="0" role="button" aria-label="RAG Evaluation System"><div class="pcb"><span class="tk">Featured · open source</span><span class="pt">RAG Evaluation System</span><span class="pp">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</span><span class="pm">0.94 hit@5</span><span class="pms">0.96 citation presence</span><a class="pgo" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">View on GitHub ↗</a></div></div>
+          <div class="pc" data-pos="1" style="--ph:140" tabindex="0" role="button" aria-label="LLM Gateway"><div class="pcb"><span class="tk">Featured · open source</span><span class="pt">LLM Gateway</span><span class="pp">Async FastAPI proxy that traces every LLM call to Langfuse and prices it from the provider's own token counts.</span><span class="pm">21 tests</span><span class="pms">Langfuse traces · per-call cost</span><a class="pgo" href="https://github.com/axon011/llm-gateway" target="_blank" rel="noopener">View on GitHub ↗</a></div></div>
+          <div class="pc" data-pos="2" style="--ph:262" tabindex="0" role="button" aria-label="Deutsch-Tutor"><div class="pcb"><span class="tk">Featured · live app</span><span class="pt">Deutsch-Tutor</span><span class="pp">AI German tutor that builds your curriculum from your own mistakes.</span><span class="pm">two-agent SSE turn</span><span class="pms">explainable recommender</span><span class="viz viz-live"><i aria-hidden="true"></i>live at tutor.aravindpradee.me</span><a class="pgo" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">Open the app ↗</a></div></div>
         </div>
         <div class="deck-nav">
           <button type="button" id="deck-prev" aria-label="Previous project">‹</button>
-          <span class="deck-count" aria-live="polite"><b id="deck-cur">01</b> / 12</span>
-          <div class="deck-scrub" id="deck-scrub" role="slider" tabindex="0" aria-label="Choose a project" aria-valuemin="1" aria-valuemax="12" aria-valuenow="1"><span class="segs"></span><div class="scrub-tip" id="scrub-tip" hidden></div></div>
+          <span class="deck-count" aria-live="polite"><b id="deck-cur">01</b> / 03</span>
+          <div class="deck-scrub" id="deck-scrub" role="slider" tabindex="0" aria-label="Choose a project" aria-valuemin="1" aria-valuemax="3" aria-valuenow="1"><span class="segs"></span><div class="scrub-tip" id="scrub-tip" hidden></div></div>
           <button type="button" id="deck-next" aria-label="Next project">›</button>
         </div>
       </div>
@@ -1328,26 +1349,27 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
   </section>
 
   <section class="block" id="projects">
-    <div class="sec-head reveal"><span class="sec-idx">05</span><h2 class="sec-title">Projects</h2><span class="sec-note">// selected open source</span></div>
-
-    <article class="card glass feat sreveal" style="--i:0;--ph:225">
-      <div class="feat-body">
-        <span class="ftag" style="align-self:flex-start">Featured</span>
-        <h3><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
-        <p class="pitch">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</p>
-        <div class="more" id="more-windfarm"><div><p>Crane lifts can't be paused, have wind limits, and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p></div></div>
-        <div class="card-foot">
-          <div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div>
-          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-windfarm">Details <span class="car" aria-hidden="true">▾</span></button>
-        </div>
-      </div>
-      <div class="feat-metric">
-        <div class="big">€<span class="cu" data-to="5.59">5.59</span>M → €<span class="cu" data-to="3.56">3.56</span>M</div>
-        <div class="sub">189 → 64 days<br>19/19 weather-years</div>
-      </div>
-    </article>
+    <div class="sec-head reveal"><span class="sec-idx">05</span><h2 class="sec-title">Projects</h2><span class="sec-note">// three in depth, the rest in brief</span></div>
 
     <div class="proj-grid" id="proj-grid">
+      <article class="card glass sreveal" style="--i:0;--ph:188">
+        <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
+        <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
+        <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
+        <div class="more" id="more-rag-eval"><div><p>A 50-question golden set scores each run on retrieval hit@5 and citation presence, and a check script flags any metric that drops more than 5% between runs.</p><p class="lim">Where it falls short: the 0.94 is on an easy corpus built from the test set's own passages, and no LLM-judge run is committed yet. <a href="https://github.com/axon011/rag-eval-system#limitations" target="_blank" rel="noopener">All limitations ↗</a></p><div class="dgw" data-dg="rag"></div></div></div>
+        <div class="card-foot"><div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span></div>
+          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-rag-eval">Details <span class="car" aria-hidden="true">▾</span></button></div>
+      </article>
+
+      <article class="card glass sreveal" style="--i:1;--ph:140">
+        <h3><a class="card-link" href="https://github.com/axon011/llm-gateway" target="_blank" rel="noopener">LLM Gateway</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
+        <p class="pitch">Async FastAPI proxy in front of the live tutor: one Langfuse trace and a real cost for every LLM call.</p>
+        <span class="metric">21 tests · cost from provider tokens, nothing estimated</span>
+        <div class="more" id="more-gateway"><div><p class="origin">The Deutsch-Tutor routes its LLM calls through it.</p><p>Each call to Groq or Gemini gets one Langfuse trace tagged by session, user and route, with the provider's own token counts. Cost is those tokens times a dated per-model price list, written to the trace, the API response and a SQLite usage ledger; a usage endpoint reports it by day, route, model and session. SSE streaming, constant-time bearer-key auth, a model allowlist and request size limits, a non-root Docker image, CI on every push.</p><p class="lim">Where it falls short: one provider per process with no fallback, and the latency it adds is not measured yet. <a href="https://github.com/axon011/llm-gateway#limitations" target="_blank" rel="noopener">All limitations ↗</a></p></div></div>
+        <div class="card-foot"><div class="chips"><span class="chip">FastAPI</span><span class="chip">Langfuse</span><span class="chip">SQLite</span><span class="chip">Docker</span></div>
+          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-gateway">Details <span class="car" aria-hidden="true">▾</span></button></div>
+      </article>
+
       <article class="card glass sreveal" style="--i:0;--ph:262">
         <h3><a class="card-link" href="https://tutor.aravindpradee.me" target="_blank" rel="noopener">Deutsch-Tutor</a><span class="ico" aria-hidden="true">↗</span></h3>
         <p class="pitch">AI German tutor that builds your curriculum from your own mistakes.</p>
@@ -1356,17 +1378,20 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
         <div class="card-foot"><div class="chips"><span class="chip">Next.js</span><span class="chip">TypeScript</span><span class="chip">SSE streaming</span><span class="chip">Zod</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-tutor">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
+    </div>
 
-      <article class="card glass sreveal" style="--i:1;--ph:140">
-        <h3><a class="card-link" href="https://github.com/axon011/llm-gateway" target="_blank" rel="noopener">LLM Gateway</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
-        <p class="pitch">Async FastAPI proxy in front of the live tutor: one Langfuse trace and a real cost for every LLM call.</p>
-        <span class="metric">21 tests · cost from provider tokens, nothing estimated</span>
-        <div class="more" id="more-gateway"><div><p class="origin">The Deutsch-Tutor routes its LLM calls through it.</p><p>Each call to Groq or Gemini gets one Langfuse trace tagged by session, user and route, with the provider's own token counts. Cost is those tokens times a dated per-model price list, written to the trace, the API response and a SQLite usage ledger; a usage endpoint reports it by day, route, model and session. SSE streaming, constant-time bearer-key auth, a model allowlist and request size limits, a non-root Docker image, CI on every push.</p></div></div>
-        <div class="card-foot"><div class="chips"><span class="chip">FastAPI</span><span class="chip">Langfuse</span><span class="chip">SQLite</span><span class="chip">Docker</span></div>
-          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-gateway">Details <span class="car" aria-hidden="true">▾</span></button></div>
+    <h3 class="ow-h reveal">Other work</h3>
+    <div class="proj-grid ow" id="proj-other">
+      <article class="card glass sreveal" style="--i:0;--ph:225">
+        <h3><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
+        <p class="pitch">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</p>
+        <span class="metric">€5.59M → €3.56M · 189 → 64 days · 19/19 weather-years</span>
+        <div class="more" id="more-windfarm"><div><p>Crane lifts can't be paused, have wind limits, and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p></div></div>
+        <div class="card-foot"><div class="chips"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div>
+          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-windfarm">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:0;--ph:200">
+      <article class="card glass sreveal" style="--i:1;--ph:200">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</p>
         <span class="metric">knowledge graph · k-hop retrieval · cited answers</span>
@@ -1375,22 +1400,13 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-graphrag-agent">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal" style="--i:1;--ph:265">
+      <article class="card glass sreveal" style="--i:0;--ph:265">
         <h3><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</p>
         <span class="metric">self-correcting Critic · YAML eval harness · 2,000+ word cited reports</span>
         <div class="more" id="more-multi-agent"><div><p>A fourth Critic agent audits every cited sentence against its source snippet and triggers one bounded repair pass, so the report corrects itself before it is returned. A YAML-driven eval harness scores runs on citation validity, citation grounding, source diversity and routing precision over a 10-topic set.</p><div class="dgw" data-dg="multi"></div></div></div>
         <div class="card-foot"><div class="chips"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span></div>
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-multi-agent">Details <span class="car" aria-hidden="true">▾</span></button></div>
-      </article>
-
-      <article class="card glass sreveal" style="--i:0;--ph:188">
-        <h3><a class="card-link" href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">RAG Evaluation System</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
-        <p class="pitch">Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.</p>
-        <span class="metric">0.94 hit@5 · 0.96 citation presence</span>
-        <div class="more" id="more-rag-eval"><div><p>A 50-question golden set scores each run on retrieval hit@5 and citation presence, and a check script flags any metric that drops more than 5% between runs.</p><div class="dgw" data-dg="rag"></div></div></div>
-        <div class="card-foot"><div class="chips"><span class="chip">Qdrant</span><span class="chip">RAGAs</span><span class="chip">MLflow</span><span class="chip">LangChain</span></div>
-          <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-rag-eval">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
       <article class="card glass sreveal" style="--i:1;--ph:172">
@@ -1402,7 +1418,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-llmops">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:0;--ph:210" hidden>
+      <article class="card glass sreveal" style="--i:0;--ph:210">
         <h3><a class="card-link" href="https://github.com/axon011/graphrag-studio" target="_blank" rel="noopener">GraphRAG Studio</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Full-stack app: upload docs, watch the graph build, chat over it.</p>
         <span class="metric">live graph viz · k-hop retrieval · cited chat</span>
@@ -1411,7 +1427,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-graphrag-studio">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:1;--ph:245" hidden>
+      <article class="card glass sreveal" style="--i:1;--ph:245">
         <h3><a class="card-link" href="https://github.com/axon011/Multilingual-News-NLP-Pipeline" target="_blank" rel="noopener">Multilingual News NLP Pipeline</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Whisper → NER → event classification → summary, on a 4 GB GPU.</p>
         <span class="metric">+13% F1 · 8.4× faster inference</span>
@@ -1420,7 +1436,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-news">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:0;--ph:252" hidden>
+      <article class="card glass sreveal" style="--i:0;--ph:252">
         <h3><a class="card-link" href="https://github.com/axon011/llm-fine-tuning" target="_blank" rel="noopener">LLM Fine-Tuning: JD Extractor</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.</p>
         <span class="metric">100% JSON validity · &lt;4 min on 4 GB GPU</span>
@@ -1429,7 +1445,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-finetune">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
 
-      <article class="card glass sreveal extra" style="--i:1;--ph:162" hidden>
+      <article class="card glass sreveal" style="--i:1;--ph:162">
         <h3><a class="card-link" href="https://github.com/axon011/resume-tailor-public" target="_blank" rel="noopener">Resume Tailor</a><span class="ico" aria-hidden="true"><svg width="15" height="15" fill="currentColor"><use href="#gh"/></svg></span></h3>
         <p class="pitch">Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.</p>
         <span class="metric">3 gates before pdflatex · 106 tests · profile-driven, no personal data in code</span>
@@ -1438,7 +1454,6 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
           <button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-resume">Details <span class="car" aria-hidden="true">▾</span></button></div>
       </article>
     </div>
-    <div class="more-row"><button class="btn btn-ghost show-all" id="show-all" type="button" aria-expanded="false" aria-controls="proj-grid"><span id="show-all-t">Show all 11 projects</span> <span class="car" aria-hidden="true">▾</span></button></div>
   </section>
 
   <section class="block band reveal" id="education">
@@ -1576,18 +1591,6 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
       setTimeout(function(){ measure(); },300); });
   });
 
-  // show all projects: the grid opens with six, the last three wait behind one button
-  var showBtn=document.getElementById('show-all'), showT=document.getElementById('show-all-t');
-  var extras=[].slice.call(document.querySelectorAll('.card.extra'));
-  showBtn.addEventListener('click',function(){
-    var open=showBtn.getAttribute('aria-expanded')!=='true';
-    extras.forEach(function(c){ c.hidden=!open; if(open) io.observe(c); });
-    showBtn.setAttribute('aria-expanded',open);
-    showT.textContent=open?'Show fewer projects':'Show all 11 projects';
-    if(!open) document.getElementById('projects').scrollIntoView({behavior:reduced?'auto':'smooth'});
-    setTimeout(function(){ measure(); },60);
-  });
-
   // copy email
   var cp=document.getElementById('copy-email'), cpT;
   cp.addEventListener('click',function(){
@@ -1653,7 +1656,7 @@ button,[role="button"]{-webkit-user-select:none;user-select:none}
 
   // option B: a cycling deck. Three card slots show the current project (front), the next (right) and the
   // previous (left). Each step rotates the slots and refills the one that has moved out of sight.
-  var DECK=[{"ph": 225, "k": "Featured project", "t": "Wind-Farm Installation Planner", "p": "Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.", "m": "€5.59M → €3.56M", "ms": "189 → 64 days · 19/19 weather-years", "go": "See the project ↓", "href": "#projects", "vizHtml": "<span class=\"viz viz-bars\" role=\"img\" aria-label=\"189 days before, 64 days after\"><span class=\"b\"><i style=\"width:100%\"></i><span>189 d</span></span><span class=\"b after\"><i style=\"width:33.9%\"></i><span>64 d</span></span></span>"}, {"ph": 290, "k": "First-author paper · DSD 2026", "t": "Fusion: A Framework for Unified Sequential Token Adaptation in Vision Transformers", "p": "", "m": "est. 48% less energy", "ms": "31.8% fewer FLOPs for 0.09 pp of accuracy", "go": "Read about it ↓", "href": "#publications", "vizHtml": "<span class=\"viz viz-tok\" aria-hidden=\"true\"><i></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i class=\"m\"></i><i></i><i class=\"x\"></i><i></i><span>merge · exit · prune</span></span>"}, {"ph": 262, "k": "Live app", "t": "Deutsch-Tutor", "p": "AI German tutor that builds your curriculum from your own mistakes.", "m": "two-agent SSE turn", "ms": "explainable recommender", "go": "Open the app ↗", "href": "https://tutor.aravindpradee.me", "vizHtml": "<span class=\"viz viz-live\"><i aria-hidden=\"true\"></i>live at tutor.aravindpradee.me</span>"}, {"ph": 140, "k": "Open source", "t": "LLM Gateway", "p": "Async FastAPI proxy that traces every LLM call to Langfuse and prices it from the provider's own token counts.", "m": "21 tests", "ms": "Langfuse traces · per-call cost", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-gateway", "vizHtml": ""}, {"ph": 200, "k": "Open source", "t": "GraphRAG Agent", "p": "Multi-hop answers by traversing a built knowledge graph, with citations.", "m": "k-hop retrieval", "ms": "knowledge graph · cited answers", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-agent", "vizHtml": ""}, {"ph": 210, "k": "Open source", "t": "GraphRAG Studio", "p": "Full-stack app: upload docs, watch the graph build, chat over it.", "m": "live graph viz", "ms": "k-hop retrieval · cited chat", "go": "View on GitHub ↗", "href": "https://github.com/axon011/graphrag-studio", "vizHtml": ""}, {"ph": 265, "k": "Open source", "t": "Multi-Agent Research Pipeline", "p": "Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.", "m": "2,000+ words", "ms": "cited reports · self-correcting Critic", "go": "View on GitHub ↗", "href": "https://github.com/axon011/multi-agent-pipeline", "vizHtml": ""}, {"ph": 188, "k": "Open source", "t": "RAG Evaluation System", "p": "Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.", "m": "0.94 hit@5", "ms": "0.96 citation presence", "go": "View on GitHub ↗", "href": "https://github.com/axon011/rag-eval-system", "vizHtml": ""}, {"ph": 172, "k": "Open source", "t": "LLMOps Observability Dashboard", "p": "Self-hosted tracing of latency, tokens and cost per model call.", "m": "12 tests", "ms": "full-stack · multi-stage Docker", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llmops-dashboard", "vizHtml": ""}, {"ph": 245, "k": "Open source", "t": "Multilingual News NLP Pipeline", "p": "Whisper → NER → event classification → summary, on a 4 GB GPU.", "m": "+13% F1", "ms": "8.4× faster inference", "go": "View on GitHub ↗", "href": "https://github.com/axon011/Multilingual-News-NLP-Pipeline", "vizHtml": ""}, {"ph": 252, "k": "Open source", "t": "LLM Fine-Tuning: JD Extractor", "p": "QLoRA Qwen2-0.5B extracting structured JSON from job descriptions.", "m": "100% JSON validity", "ms": "<4 min on 4 GB GPU", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-fine-tuning", "vizHtml": ""}, {"ph": 162, "k": "Open source", "t": "Resume Tailor", "p": "Tailors a LaTeX résumé and cover letter to a job description, then refuses to compile any claim it cannot trace to the base CV.", "m": "106 tests", "ms": "3 gates before pdflatex", "go": "View on GitHub ↗", "href": "https://github.com/axon011/resume-tailor-public", "vizHtml": ""}];
+  var DECK=[{"ph": 188, "k": "Featured · open source", "t": "RAG Evaluation System", "p": "Hybrid BM25+dense+RRF retrieval with a RAGAs/MLflow regression harness.", "m": "0.94 hit@5", "ms": "0.96 citation presence", "go": "View on GitHub ↗", "href": "https://github.com/axon011/rag-eval-system", "vizHtml": ""}, {"ph": 140, "k": "Featured · open source", "t": "LLM Gateway", "p": "Async FastAPI proxy that traces every LLM call to Langfuse and prices it from the provider's own token counts.", "m": "21 tests", "ms": "Langfuse traces · per-call cost", "go": "View on GitHub ↗", "href": "https://github.com/axon011/llm-gateway", "vizHtml": ""}, {"ph": 262, "k": "Featured · live app", "t": "Deutsch-Tutor", "p": "AI German tutor that builds your curriculum from your own mistakes.", "m": "two-agent SSE turn", "ms": "explainable recommender", "go": "Open the app ↗", "href": "https://tutor.aravindpradee.me", "vizHtml": "<span class=\"viz viz-live\"><i aria-hidden=\"true\"></i>live at tutor.aravindpradee.me</span>"}];
   var stackEl=document.getElementById('stack'), stackWrap=stackEl.parentNode, slots=[].slice.call(stackEl.querySelectorAll('.pc')),
       cntEl=document.getElementById('deck-cur'), pTimer=null, cur=0, N=DECK.length;
   stackWrap.classList.add('stack-wrap');
@@ -2236,12 +2239,16 @@ var BOT_INTENTS = [
   links:[['See the paper card','#publications']], rel:['publication']},
  {id:'projects', title:'Projects overview', status:'site', source:'Projects',
   ex:['projects','portfolio','what has he built','show me his work','side projects','github projects','list of projects','things he made'],
-  a:"Eleven projects. The featured one is the **Wind-Farm Installation Planner**. The others: Deutsch-Tutor (a live app), LLM Gateway, GraphRAG Agent, GraphRAG Studio, Multi-Agent Research Pipeline, RAG Evaluation System, LLMOps Observability Dashboard, Multilingual News NLP Pipeline, LLM Fine-Tuning: JD Extractor and Resume Tailor.",
-  links:[['See Projects','#projects']], proj:['wind','tutor','gateway','gagent','gstudio','multi','rag','llmops','news','jd','resume'], rel:['featured','live_demo','rag','agents']},
- {id:'featured', title:'Featured project', status:'site', source:'Projects · Wind-Farm card',
-  ex:['best project','favourite project','most impressive project','featured project','wind farm','scheduler','optimization project','his strongest work'],
+  a:"Eleven projects. Three are featured in depth: the **RAG Evaluation System**, the **LLM Gateway** and **Deutsch-Tutor** (a live app). The rest are under Other work: Wind-Farm Installation Planner, GraphRAG Agent, Multi-Agent Research Pipeline, LLMOps Observability Dashboard, GraphRAG Studio, Multilingual News NLP Pipeline, LLM Fine-Tuning: JD Extractor and Resume Tailor.",
+  links:[['See Projects','#projects']], proj:['rag','gateway','tutor','wind','gagent','multi','llmops','gstudio','news','jd','resume'], rel:['featured','live_demo','rag','agents']},
+ {id:'featured', title:'Featured projects', status:'site', source:'Projects · featured cards',
+  ex:['best project','favourite project','most impressive project','featured project','featured projects','his strongest work','main projects'],
+  a:"Three are featured. The **RAG Evaluation System**: hybrid BM25 + dense retrieval, **0.94 hit@5** on a 50-question set (an easy corpus, its README says so). The **LLM Gateway**: a FastAPI proxy the live tutor calls, with a Langfuse trace and a cost for every LLM call. **Deutsch-Tutor**: a live German tutor app. His biggest numbers are on the **Wind-Farm Installation Planner** under Other work: **€5.59M → €3.56M** and 189 → 64 days across 19/19 weather-years.",
+  proj:['rag','gateway','tutor','wind'], rel:['projects','skills']},
+ {id:'windfarm', title:'Wind-Farm planner', status:'site', source:'Projects · Wind-Farm card',
+  ex:['wind farm','wind-farm planner','scheduler','optimization project','turbine','offshore wind','crane scheduling'],
   a:"The **Wind-Farm Installation Planner**: a weather-aware scheduler for a 12-turbine build, 48 campaigns × 20 years of hourly wind, priced as risk. Result: **€5.59M → €3.56M** and 189 → 64 days, across 19/19 weather-years. Crane lifts can't be paused, have wind limits and must fit working hours; the scheduling maths stays deterministic, and the LLM handles only the human edges.",
-  links:[['View on GitHub ↗','https://github.com/axon011/windfarm-planner']], rel:['projects','skills']},
+  links:[['View on GitHub ↗','https://github.com/axon011/windfarm-planner']], rel:['featured','projects']},
  {id:'rag', title:'RAG experience', status:'site', source:'Projects · Experience',
   ex:['rag','retrieval augmented generation','vector database','retrieval experience','has he built rag','qdrant','hybrid search','graphrag','knowledge graph'],
   a:"- **RAG Evaluation System:** hybrid BM25 + dense + RRF retrieval; 0.94 hit@5 and 0.96 citation presence on a 50-question golden set\n- **GraphRAG Agent** and **GraphRAG Studio:** multi-hop answers by walking a built knowledge graph, with citations\n- **At Perinet:** he owned RAG evaluation and model benchmarking",
@@ -2263,7 +2270,7 @@ var BOT_INTENTS = [
   a:"**Multilingual News NLP Pipeline:** Whisper → NER → event classification → summary, on a 4 GB GPU. +13% F1 and 8.4× faster inference. The whole German-language chain was engineered to fit one consumer GPU.",
   links:[['View on GitHub ↗','https://github.com/axon011/Multilingual-News-NLP-Pipeline']], rel:['finetune','projects']},
  {id:'live_demo', title:'Live demo', status:'site', source:'Projects · Deutsch-Tutor card',
-  ex:['demo','live app','can i try something','deployed app','production app','deutsch tutor','something i can use','something live i can try'],
+  ex:['demo','live app','which project is live','can i try something','deployed app','production app','deutsch tutor','something i can use','something live i can try'],
   a:"**Deutsch-Tutor** is live: an AI German tutor that builds your curriculum from your own mistakes. Each turn the reply streams while a corrector marks errors, and a decay-weighted formula, not an LLM, picks what you practise next.",
   links:[['Open Deutsch-Tutor ↗','https://tutor.aravindpradee.me']], rel:['agents','german']},
  {id:'resume_tailor', title:'Resume Tailor', status:'site', source:'Projects · Resume Tailor card',
