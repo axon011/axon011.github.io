@@ -2,14 +2,20 @@
 
 ## Project Overview
 
-- **Project**: Personal portfolio / landing page for GitHub Pages
+- **Project**: Personal portfolio for GitHub Pages, aimed at AI Engineer roles in Germany
 - **URL**: https://aravindpradee.me (custom domain) / https://axon011.github.io
-- **Owner**: Aravind Pradeep (Junior AI Engineer)
-- **Stack**: Vanilla HTML/CSS/JS, GitHub Pages
-- **No build step** - static files served directly
-- **Single self-contained file** - `index.html` holds ALL CSS (in a `<style>` block)
-  and ALL JS (in an inline `<script>` at the end of `<body>`). There are no external
-  stylesheets or scripts, and no Tailwind. The only remote assets are Google Fonts.
+- **Owner**: Aravind Pradeep (AI Engineer)
+- **Stack**: Vanilla HTML/CSS/JS, GitHub Pages (legacy build from `main`), no build step
+- **Single self-contained page**: `index.html` holds all CSS (one `<style>`) and all JS (two inline
+  `<script>`s at the end of `<body>`: the page script, then the Ask-about-me chat). The only remote
+  assets are Google Fonts (Archivo, Martian Mono). The page also fetches `activity.json` (same origin).
+
+## Commit rules (from Aravind, 2026-11-26)
+
+- Commit as `axon011`. **Never add a `Co-Authored-By: Claude` (or any Anthropic) trailer** and never
+  author commits as Claude. Only his name may appear as contributor or maintainer, in this repo and in
+  every axon011 project repo. History was rewritten on 2026-11-26 to enforce this.
+- Preview first, push only when Aravind says "push". The site deploys on push.
 
 ---
 
@@ -17,235 +23,120 @@
 
 ```
 axon011.github.io/
-├── index.html              # THE site — markup + all CSS + all JS, self-contained
-├── Aravind_Pradeep_AI_Engineer.pdf  # Resume PDF (linked from nav + contact)
-├── 404.html                # Custom "page not found" (GitHub Pages serves it for any unknown path); own tokens, Sora + Inter
-├── CNAME                   # Custom domain config (aravindpradee.me)
-├── robots.txt              # Crawl rules
-├── sitemap.xml             # Sitemap for SEO
-├── design.md               # Reusable design-system templates (reference only)
-├── reports/                # Historical frontend audit reports (point-in-time)
-├── .claude/
-│   └── skills/
-│       └── frontend-engineer/
-│           └── SKILL.md    # Frontend engineer skill for Claude Code
-├── README.md               # Repo README
-└── CLAUDE.md               # This file
+├── index.html                      # THE site: markup + CSS + JS
+├── activity.json                   # last commit + latest CI result per featured repo (read by the page)
+├── .github/workflows/activity.yml  # daily job that rewrites activity.json (commits as axon011)
+├── Aravind_Pradeep_AI_Engineer.pdf # résumé PDF (side column, phone bar, contact)
+├── 404.html                        # custom not-found page; still on the OLD tokens (Sora + Inter)
+├── og.png                          # 1200x630 share image (rendered artwork, see TODO)
+├── favicon.svg / favicon.ico / apple-touch-icon.png
+├── CNAME, robots.txt, sitemap.xml
+├── reports/                        # historical audits of older versions; not a live TODO list
+└── CLAUDE.md
 ```
 
-> **Note (2026-08-14):** `css/style.css` and `js/script.js` were deleted. They had
-> been orphaned since `index.html` was rewritten as a self-contained file — the page
-> never loaded them. The `reports/` audits reference them; those are historical
-> records of an older version of the site and are intentionally left as-is.
+---
+
+## Design (2026-11-26 redesign: "Datasheet", split layout)
+
+Chosen by Aravind over several previews (layouts A/B/C, looks Now/Datasheet/Phosphor/Heatmap), then
+reworked after a recruiter-lens review and a phone pass. Preview history:
+https://claude.ai/artifact/AEbRGzqVYjSpFFb3iZ2gvd (version 9 = what was ported).
+
+- **Look**: an engineering component datasheet. Archivo for text, with names and project titles at
+  `font-variation-settings:"wdth" 125` and weight 800; Martian Mono for numbers, labels and terminals.
+  Pale green-grey paper `#eceee7`, ink `#111311`, one signal orange `#c2410c` (dark: `#101210` / `#ff7a3d`).
+  Hairline rules, a 2px ink rule under section heads. No glass, gradients, glow or aurora.
+- **Theme**: `html.light` / `html.dark`, set before paint by the boot script in `<head>` (localStorage
+  key `theme`, else the OS). Tokens live on `:root` and `html.dark`. The toggle is `#theme` beside the name.
+- **Layout**: a sticky identity column (`header.side.hero#top`) beside a scrolling main column. On phones
+  (<960px) the column stacks on top, its section nav is hidden, the four buttons become a 2x2 grid, and a
+  slim fixed bar (`#mbar`: name + Résumé + Email) slides in once the side buttons scroll away.
+- **Recruiter rules** (from the recruiter-lens review): role, degree, location, availability and the four
+  buttons (Résumé, GitHub, LinkedIn, Email) must be visible in the first screen at 1440x900, 1024x768 and on
+  a phone. Plain words at rest ("Selected projects", "See the project", "47 / 50 test questions"), jargon
+  (hit@5, test counts, trade-offs, limits) one click deeper. At rest each item shows a title and one number.
+- **No em dashes** in visible copy. Copy goes through unslop. No fabricated numbers: every figure traces to a
+  repo file, the paper or the résumé.
+
+## Page map
+
+| Part | id / class | Notes |
+|---|---|---|
+| Identity column | `header.side.hero#top` | name, "AI Engineer · M.Sc. Artificial Intelligence · Cottbus, Germany", availability, buttons, headline, career rail (Now / 2024-26 / 2026), focus line, section nav |
+| Results strip | `.glance` | €5.59M → €3.56M (wind farm), 47 / 50 (RAG eval, committed run), est. 48% (paper) |
+| Projects | `section.block#projects` | 3 featured `article.card.case` (RAG Evaluation System, LLM Gateway, Deutsch-Tutor), then 8 `article.card.row-card` under "Other work" |
+| Live demo | `section.live#live` (NOT `.block`) | replay of one recorded gateway call (data inline as `CALL`); autoplays once in view, Replay button |
+| Paper | `section.block#publications` | Fusion, 3 stats, "How it works" fold, arXiv / code / talk links |
+| Skills | `section.block#skills` | five plain rows (AI & agents, Retrieval & data, ML & evaluation, Backend & web, Ops & cloud); every tool also appears on a project card or in Experience |
+| Experience | `section.block#experience` | three jobs, first open; bullets verbatim from the résumé |
+| Education | `section.block#education` | two degrees + languages |
+| Contact | `section.block#contact` | email headline + Copy, links |
+
+**Featured project anatomy** (`article.card.case`): head = kicker, activity line (`.act[data-repo]`, filled
+from `activity.json`, shown only when CI passes), title link (`.card-link`), pitch, big number (`.big.metric`),
+`.exp-btn` "See the project". Body (`.more.case-body`) = tabs: Overview (Problem, How it works pipeline
+`.flow`, Evidence facts with source file, Built with chips), Example (RAG only: real dense / BM25 / fused
+top-5 for question 16), Run it (`.term`, types captured test output, data inline as `TERMS`), Trade-offs,
+Where it breaks. All numbers were captured 2026-11-26 from fresh clones (gateway 21 tests, rag-eval 29,
+tutor 137 in 17 files; recorded call 111+130 tokens, $0.0000473, first token 3,133 ms).
+
+**Motion** (all respect `prefers-reduced-motion`, which shows end states): pipeline stages light up as they
+scroll through the view (`html.js .flow .st.lit`), the fused list fills in, terminals type once on screen,
+the live call replays at its recorded timing.
 
 ---
 
-## Key Design Decisions
+## Ask about me (chat) - keep in sync
 
-- **Single HTML file** - no framework, no build tools, no runtime dependencies
-- **Three fonts (2026-10-03)**: **Sora** for headings and big numbers (`h1.title`, `.sec-title`, `h3`, `.pc .pt`, `.fact .n`,
-  `.stat .big`, `a.mail`, `.stmt strong`), **Inter** for body and all text inside boxes, **JetBrains Mono** for metrics and tags.
-  Chosen by the user over Manrope (its small box text read cramped) and Outfit. Each has a metric-matched Arial fallback
-  (`Inter Fallback`, `Sora Fallback`) so the async font swap moves nothing; on a slow-network test the hero shift went from
-  0.159 (headline re-wrapped when Inter 800 arrived) to 0.003. Keep the type airy: the user does not want it "clustered"
-- **CSS variables** for theming - light/dark mode via `html.dark` (NOT `[data-theme]`),
-  persisted in `localStorage` under key `theme`. A tiny boot script in `<head>` applies the
-  class before first paint (no light flash for dark visitors); the page script also sets `html.light`
-  so the `prefers-color-scheme` CSS fallback never fights an explicit choice. All storage access is
-  wrapped in try/catch (private mode / blocked storage used to throw and kill the whole script)
-- **Static project cards** - hand-written in HTML. The GitHub mark is a single
-  `<symbol id="gh">` sprite at the top of `<body>`, referenced via `<use href="#gh">`. The GitHub API is no longer called;
-  there is no rate-limit or 404-probe risk any more.
-- **No contact form** - the contact section is a set of direct links (email, LinkedIn,
-  GitHub, résumé). Formspree is gone.
-- **Glassmorphic surfaces** over an aurora radial-gradient field (`body::before`)
-- **Motion vocabulary** (added 2026-08-14, from the emil-design-eng ruleset):
-  - `--ease-out: cubic-bezier(.23,1,.32,1)` is the single easing token — use it,
-    don't invent parallel curves
-  - Press feedback: `:active { transform: scale(.97) }` at 140ms on every pressable
-  - Hover rules live in ONE `@media (hover:hover) and (pointer:fine)` block near the
-    end of the `<style>` — never add a bare `:hover` inline, or touch devices get
-    stuck hover states
-  - `prefers-reduced-motion` means gentler, not zero: the block only kills `animation`
-    and `transform`, never `opacity` or `display` (killing those hides content)
-  - Added 2026-10-03 from Emil's `review-animations` checklist (not installed; rules copied here):
-    animate `transform`/`opacity`, never `left`/`top`/`width`/`height` (the chat window's glide-aside uses WAAPI on
-    transform); never write a CSS custom property on `:root` or a big parent every frame (it restyles the whole subtree;
-    a root-level hue variable on scroll measured 5 -> 80 janky frames); exits faster than entrances (chat panel closes in
-    160-180ms, opens in 220-260ms); stagger groups 30-80ms
+The chat script (`/* ================= Ask about me` ...) was carried over unchanged from the old site,
+except "106 tests" → "107 tests". It depends on this page:
 
----
+- **Project cards** are found as `#projects article.card` and matched by `.card-link` text, which must equal
+  the names in `BOT_PID`. It reads `.pitch`, `.metric`, the first non-first-person `.more p`, `.card-foot .chip`,
+  and opens a card by clicking its `.exp-btn`. Keep those class names on every project.
+- **Sections**: `SECS` keys must be `section.block` ids (`projects`, `publications`, `skills`, `experience`,
+  `education`, `contact`); the identity column is `.hero` (= `top`). Do not give other elements `.block`.
+- **Answers are copy from the page.** If you edit availability, experience bullets, education, languages, the
+  paper or contact copy, update the matching `BOT_INTENTS` answer and `BOT_LINES`. Re-check routing with
+  `AskBot.engine.ask(q)` over every intent's `ex` (baseline 318/335, the misses are the old known ones).
+- Its CSS was extracted into the `/* ===== Ask about me window ===== */` block; it uses alias tokens
+  (`--surface-solid`, `--accent-ink`, `--line` ...) defined on `:root`.
+- Open question (2026-11-26): the chat and the old Gateway copy say the live tutor routes calls through the
+  gateway. The tutor-side client is not in the public german-tutor repo; Aravind has not confirmed it.
 
-## Interactive Elements
+## activity.json
 
-| Feature | Location | How it works |
-|---------|----------|-------------|
-| Hero focus line (2026-11-26) | `p.niche` right under `h1.title` | Mono "FOCUS" label + "AI integration, automation and ML models", the one-line specialty the guide asks for. It costs ~25px: the short-screen media query (`min-width:881px` and `max-height:820px`) tightens hero padding and the niche/rail/CTA gaps so the whole column still fits 1024x768 (column bottom 763px) |
-| Hero entrance | `h1.title .w`, `.strip/.hero-rail/.hero-cta`, `.pc` | One-time on load: 7 headline words rise on a 45ms `--i` stagger (`wordin`), the copy and the career rail fade up (`fadeup`, rail at .37s). The project deck is already in place; it starts cycling once loaded |
-| Project deck (hero, 2026-09-28) | `#hero-b` `.b-grid`: copy left, `#stack` right | **Since 2026-11-26 the deck holds only the three featured projects** (RAG Evaluation System, LLM Gateway, Deutsch-Tutor; kickers "Featured · open source" / "Featured · live app"), so counter reads `01 / 03`; Wind-Farm and FUSION left it (FUSION stays in the career rail). Three card slots (`.pc`, `data-pos` 0 front / 1 right = next / 2 left = previous) over a 12-item deck (`DECK` in the page script: wind-farm, FUSION, Deutsch-Tutor, LLM Gateway, then the other 8 projects; copy from the project cards). Every 4.2s the right card comes forward and the slot leaving view is refilled (fade via `.swapping`), so every project comes round. Clicking a back card steps to it; clicking (or Enter/Space on) the front card anywhere but its own link goes to its section: the project's card in `#projects` (opening Show all if hidden) or the FUSION card in `#publications`, and flashed via `.ab-flash` in the deck hue (`--flash-h`, so the card's own `--ph` is untouched). Since 2026-10-05 the card FLIES there (`goSection`): a fixed `.pc-ghost` clone is pinned where the front card is, the page jumps instantly (`renderAll()` first), and the clone travels to the target's on-screen rect (520ms, 380ms on phones; its text fades over the first 55% so it never stretches), handing over to the flash at 70%. Reduced motion: the old smooth scroll + flash; arrow keys step; hover pauses and fans the back cards out (fan offsets tightened at 881-1220px so nothing crosses the viewport). The stack height is fixed once to the tallest of all 11 cards (hidden probe card), so the controls never shift. Below it `.deck-nav`: prev/next buttons, `01 / 11` counter and `#deck-scrub`, an 11-segment scrubber (role=slider): hovering shows a preview card (`#scrub-tip`) of the project under the pointer, clicking jumps, touch drag skims, Home/End work. Phones: tighter stack, back cards show edges only, horizontal swipe steps. Reduced motion: no autoplay |
-| Living aurora | `body::before` + `body::after` | Four soft radial fields (`--aur1..4`, blue→violet→cyan) drifting via `aur-a` 96s / `aur-b` 124s (translate3d+scale+opacity only, `inset:-25%` hides edges). Loops attach only under `html.ready`; richer alphas in dark |
-| Gradient ink | `h1.title em`, `.feat-metric .big`, `.sec-idx` | `--g1/--g2/--g3` per theme, AA-checked stops. The `em` animates `background-position` (`inkshift` 14s, `html.ready`-gated) inside `@supports (background-clip:text)` with solid-accent fallback |
-| Per-project hues | Every `#projects` card (`style="--ph:<hue>"`) | `--pa`/`--pw` derived from `--ph` via `hsl()` (re-derived lighter in dark). Consumed by the wipe bar, spotlight, chevron, `.origin` rule, chip hover tint. Omitting `--ph` falls back to accent blue. Hues: 225 windfarm, 262 tutor, 140 llm-gateway, 200/210 GraphRAG×2, 265 multi-agent, 188 rag-eval, 172 llmops, 245 news, 252 finetune, 162 resume-tailor |
-| Metric count-up | Featured card `.cu[data-to]` spans | On first reveal (existing IntersectionObserver), 900ms cubic ease-out counts €5.59M/€3.56M from 0; final string byte-identical to static text; reduced-motion lands instantly |
-| Timeline draw-in | `#experience .tl::before` | Rests `scaleY(0)` origin-top; `.reveal.in` releases a 700ms `--ease-out` transition |
-| Hero pointer glow | `.hero-glow` (z-index 0) | Pre-blurred radial gradient follows cursor via rAF-throttled translate3d, clamped so the 560px glow stays inside the viewport; bound only when `(hover:hover) and (pointer:fine)` AND no reduced-motion; `pointer-events:none` |
-| Personal strip | Hero, first line of the copy | One glass pill: pulsing `.pip` + "AI Engineer" + "Cottbus, Germany" + `.js-clock` (Intl.DateTimeFormat Europe/Berlin, 1s tick from `ready()`). The pill cannot wrap, so <=380px hides the clock and its separator |
-| Section map (2026-10-05) | `.chap` (fixed, appended to `<body>`, NOT inside the nav) | Replaced the old `.nav::after` progress bar: 8 thin segments at the nav's bottom edge, one per section (hero + 7), each filling as you read it. Where `animation-timeline: scroll()` exists each fill is a CSS animation on the root scroll timeline with a per-segment `animation-range` computed in `measure()` (no script per frame); otherwise a rAF-throttled scroll listener writes `scaleX`. Offsets come from `offsetTop` (ignores the scroll transition's transforms) and are re-measured by a ResizeObserver on `<body>`, on resize and after fonts. Hover shows the section name, click jumps (fine pointers); on touch it is display-only. `aria-hidden`, buttons `tabindex=-1`: the nav links are the accessible route. Writing `--p` on the nav every frame restyled its whole subtree; removing it halved style time while scrolling (phone, 4x CPU: 2047 to 1121ms per 5s scroll, slow frames 6.2% to 2.8%) |
-| FUSION tokens (2026-10-05) | `.fz` before `#publications .pub-how`, own `<script>` before the chat script | A 6x6 token grid plays the paper's order, looping while half in view (user's pick): play ~3.2s, hold the end state 2s, fade 160ms, reset and play again; off screen every animation is paused (and the hold timer cleared), back on screen it resumes where it stopped. One run: pairs of tokens merge in three small steps, a second smaller image stops at "exit early" with a check, about a third of the rest is pruned (fade + shrink); the running stage's label lights up. No Replay button (it loops). Plain HTML boxes, NOT SVG (WAAPI transforms on SVG forced ~40 page layouts). `contain:layout paint`. No numbers drawn. Reduced motion: end state at once. Redrawn on width change. `window.FusionTokens` for tests |
-| Mobile menu | `#menu` + `.nav-links` (<=980px; seven links + actions no longer fit a row below that) | Bars/X icons cross-fade like the theme toggle; panel slides in 6px + fades. `aria-expanded`, Esc closes, link click closes |
-| Scroll reveal | Sections with `.reveal` | Fade + rise via IntersectionObserver adding `.in` |
-| Staggered card reveal | `#projects` cards (`.sreveal`) | Same observer; per-card `cardin` keyframe, `--i` sets a 60ms column offset. `backwards` fill ONLY, so the finished state releases `transform` back to the hover rule |
-| Card spotlight | `.card::after` | motion-primitives Spotlight: radial `--accent-wash` at `--mx/--my`, fades in on hover. JS binds `pointermove` only when `(hover:hover) and (pointer:fine)` matches |
-| Project "Details ▾" | `.exp-btn` + `.more` on every card | `.more{display:grid;grid-template-rows:0fr}` → `1fr` over 260ms; chevron rotates; `aria-expanded`/`aria-controls`. Cards are `<article>` with a stretched `.card-link::after`, so the button sits above the link (`z-index:1`) — no button-inside-anchor |
-| Stack marquee | About `.a-stack .marquee` | 40s linear duplicated track, mask fade at both ends, paused on hover (gated), killed under reduced-motion. The one permitted ambient loop outside the hero |
-| Featured + Other work (2026-11-26) | `#proj-grid` (featured) + `.ow-h` + `#proj-other.proj-grid.ow` | Per the AI-portfolio guide ("2-4 deep systems, rest in brief"): three featured cards (RAG Evaluation System, LLM Gateway, Deutsch-Tutor) at full size, then 8 compact "Other work" cards (Wind-Farm first). `.ow .card` is a grid (title / pitch / metric + Details), chips hidden (they still feed the skill map and the chat). No `.extra`/`hidden` cards and no Show-all button any more; the goSection/revealCard `show-all` lookups are null-safe leftovers. RAG Eval and LLM Gateway Details carry a `.lim` line ("Where it falls short...") linking the repo README `#limitations`; keep those in sync with the READMEs |
-| Skill map (Skills section) | `#skills .sm-panel`: `#sm-skills` chips grouped left, `#sm-projects` rows right, `#sm-links` SVG | Every chip from the project cards (35 tools, full lists, not the trimmed 4) linked to the projects that use it. Search (`#sm-q`) narrows chips; hover (fine pointers) or click pins a skill or project and draws curves from the skills column edge to the matching rows. One column (<=820px): no curves; tapping a skill opens an inline answer card (`.sm-answer`) under its group listing the projects, each scrolling to its row. Tools not on any card are answered by the search fallback and live in the toolkit below. At <=820px the per-project list folds behind `#sm-more` ("See tools by project"); answer-card links call `openProjects()` before scrolling to a row |
-| Toolkit | `#toolkit` under the skill map | The tools no project card names (24 since Langfuse moved onto the LLM Gateway card, 2026-11-20), in five labelled rows. Tools the Experience section names (Go, MQTT, Kubernetes, GitHub Actions, GitLab CI/CD from Perinet bullet 1; RAG from bullet 3) get a green dot and open `#tk-note` quoting that bullet with the tool highlighted and a link to `#experience`. Search matches light the chip (`.hit`). If you edit those Perinet bullets, update `WORK_LINES` in the skill-map script |
-| Ask about me (2026-10-03) | `.ab-launch` (bottom-right) + `#ab-panel`, last `<script>` in `<body>` | Floating chat window answering recruiter questions from this page's own copy. No model, no network: BM25 over each intent's example questions (`BOT_INTENTS`, 37 intents), synonyms, typo repair, a tool lookup over the project chips + toolkit + Perinet bullets (`BOT_PROJECTS`/`BOT_TOOLKIT`/`BOT_LINES`), "did you mean" chips, an honest fallback with the email. Window: drag by the header (arrow keys on the grip), resize on desktop, minimise to the title bar; no backdrop, no scroll lock, `aria-modal=false`, Esc only from inside; turns see-through while the page scrolls; position + conversation in sessionStorage. Phones: a 56dvh floating window, tuned for cost (2026-10-03): solid `--surface-solid` panel with no backdrop blur, a lighter shadow, `contain:layout paint`, a 24px slide-up with no scale, `will-change` only while animating (`.ab-anim`), no auto-focus on coarse pointers (the keyboard appears only on tapping the input), and a `visualViewport` fit (`.kb`) that moves and shortens the window above the on-screen keyboard. The greeting is built two frames after open so the slide paints first. Answers naming 2+ projects get a button per project (`proj` ids in `BOT_PID`): the card is read from the DOM, "Show on page" opens Show all/Details, flashes the card and moves the window off it. **If you edit availability, Perinet bullets, education, languages, the FUSION card or contact copy, update the matching `BOT_INTENTS` answer too.** Project cards need no bot edit unless a title changes (`BOT_PID` names must equal the card titles; the engine throws if a project lacks an id). Visa answer comes from Aravind, not the page. When closed, the launcher steps aside (`.ab-away`) while the page scrolls down and returns 700ms after it stops or on scroll up; on phones it sat on text. "Show on page" and in-page answer links close the window to its button on phones, and on desktop when there is no room beside the card (the conversation is kept). Touch screens (`pointer:coarse`) get 40px chips/links/project buttons and 46px input/send. Long unbroken input wraps (`.ab-bub{overflow-wrap:anywhere}`, `.ab-log{overflow-x:hidden}`). **Added 2026-10-05:** (1) *Retrieval trace, folded:* for real questions the meta line ("matched publication · 1.00") is a button (`.ab-why`, `aria-expanded`) that opens `.ab-trace`: the up-to-3 closest intents from `r.top` with bars relative to the best score (winner in accent, runners-up grow first), "BM25, in your browser". Chip-picked answers ran no retrieval and keep the plain meta. (2) *Section-aware:* `SECS` in the chat script holds each section's launcher label ("Ask about Perinet", "Ask about FUSION", "Ask if he's available"...) and 3 questions; an IntersectionObserver (`-45% 0px -50% 0px`, like the nav) tracks the section, the label cross-fades 260ms after scrolling settles (and sets the button's `aria-label` to match), the section's questions are offered on open (`.ab-sec` row, "About Publications") and follow you while the window is open (an unused row is replaced, a used one stays as history; the intro is covered by the greeting's "Try" row). (3) *Answers go to their section:* the section is read from the intent's own `source` ("Publications · ..."); asked answers (`r._go`) get a "Go to X ↓" link if they have none, and on wider screens the page scrolls there 450ms after the answer (the window floats beside it); phones only get the link (it closes the window to its button). Answers not on the page (salary, visa) stay put. **Every question in `SECS` must get a real answer:** 4 of the first 18 didn't (vector DBs, peer review, "48% less energy", graduation date) and were swapped; re-check with `AskBot.engine.ask(q)` if you edit them. (4) *Answers are read from the top:* a new answer (and a project card) stops with its first line just under the window's top edge instead of jumping to the end (`showMsg`); if everything from the answer down fits, it scrolls to the end as before. A round down-arrow button (`.ab-down`, above the input) appears while more than 40px is below and jumps to the end. Section-question rows only follow you to the end if you were already there; typing dots and history restores still scroll to the end |
-| Scroll transition (2026-10-03) | own `<script>` before the chat script; `html.st-on` | Scroll-linked handoff between sections, "Medium" picked from a preview: the leaving section scales to ~0.955 from its bottom and fades to ~0.38 as its bottom crosses the upper half; the arriving one rises 48px and fades in from 0.38 as its top crosses the lower half. Transform/opacity are written straight onto `.hero` and each `section.block` (no custom properties) and cleared at rest and off screen, so a still page is the static page. `section.block.reveal` loses its transition while it runs. Reduced motion: half-strength fade only. Measured at 4x CPU: ~2.2% janky frames vs ~1.3% without |
-| Project pipelines | `.dgw` mount inside the Details panel of Multi-Agent, RAG Eval, News NLP, Resume Tailor | The approved prototype component: stage boxes, dashed animated links, travelling highlight (`st-live`/`ln-live`), Pause button. Stage data was verified against each GitHub repo on 2026-09-28. An open card with a diagram spans the full grid width (`:has()`), so the flow runs horizontally; a container query (`dg`, <=720px) switches it to vertical. Animates only while its Details panel is open |
-| Press feedback | All `.btn`, `.icon-btn`, `.cc`, `.card` (.99), `.fact`, `.exp-btn`, `.copy`, `.sk`, `.tkc`, deck buttons | `:active` scale, 140ms `--ease-out` |
-| Card hover lift | `#projects` cards | `translateY(var(--lift,-4px))` + gradient bar wipes in via `::before scaleX`; reduced-motion sets `--lift:0px` |
-| Timeline rail | `#experience .tl` | 1px gradient rail + 11px dots per `.job`; first job gets the accent ring |
-| Copy email | `#copy-email` inline after the email headline in `#contact` | Clipboard API; copy→check icon cross-fade, tooltip "Copied", resets after 1.4s |
-| Active nav | Navbar links | `.on` class via IntersectionObserver, `-45%/-50%` rootMargin |
-| Dark/light toggle | Navbar `#theme` | Both SVGs stacked in one grid cell; `.off` class cross-fades + rotates 90° over 180ms. With `document.startViewTransition` (and no reduced-motion) the swap is a circular clip-path reveal from the toggle (`--tx/--ty`) |
-
-There is no typing effect, particle canvas, filter pills, contribution graph, or
-back-to-top button. Those existed in an older version of the site and were removed.
-
-**Airy type (2026-10-03).** `h1.title` is Sora 600, `-.018em`, line-height 1.08, `max-width:13.5ch`; `.sec-title` Sora 600,
-`-.012em`, 1.15; card/deck/pub titles 650, `-.005em`; lede/stmt/pitch line-height 1.7. Boxes (`.card,.pc,.glass,.fact,.mini,
-.cc,.ab-panel,.tk-panel,.sm-panel,#scrub-tip`) carry `letter-spacing:.012em`, which inherits into box text; paragraphs in
-boxes get line-height 1.68; chips `.02em`; untracked mono labels `.02em` while tracked caps (`.ftag`, `.tk`, `.k`) keep
-theirs; `.fact .l`/`.stat .l` are 15px. At <=400px the 2x2 `.fact` tiles drop the tracking (they overflowed at 320) and
-at <=380px the deck `.pc .pm` is 17px so "est. 48% less energy" fits. These rules live in one block,
-"type: Sora headings, airy spacing, roomier boxes", just before the hover block.
-
-**Type scale (2026-09-27 redesign): seven steps, nothing in between.** `--t-xs:12px`, `--t-sm:14px`, `--t-md:17px` (body),
-`--t-lg:20px`, `--t-xl:clamp(21px,2.3vw,25px)` (lede, About statements), `--t-2xl:clamp(30px,3.6vw,42px)` (section titles),
-`--t-hero:clamp(46px,7.6vw,92px)` (hero h1 overrides to `clamp(44px,6.6vw,84px)` beside the bento). Body copy uses `--body`
-(#30333c light / #c9ccd5 dark), darker than `--muted`. **Three radii:** `--r-sm:8px`, `--r-md:12px`, `--r-lg:22px`.
-`--maxw:1160px`, `section.block{padding:92px 0}` (64px ≤560). No em dashes in visible copy. Copy stays terse: one-sentence
-lede, three-statement About, one-line project pitches — long text lives behind "Details ▾".
-
----
-
-## Section Map
-
-Sections are numbered 01-07 via `.sec-idx` in each `.sec-head`. **Order since 2026-10-03 (user: "skills should
-be below experience"): About, Experience, Skills, Publications, Projects, Education, Contact.** The even positions
-(02 Experience, 04 Publications, 06 Education) carry `class="band"` — a full-bleed `--band`
-tint via `::before{inset:0 calc(50% - 50vw)}` with its own 1px top/bottom rules (the
-banded section and its follower drop `border-top` to avoid doubling). `html` carries
-`overflow-x:clip` (NOT hidden — hidden would break the sticky nav; and on `body` alone
-clip does not reach the viewport) to trim the band's half-scrollbar overhang.
-
-| Section ID | Description |
-|-----------|-------------|
-| `.hero` (`#top`) | `#hero-b`: copy (strip pill, headline, `.niche` focus line "AI integration, automation and ML models" (2026-11-26), career rail, 3 CTAs, availability status) beside the cycling project deck; one column <=880px. No section index. The career rail `ol.hero-rail` (added 2026-11-20, replaced the lede) is three linked rows on a dot rail: Now / Technical Lead & AI Engineer -> `#experience`; 2024 – 26 / AI Engineer, Perinet -> `#experience`; 2026 / First-author paper, DSD 2026 -> `#publications`. Desktop height <=820px trims the hero top padding to 32px so the status line stays in the first screen. If the Experience titles or the FUSION energy wording change, update these rows. |
-| `#about` | 01 - `.about` grid: `.a-lead` glass panel (3 bold-lead statements + footer line; no blur/focus reveal, removed 2026-09-28) beside `.a-side` (2x2 `.fact` tiles: M.Sc., ~3 yrs, 2 yrs, 10; then the stack marquee). One column <=880px |
-| `#experience` | 02 - timeline with rail + dots, three positions (startup Technical Lead & AI Engineer Jun 2026 to present, company deliberately unnamed, from the base résumé 2026-11-16; Perinet; Cognizant). Never claim the startup launched, has users or revenue. Perinet bullet 1 names GitHub Actions and GitLab CI/CD; bullet 3 says "Owned RAG evaluation and model benchmarking" (both match the resume, 2026-09-28) |
-| `#skills` | 03 - the skill map and the toolkit (see Interactive Elements) |
-| `#publications` | 04 - one-column glass card: First-author `.ftag` + DSD/arXiv meta, linked Fusion title, authors, `.pub-stats` row (48% energy, labelled estimated + power-save setting, since the paper derives it analytically from the FLOPs profile / 1.58 pp recovered by staging / 31.8% fewer FLOPs for 0.09 pp), summary, `.pub-how` three steps (merge, exit early, prune; wording checked against the paper method section), `.pub-why` (1.62 pp is the cost of running pruning and early exit in parallel, paper Table VII, not all three mechanisms; one model for both settings). The hero deck metric reads "est. 48% less energy", repro note, three buttons. No calibration claim: the thesis review found 3.4x drops to ~1.2x after temperature scaling |
-| `#projects` | 05 — **11 hand-written** `<article class="card">`: 3 featured in `#proj-grid` (RAG Evaluation System, LLM Gateway, Deutsch-Tutor; the tutor is the only live app and its card-link goes to https://tutor.aravindpradee.me) + 8 compact cards under "Other work" in `#proj-other` (Wind-Farm, GraphRAG Agent, Multi-Agent, LLMOps, GraphRAG Studio, News NLP, JD Extractor, Resume Tailor). The old full-width `.feat` Wind-Farm card is gone (its `.feat` CSS and count-up script are now unused). Title + one-line pitch + metric + chips + Details ▾. Not API-driven. |
-| `#education` | 06 — 2 `.mini` cards (M.Sc. BTU with language chips English C1 · German B1 · Malayalam, B.Sc. BVM) |
-| `#contact` | 07 — email as a Sora headline (`aravindpradeep001@<wbr>gmail.com`, so phones break after the @) + inline copy button, then 3 `.cc` tiles (LinkedIn, GitHub, résumé PDF) |
-
-There is no `#github-stats` or `#languages` section (languages moved into Education).
+`{"generated": ISO, "repos": [{"repo", "last_commit", "ci"}]}` for 8 repos. The workflow runs daily at 04:20
+UTC (and on demand), uses `gh api` with the default token, and commits only when the file changes. The page
+shows a line only for `ci == "success"`; the tutor has no CI, so it shows none.
 
 ---
 
 ## GitHub Username
 
-The GitHub username `axon011` appears only in `index.html` now — the JSON-LD `sameAs`
-block, the OG image URL, the hero GitHub button, the 9 project card `href`s, the
-contact tile, and the footer source link. If the username changes, a single find-and-replace in `index.html` covers it.
-
----
+`axon011` appears in `index.html` (JSON-LD `sameAs`, OG image URL, buttons, project links, contact, footer),
+in `activity.json` and in the workflow. A rename needs a find-and-replace across those three files.
 
 ## Companion Repo: axon011 (Profile README)
 
-Located at `C:\Users\Aravind\Desktop\workspace\GIT\axon011\`
-- Contains `README.md` displayed on the GitHub profile page
-- Has badges linking to this portfolio site
-- Shows GitHub stats cards (github-readme-stats, streak stats)
-- Project table matching the resume
+`C:\Users\Aravind\Desktop\workspace\GIT\axon011-profile\` (repo `axon011/axon011`). Its weekly
+`refresh-readme.yml` commits as axon011 since 2026-11-26.
 
----
+## Phone baseline
 
-## Content Source
+`html` has `-webkit-tap-highlight-color:transparent`, `text-size-adjust:100%`, `overflow-x:clip`; controls have
+`touch-action:manipulation`; on `pointer:coarse` every button and link row is at least 44px tall. Two
+`theme-color` metas (light `#eceee7`, dark `#101210`) follow the OS and the toggle rewrites both. Deliberately
+NOT added: `interactive-widget=resizes-content` (it would defeat the chat window's `visualViewport` fit).
 
-All content is based on the LaTeX resume (moderncv format). Key details:
-- **Title**: Junior AI Engineer | Agentic Systems & RAG
-- **Experience**: Perinet GmbH (Jun 2024-Present), Cognizant (Oct 2021-Aug 2022)
-- **6 Projects**: Multi-Agent Pipeline, RAG Eval System, LLMOps Dashboard, GenAI Study Assistant, Commercial RAG Assistant, ViT Edge Optimization
-- **Skills**: AI/Agents, LLMOps, Python/ML, Backend, Vector DBs, Cloud/DevOps, Frontend, Data
-- **Education**: M.Sc. AI @ BTU Cottbus, B.Sc. CS @ BVM Holy Cross
+## Known issues / TODO
 
----
-
-## Load performance (2026-10-03)
-
-Every `section.block` has `content-visibility:auto`: below-the-fold sections skip layout and paint until
-they near the viewport. Measured on a phone-like load (390px, CPU 4x slower, slow 4G, 5-run medians, two
-sets): longest task 473-579ms -> 180-195ms, blocking from start 532-715ms -> 326-346ms, LCP 2.4-2.6s ->
-1.6-1.7s, layout 1.6-1.8s -> 1.0s. What that requires, and must stay true:
-
-- **Paint containment clips a section to its box.** So each section spans the viewport
-  (`margin-inline:calc(50% - 50vw);padding-inline:calc(50vw - 50%)`) and the full-bleed bands and card
-  shadows stay visible. Content positions are unchanged (screen-by-screen pixel diff: sub-pixel text only).
-- **`contain-intrinsic-size` sizes the CONTENT box.** The per-section estimates are measured heights minus
-  the section's vertical padding, in tiers for >1100, <=1100, <=980, <=820, <=680 and <=560px. Re-measure if a
-  section's content changes a lot. Counting the padding twice made menu jumps overshoot by one padding per
-  unrendered section.
-- **Jumps must call `renderAll()`.** It adds `html.cv-all` for 1.8s so every section renders while a scroll
-  target is computed. In-page `a[href^="#"]` clicks do this automatically (capture-phase listener). The deck
-  card (`goSection`), the chat's "Show on page" (`revealCard`) and the skill rows call it explicitly. Any new
-  programmatic `scrollIntoView` to something below the fold must call it too.
-- **Full-page screenshots** (Playwright `fullPage`) leave far sections blank, because they're skipped. That's
-  a capture artifact. Compare screen by screen instead.
-- **Dead code removed:** the About blur/focus reveal (`.fx`, `fxMeasure`). Its markup went 2026-09-28, but its
-  script still forced layout on load and on every font load.
-
-## Phone baseline (2026-10-03)
-
-`html` has `-webkit-tap-highlight-color:transparent` and `text-size-adjust:100%`; controls have `touch-action:manipulation`
-and buttons are not text-selectable. Two `theme-color` metas (light `#f6f7fb`, dark `#0a0b10`) follow the OS, and the
-theme toggle rewrites both to the chosen theme. Deliberately NOT added: `viewport-fit=cover` (content would sit under the
-notch in landscape without safe-area padding on `.wrap`/nav) and `interactive-widget=resizes-content` (it would defeat the
-chat window's `visualViewport` keyboard fit).
-
-## Known Issues (2026-08-14)
-
-- [x] ~~Navbar overflows ~36px at a 320px viewport~~ — fixed 2026-09-01. The brand plus
-      three actions needed 374px of a 320px row, and `html{overflow-x:clip}` cut the
-      Résumé button in half with no scrollbar to reveal it. Two media queries after the
-      860px block reclaim it: `≤380px` tightens `.nav-in` padding (18→14) and gap (16→10),
-      `.brand` (15→14px), `.nav-actions` gap (10→8) and the Résumé button (13px type,
-      9/12 padding); `≤359px` swaps the visible label to "CV" via `.cv-long`/`.cv-short`,
-      with `aria-label="Résumé (PDF)"` on the anchor keeping the accessible name intact.
-      Verified zero overflow at 320/360/375/768/1440 in both themes
-- [ ] Google Fonts is the only remote dependency; the page renders fine on the system
-      font fallback if it's blocked, but headings reflow slightly
-- [ ] `reports/` still cites `css/style.css` and `js/script.js` line numbers. Those
-      files no longer exist — treat those reports as history, not as a live TODO list
-
----
-
-## TODO
-
-- [x] ~~Add favicon~~ — `favicon.svg` + `favicon.ico` (16/32/48) + `apple-touch-icon.png`
-      (180×180, full-bleed, iOS rounds the corners itself) added 2026-09-04, replacing the
-      inline data-URI icon that depended on an installed Inter/Arial. The mark is a white
-      "A" drawn as paths (no font dependency) on an accent-gradient rounded tile — chosen
-      over a 3-node graph motif because only the letterform stays legible at 16px.
-      `favicon.svg` is the source: regenerate the raster pair by rendering it at 16/32/48
-      and 180 in headless Chromium, then assembling the .ico with Pillow
-- [x] ~~Add Open Graph image for social sharing previews~~ — `og.png` added 2026-09-01
-      (1200×630, 73KB indexed PNG). Wired to `og:image` + `twitter:image`, with
-      `twitter:card` raised to `summary_large_image`. It is a rendered artwork, not a
-      source file: regenerate by re-rendering the throwaway `og-src.html` recipe rather
-      than editing the PNG. The JSON-LD `"image"` stays the GitHub avatar — schema.org
-      wants a photo of the person there, not a share card
-- [ ] Consider adding a blog section
+- [ ] `404.html` still uses the old Sora/Inter tokens; restyle it in Datasheet.
+- [ ] `og.png` shows the old design; re-render it in Datasheet (regenerate from an HTML recipe, do not edit the PNG).
+- [ ] The `<title>` and OG titles still use an em dash ("Aravind Pradeep — AI Engineer").
+- [ ] Removed in the redesign (in git history if wanted back): cycling hero deck, skill map + toolkit, section
+      map, scroll transitions, aurora, FUSION token animation, per-project pipeline diagrams (`.dgw`),
+      `content-visibility` tiers.
+- [ ] Consider a short "lab notes" section (the guide's writing signal); the RAG eval finding (retrieval-only
+      hit@5 = 1.00 because `corpus.md` repeats each question as a heading) is drafted but not approved for publishing.

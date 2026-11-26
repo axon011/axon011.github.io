@@ -1,0 +1,45 @@
+{
+ "generated": "2026-11-26T10:43:08+00:00",
+ "repos": [
+  {
+   "repo": "rag-eval-system",
+   "last_commit": "2026-11-26T09:13:57Z",
+   "ci": "success"
+  },
+  {
+   "repo": "llm-gateway",
+   "last_commit": "2026-11-26T09:14:15Z",
+   "ci": "success"
+  },
+  {
+   "repo": "german-tutor",
+   "last_commit": "2026-10-11T18:43:35Z",
+   "ci": null
+  },
+  {
+   "repo": "graphrag-agent",
+   "last_commit": "2026-11-26T09:13:02Z",
+   "ci": "success"
+  },
+  {
+   "repo": "multi-agent-pipeline",
+   "last_commit": "2026-11-26T09:14:48Z",
+   "ci": "success"
+  },
+  {
+   "repo": "llmops-dashboard",
+   "last_commit": "2026-11-26T09:14:47Z",
+   "ci": "success"
+  },
+  {
+   "repo": "windfarm-planner",
+   "last_commit": "2026-08-21T13:40:59Z",
+   "ci": null
+  },
+  {
+   "repo": "fusion-vit",
+   "last_commit": "2026-09-01T13:59:57Z",
+   "ci": null
+  }
+ ]
+}

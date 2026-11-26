@@ -1,0 +1,39 @@
+name: Refresh project activity
+# Writes activity.json (last commit and latest CI result per featured repo) for the site's status lines.
+on:
+  schedule:
+    - cron: "20 4 * * *"
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build activity.json
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import json, subprocess, datetime
+          repos = ["rag-eval-system","llm-gateway","german-tutor","graphrag-agent","multi-agent-pipeline","llmops-dashboard","windfarm-planner","fusion-vit"]
+          def gh(path):
+              r = subprocess.run(["gh","api",path], capture_output=True, text=True)
+              return json.loads(r.stdout) if r.returncode == 0 else None
+          out = {"generated": datetime.datetime.now(datetime.timezone.utc).isoformat(timespec="seconds"), "repos": []}
+          for n in repos:
+              c = gh(f"repos/axon011/{n}/commits?per_page=1")
+              runs = ((gh(f"repos/axon011/{n}/actions/runs?per_page=1") or {}).get("workflow_runs") or [])
+              out["repos"].append({"repo": n,
+                  "last_commit": c[0]["commit"]["committer"]["date"] if c else None,
+                  "ci": (runs[0]["conclusion"] or runs[0]["status"]) if runs else None})
+          json.dump(out, open("activity.json", "w"), indent=1)
+          PY
+      - name: Commit if changed
+        run: |
+          git config user.name "axon011"
+          git config user.email "90232650+axon011@users.noreply.github.com"
+          git add activity.json
+          git diff --staged --quiet || git commit -m "Refresh project activity"
+          git push
