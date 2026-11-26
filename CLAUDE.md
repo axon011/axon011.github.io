@@ -64,9 +64,10 @@ https://claude.ai/artifact/AEbRGzqVYjSpFFb3iZ2gvd (version 9 = what was ported).
 | Part | id / class | Notes |
 |---|---|---|
 | Identity column | `header.side.hero#top` | name, "AI Engineer · M.Sc. Artificial Intelligence · Cottbus, Germany", availability, buttons, headline, career rail (Now / 2024-26 / 2026), focus line, section nav |
-| Results strip | `.glance` | €5.59M → €3.56M (wind farm), 47 / 50 (RAG eval, committed run), est. 48% (paper) |
+| Results strip | `.glance` | 47 / 50 (RAG eval, committed run), $0.00005 (one recorded gateway call), est. 48% (paper). The wind-farm planner was a CASE STUDY: never feature it (strip, explorer, featured cards); it lives in Other work labelled "case study" |
 | Projects | `section.block#projects` | 3 featured `article.card.case` (RAG Evaluation System, LLM Gateway, Deutsch-Tutor), then 8 `article.card.row-card` under "Other work" |
-| Live demo | `section.live#live` (NOT `.block`) | replay of one recorded gateway call (data inline as `CALL`); autoplays once in view, Replay button |
+| Try the results | `section.explore#explore` (NOT `.block`) | two tabs: RAG test set (50 cells from `eval/results/run_2026-05-01.json`, filters Missed / No citation / Slowest 10) and Fusion trade-off (Full model / Balanced / Power-save on an accuracy vs FLOPs chart with DSD Table II baselines). Data inline (`RQ`, `FU`) |
+| Live demo | `section.live#live` (NOT `.block`) | replays recorded gateway calls (`CALLS`: gpt-oss-20b and gpt-oss-120b, recorded 2026-11-26) with a model picker; autoplays once in view, Replay button. Gemini was not recorded (empty key in the gateway `.env`) |
 | Paper | `section.block#publications` | Fusion, 3 stats, "How it works" fold, arXiv / code / talk links |
 | Skills | `section.block#skills` | five plain rows (AI & agents, Retrieval & data, ML & evaluation, Backend & web, Ops & cloud); every tool also appears on a project card or in Experience |
 | Experience | `section.block#experience` | three jobs, first open; bullets verbatim from the résumé |
@@ -81,7 +82,7 @@ top-5 for question 16), Run it (`.term`, types captured test output, data inline
 Where it breaks. All numbers were captured 2026-11-26 from fresh clones (gateway 21 tests, rag-eval 29,
 tutor 137 in 17 files; recorded call 111+130 tokens, $0.0000473, first token 3,133 ms).
 
-**Motion** (all respect `prefers-reduced-motion`, which shows end states): pipeline stages light up as they
+**Motion** (count-up on headline numbers, hover shading on projects, a reading-progress line under the current nav link; all respect `prefers-reduced-motion`, which shows end states): pipeline stages light up as they
 scroll through the view (`html.js .flow .st.lit`), the fused list fills in, terminals type once on screen,
 the live call replays at its recorded timing.
 

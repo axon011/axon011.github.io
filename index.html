@@ -322,7 +322,7 @@ html.js .rr-col li:not(.in){opacity:0;transform:translateX(-8px)}
 .glance{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:2px solid var(--ink);margin-bottom:64px}
 .glance div{display:grid;align-content:start;gap:6px;padding:18px 18px 18px 0}
 .glance div+div{padding-left:18px;border-left:1px solid var(--rule)}
-.glance .n{white-space:nowrap;font:500 clamp(18px,1.7vw,26px)/1.1 var(--f-mono);color:var(--accent)}
+.glance .n{overflow-wrap:anywhere;font:500 clamp(18px,1.7vw,26px)/1.1 var(--f-mono);color:var(--accent)}
 .glance .l{font-size:14px;line-height:1.45;color:var(--ink-2)}
 .glance .l a{color:inherit}
 .glance-h{font:500 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin-bottom:10px}
@@ -450,6 +450,96 @@ button,a{touch-action:manipulation}
   .row .p{grid-column:1;grid-row:3}
 }
 @media (pointer:coarse){.row .exp-btn{width:44px;height:44px;margin:-6px}}
+
+/* ===== interactive: try the results yourself (2026-11-26) ===== */
+.explore{margin-top:88px}
+.ex-tabs{display:flex;gap:4px;border-bottom:1px solid var(--rule);margin:18px 0 22px;overflow-x:auto;scrollbar-width:none}
+.ex-tabs::-webkit-scrollbar{display:none}
+.ex-tabs button{flex:none;position:relative;padding:10px 14px 12px;font:600 15px/1 var(--f-text);color:var(--muted)}
+.ex-tabs button[aria-selected="true"]{color:var(--ink)}
+.ex-tabs button[aria-selected="true"]::after{content:"";position:absolute;left:12px;right:12px;bottom:-1px;height:2px;background:var(--accent)}
+@media (hover:hover){.ex-tabs button:hover{color:var(--ink)}}
+.ex-panel{display:grid;gap:18px}
+.ex-lede{font-size:15px;line-height:1.6;color:var(--ink-2);max-width:62ch}
+.ex-src{font:400 12px/1.5 var(--f-mono);color:var(--muted)}
+.ex-read{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));border-block:1px solid var(--rule)}
+.ex-read div{display:grid;gap:4px;padding:14px 14px 14px 0}
+.ex-read div+div{padding-left:14px;border-left:1px solid var(--rule)}
+.ex-read .n{font:500 clamp(20px,2vw,28px)/1.1 var(--f-mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.ex-read .l{font-size:13px;line-height:1.4;color:var(--muted)}
+.ex-ctl{display:grid;gap:14px}
+.ex-row{display:flex;flex-wrap:wrap;align-items:center;gap:10px 16px}
+.ex-row>label,.ex-row>.lbl{font:500 12px/1.4 var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);min-width:7.5rem}
+.seg{display:inline-flex;border:1px solid var(--rule);border-radius:8px;padding:3px;gap:2px;background:var(--panel)}
+.seg button{min-width:44px;height:36px;padding:0 12px;border-radius:6px;font:500 14px/1 var(--f-text);color:var(--ink-2)}
+.seg button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
+input[type=range].rng{flex:1 1 220px;min-width:180px;accent-color:var(--accent);height:28px}
+.rng-val{font:500 15px/1 var(--f-mono);color:var(--ink);min-width:3.5em}
+.ex-note{font-size:14px;line-height:1.55;color:var(--ink-2)}
+.ex-note b{color:var(--ink)}
+/* wind farm: one bar per start month */
+.wf-bars{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));align-items:end;gap:6px;height:170px;padding-top:8px;border-bottom:1px solid var(--ink)}
+.wf-bars button{position:relative;height:var(--h);min-height:6px;border-radius:3px 3px 0 0;background:color-mix(in srgb,var(--ink) 16%,transparent);transition:height .35s var(--ease),background-color .2s}
+.wf-bars button.on{background:var(--accent)}
+.wf-bars button.best::before{content:"best";position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:500 10px/1 var(--f-mono);color:var(--good)}
+.wf-bars button.naive::before{content:"obvious";position:absolute;left:50%;top:-18px;transform:translateX(-50%);font:500 10px/1 var(--f-mono);color:var(--muted)}
+@media (hover:hover){.wf-bars button:hover{background:color-mix(in srgb,var(--accent) 55%,transparent)}}
+.wf-axis{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));gap:6px;font:400 11px/1 var(--f-mono);color:var(--muted);text-align:center;margin-top:6px}
+.wf-stack{display:flex;height:14px;border-radius:3px;overflow:hidden;background:var(--fill)}
+.wf-stack i{display:block;height:100%;transition:width .35s var(--ease)}
+.wf-legend{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 12px/1.4 var(--f-mono);color:var(--muted)}
+.wf-legend span::before{content:"";display:inline-block;width:9px;height:9px;border-radius:2px;margin-right:6px;background:var(--c);vertical-align:-1px}
+/* RAG test set: 50 cells */
+.rq-grid{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:5px;max-width:520px}
+.rq-grid button{aspect-ratio:1;border-radius:4px;background:color-mix(in srgb,var(--good) calc(30% + var(--s) * 50%),transparent);border:1px solid transparent;font:500 10px/1 var(--f-mono);color:color-mix(in srgb,var(--ink) 70%,transparent);transition:transform .15s var(--ease)}
+.rq-grid button.miss{background:var(--warn-fill);border-color:var(--warn);color:var(--warn)}
+.rq-grid button.nocite{box-shadow:inset 0 0 0 2px var(--accent)}
+.rq-grid button[aria-pressed="true"]{outline:2px solid var(--ink);outline-offset:2px}
+.rq-grid button.dim{opacity:.25}
+@media (hover:hover){.rq-grid button:hover{transform:scale(1.12)}}
+.rq-card{display:grid;gap:8px;padding:14px 16px;border:1px solid var(--rule);border-radius:8px;background:var(--panel);min-height:7.5em}
+.rq-card q{font-size:16px;line-height:1.5;color:var(--ink);quotes:none}
+.rq-tags{display:flex;flex-wrap:wrap;gap:6px 14px;font:400 13px/1.4 var(--f-mono);color:var(--ink-2)}
+.rq-tags .bad{color:var(--warn)}
+.rq-tags .ok{color:var(--good)}
+.rq-key{display:flex;flex-wrap:wrap;gap:6px 16px;font:400 12px/1.4 var(--f-mono);color:var(--muted)}
+.rq-key i{display:inline-block;width:11px;height:11px;border-radius:3px;margin-right:6px;vertical-align:-1px}
+/* Fusion: accuracy against compute */
+.fu-chart{position:relative;width:100%;max-width:640px}
+.fu-chart svg{display:block;width:100%;height:auto;overflow:visible}
+.fu-chart .ax{stroke:var(--rule)}
+.fu-chart .tx{fill:var(--muted);font:400 11px var(--f-mono)}
+.fu-chart .base{fill:var(--muted)}
+.fu-chart .basel{fill:var(--ink-2);font:400 11px var(--f-text)}
+.fu-chart .fline{stroke:var(--accent);stroke-width:2;fill:none;stroke-dasharray:4 4}
+.fu-chart .fpt{fill:var(--panel);stroke:var(--accent);stroke-width:2;transition:r .2s}
+.fu-chart .fpt.on{fill:var(--accent)}
+.fu-chart .fl{fill:var(--accent);font:600 12px var(--f-text)}
+/* gateway model picker */
+.lane-models{display:flex;flex-wrap:wrap;align-items:center;gap:8px 12px}
+/* small touches */
+@media (hover:hover) and (pointer:fine){
+  .case{transition:background-color .2s}
+  .case:hover{background:color-mix(in srgb,var(--fill) 55%,transparent)}
+  .row-card{transition:background-color .2s}
+  .row-card:hover{background:color-mix(in srgb,var(--fill) 55%,transparent)}
+  .btn{transition:border-color .14s,transform .14s var(--ease),box-shadow .14s}
+  .btn:hover{transform:translateY(-1px)}
+}
+.btn:active,.seg button:active,.exp-btn:active,.ex-tabs button:active{transform:scale(.97)}
+.nav a{position:relative}
+.nav a .prog{position:absolute;left:0;bottom:2px;width:28px;height:1.5px;background:var(--accent);transform-origin:0 50%;transform:scaleX(var(--p,0));opacity:0;transition:opacity .2s}
+.nav a[aria-current="true"] .prog{opacity:1}
+@media (max-width:760px){
+  .ex-read{grid-template-columns:1fr}
+  .ex-read div+div{padding-left:0;border-left:0;border-top:1px solid var(--rule)}
+  .wf-bars{height:140px;gap:3px}
+  .wf-axis{gap:3px;font-size:10px}
+  .wf-bars button.best::before,.wf-bars button.naive::before{font-size:9px}
+  .rq-grid{gap:4px}
+  .ex-row>label,.ex-row>.lbl{min-width:0;width:100%}
+}
+@media (prefers-reduced-motion:reduce){.wf-bars button,.wf-stack i{transition:none}}
 
 /* ===== Ask about me window ===== */
 /* ---------- about ---------- */
@@ -644,8 +734,8 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
 
   <main class="main" id="main">
     <div class="glance" aria-label="Results at a glance">
-      <div><span class="n">€5.59M → €3.56M</span><span class="l">expected cost of a 12-turbine wind-farm build, planned around 20 years of weather</span></div>
       <div><span class="n">47 / 50</span><span class="l">test questions where my RAG search found the right source</span></div>
+      <div><span class="n">$0.00005</span><span class="l">cost of one real AI call through my LLM gateway, traced and logged</span></div>
       <div><span class="n">est. 48%</span><span class="l">less inference energy, first-author paper at DSD 2026</span></div>
     </div>
 
@@ -665,7 +755,7 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
 </article>
       <div class="sec-h ow-h"><h2>Other work</h2><p>8 projects</p></div>
       <ul class="rows">
-<li><article class="card row-card" style="--ph:225"><div class="row"><span class="m metric">€5.59M → €3.56M</span><span class="t"><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner</a></span><button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-o0" aria-label="Details: Wind-Farm Installation Planner"><span class="sign" aria-hidden="true"></span></button><span class="p pitch">Weather-aware scheduler for a 12-turbine build: 48 campaigns × 20 years of hourly wind, priced as risk.</span></div><div class="more det" id="more-o0" hidden><p>189 → 64 days across 19/19 weather-years. Crane lifts can&#x27;t be paused, have wind limits and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p><div class="card-foot"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div><p><a class="lnk" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Code ↗</a></p></div></article></li>
+<li><article class="card row-card" style="--ph:225"><div class="row"><span class="m metric">case study</span><span class="t"><a class="card-link" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Wind-Farm Installation Planner</a></span><button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-o0" aria-label="Details: Wind-Farm Installation Planner"><span class="sign" aria-hidden="true"></span></button><span class="p pitch">Case study: a weather-aware scheduler for a 12-turbine build, priced as risk over 20 years of hourly wind.</span></div><div class="more det" id="more-o0" hidden><p>A case study: €5.59M → €3.56M expected cost and 189 → 64 days across 19/19 weather-years. Crane lifts can&#x27;t be paused, have wind limits and must fit working hours. The scheduling maths stays deterministic; the LLM handles only the human edges.</p><div class="card-foot"><span class="chip">Python</span><span class="chip">NumPy</span><span class="chip">pandas</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span><span class="chip">Optimization</span></div><p><a class="lnk" href="https://github.com/axon011/windfarm-planner" target="_blank" rel="noopener">Code ↗</a></p></div></article></li>
 <li><article class="card row-card" style="--ph:200"><div class="row"><span class="m metric">k-hop retrieval</span><span class="t"><a class="card-link" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">GraphRAG Agent</a></span><button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-o1" aria-label="Details: GraphRAG Agent"><span class="sign" aria-hidden="true"></span></button><span class="p pitch">Multi-hop answers by traversing a built knowledge graph, with citations.</span></div><div class="more det" id="more-o1" hidden><p>Entity and relation extraction builds a typed graph first, so a question that spans documents is answered by walking edges. The README lists where it falls short, starting with the fact that the multi-hop gain is not measured yet.</p><div class="card-foot"><span class="chip">GraphRAG</span><span class="chip">networkx</span><span class="chip">Pydantic</span><span class="chip">LLM extraction</span></div><p><a class="lnk" href="https://github.com/axon011/graphrag-agent" target="_blank" rel="noopener">Code ↗</a></p></div></article></li>
 <li><article class="card row-card" style="--ph:265"><div class="row"><span class="m metric">4 agents</span><span class="t"><a class="card-link" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Multi-Agent Research Pipeline</a></span><button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-o2" aria-label="Details: Multi-Agent Research Pipeline"><span class="sign" aria-hidden="true"></span></button><span class="p pitch">Planner→Researcher→Writer→Critic on LangGraph, question to sourced report.</span></div><div class="more det" id="more-o2" hidden><p>The Critic checks every cited sentence against its source snippet and triggers one bounded repair pass. A YAML-driven eval scores runs on citation validity, grounding, source diversity and routing precision over 10 topics.</p><div class="card-foot"><span class="chip">LangGraph</span><span class="chip">CrewAI</span><span class="chip">Pydantic</span><span class="chip">FastAPI</span></div><p><a class="lnk" href="https://github.com/axon011/multi-agent-pipeline" target="_blank" rel="noopener">Code ↗</a></p></div></article></li>
 <li><article class="card row-card" style="--ph:172"><div class="row"><span class="m metric">12 tests</span><span class="t"><a class="card-link" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">LLMOps Observability Dashboard</a></span><button class="exp-btn" type="button" aria-expanded="false" aria-controls="more-o3" aria-label="Details: LLMOps Observability Dashboard"><span class="sign" aria-hidden="true"></span></button><span class="p pitch">Self-hosted tracing of latency, tokens and cost per model call.</span></div><div class="more det" id="more-o3" hidden><p>Traces land in PostgreSQL rather than a third-party service, which matters when the traced calls carry customer data.</p><div class="card-foot"><span class="chip">FastAPI</span><span class="chip">React</span><span class="chip">PostgreSQL</span><span class="chip">Docker</span></div><p><a class="lnk" href="https://github.com/axon011/llmops-dashboard" target="_blank" rel="noopener">Code ↗</a></p></div></article></li>
@@ -676,23 +766,49 @@ html.ready .ab-launch{animation:ab-in 420ms var(--ease-out) 900ms backwards}
       </ul>
     </section>
 
+    <section class="explore" id="explore" aria-labelledby="ex-h">
+      <div class="sec-h"><h2 id="ex-h">Try the results</h2><p>real data, your controls</p></div>
+      <div class="ex-tabs" role="tablist" aria-label="Pick a result">
+        <button type="button" role="tab" id="ext-1" aria-controls="exp-1" aria-selected="true" tabindex="0">RAG test set</button>
+        <button type="button" role="tab" id="ext-2" aria-controls="exp-2" aria-selected="false" tabindex="-1">Fusion trade-off</button>
+      </div>
+      <div class="ex-panel" role="tabpanel" id="exp-1" aria-labelledby="ext-1">
+        <p class="ex-lede">The 50 questions in the RAG Evaluation System's test set. Pick one to see whether search found the right source, whether the answer cited a source, and how long it took. Darker green is faster.</p>
+        <div class="ex-read"><div><span class="n">47 / 50</span><span class="l">right source in the top 5</span></div><div><span class="n">48 / 50</span><span class="l">answers cite a source</span></div><div><span class="n">4.3 s</span><span class="l">median time per answer</span></div></div>
+        <div class="ex-row"><span class="lbl" id="rq-fl">Show</span><div class="seg" id="rq-filter" role="group" aria-labelledby="rq-fl"><button type="button" data-f="all" aria-pressed="true">All</button><button type="button" data-f="miss" aria-pressed="false">Missed</button><button type="button" data-f="nocite" aria-pressed="false">No citation</button><button type="button" data-f="slow" aria-pressed="false">Slowest 10</button></div></div>
+        <div class="rq-grid" id="rq-grid" aria-label="50 test questions"></div>
+        <div class="rq-key"><span><i style="background:color-mix(in srgb,var(--good) 60%,transparent)"></i>found</span><span><i style="background:var(--warn-fill);border:1px solid var(--warn)"></i>missed</span><span><i style="box-shadow:inset 0 0 0 2px var(--accent)"></i>no citation</span></div>
+        <div class="rq-card" id="rq-card" aria-live="polite"></div>
+        <p class="ex-src">eval/results/run_2026-05-01.json · llama3.2:3b on a local machine · all-MiniLM-L6-v2 + BM25, top 5 · <a href="https://github.com/axon011/rag-eval-system" target="_blank" rel="noopener">rag-eval-system ↗</a></p>
+      </div>
+      <div class="ex-panel" role="tabpanel" id="exp-2" aria-labelledby="ext-2" hidden>
+        <p class="ex-lede">One trained Vision Transformer, three settings. Pick one and compare it with published methods on the same model and dataset.</p>
+        <div class="ex-row"><span class="lbl" id="fu-sl">Setting</span><div class="seg" id="fu-seg" role="group" aria-labelledby="fu-sl"><button type="button">Full model</button><button type="button">Balanced</button><button type="button">Power-save</button></div></div>
+        <div class="ex-read"><div><span class="n" id="fu-acc">79.76%</span><span class="l">top-1 accuracy, ImageNet-1k</span></div><div><span class="n" id="fu-flops">31.8%</span><span class="l">fewer FLOPs</span></div><div><span class="n" id="fu-energy">-</span><span class="l">less inference energy</span></div></div>
+        <p class="ex-note" id="fu-note" aria-live="polite"></p>
+        <div class="fu-chart" id="fu-chart"></div>
+        <p class="ex-src">DSD 2026 paper, Table II (ImageNet-1k, DeiT-S). Other methods are their published numbers. Energy is an analytical estimate from the FLOPs profile. · <a href="https://arxiv.org/abs/2607.02612" target="_blank" rel="noopener">arXiv ↗</a></p>
+      </div>
+    </section>
+
     <section class="live demo-sec" id="live" aria-label="Replay of a real gateway call">
       <div class="live-top"><h2>Live demo: the LLM Gateway at work</h2><button type="button" id="live-replay">Replay</button></div>
-      <p class="live-lede">Each request is checked, sent to a model, priced and logged. This is one real request, replayed.</p>
+      <p class="live-lede">Each request is checked, sent to a model, priced and logged. These are real requests, replayed at their recorded timing.</p>
+      <div class="lane-models"><span class="ex-src">Model</span><div class="seg" id="model-seg"><button type="button" aria-pressed="true">gpt-oss-20b</button><button type="button" aria-pressed="false">gpt-oss-120b</button></div></div>
       <div class="lane" id="lane">
         <span class="packet" id="packet" aria-hidden="true"></span>
         <div class="st"><b>App</b><span>/v1/chat/stream</span></div>
         <div class="st"><b>Guard</b><span>size limits, model allow-list</span></div>
-        <div class="st"><b>Groq</b><span>openai/gpt-oss-20b</span></div>
+        <div class="st"><b>Groq</b><span id="lane-model">openai/gpt-oss-20b</span></div>
         <div class="st"><b>Price</b><span>tokens × list price</span></div>
         <div class="st"><b>Ledger</b><span>SQLite row</span></div>
       </div>
       <dl class="term-mini" id="live-more" hidden><dt>route</dt><dd>tutor.correct</dd><dt>user</dt><dd>Korrigiere: Ich habe gestern ins Kino gegangen.</dd></dl>
       <p class="wait" id="live-wait">waiting for the first token <b id="live-ms">0 ms</b></p>
       <div class="stream" id="live-out" aria-live="polite"></div>
-      <div class="ledger pending" id="live-ledger"><span>in <b>111</b> tok</span><span>out <b>130</b> tok</span><span>cost <b>$0.0000473</b></span></div>
+      <div class="ledger pending" id="live-ledger"><span>in <b id="lg-in">111</b> tok</span><span>out <b id="lg-out">130</b> tok</span><span>cost <b id="lg-cost">$0.0000473</b></span><span>first token <b id="lg-ttft">3,133 ms</b></span></div>
       <button class="fold-btn" type="button" aria-expanded="false" aria-controls="live-more live-note" id="live-fold"><span class="sign" aria-hidden="true"></span>About this recording</button>
-      <p class="note" id="live-note" hidden>Replay of a real call, recorded 2026-11-26 on a local run of llm-gateway against Groq's free tier, with Langfuse tracing off (trace_id null). Timings are the recorded ones: the model reasons for about 3 s, then all 45 chunks arrive within 41 ms.</p>
+      <p class="note" id="live-note" hidden>Replay of a real call, recorded 2026-11-26 on a local run of llm-gateway against Groq's free tier, with Langfuse tracing off (trace_id null). Timings are the recorded ones: both models reason for about 3 s before the first token, then the rest streams in under 150 ms. Same prompt, one call each.</p>
     </section>
 
     <section class="sec block" id="publications">
@@ -815,16 +931,20 @@ cp.addEventListener('click',function(){
 });
 
 /* ---- live demo: replay one recorded gateway call at its real timing ---- */
-var CALL={"ev": [[3132.7, "delta", "K"], [3133.2, "delta", "orr"], [3133.5, "delta", "ig"], [3134.5, "delta", "ierter"], [3134.5, "delta", " Satz"], [3134.5, "delta", ":"], [3134.5, "delta", " **"], [3134.6, "delta", "„"], [3134.6, "delta", "Ich"], [3134.6, "delta", " bin"], [3134.6, "delta", " gestern"], [3134.6, "delta", " ins"], [3134.7, "delta", " Kino"], [3134.7, "delta", " gegangen"], [3134.7, "delta", ".“"], [3134.8, "delta", "**"], [3135.4, "delta", "  \n"], [3136.5, "delta", "Fe"], [3138.6, "delta", "hler"], [3139.4, "delta", ":"], [3141.4, "delta", " Bei"], [3141.6, "delta", " Beweg"], [3142.6, "delta", "ungsver"], [3142.8, "delta", "ben"], [3144.7, "delta", " wie"], [3145.9, "delta", " „"], [3147.1, "delta", "gehen"], [3147.3, "delta", "“"], [3148.9, "delta", " muss"], [3150.0, "delta", " im"], [3151.1, "delta", " Perf"], [3152.2, "delta", "ekt"], [3152.7, "delta", " das"], [3153.3, "delta", " Hil"], [3154.5, "delta", "fs"], [3156.1, "delta", "verb"], [3157.1, "delta", " „"], [3157.6, "delta", "sein"], [3158.9, "delta", "“"], [3159.7, "delta", " statt"], [3161.1, "delta", " „"], [3161.8, "delta", "haben"], [3163.1, "delta", "“"], [3164.0, "delta", " verwendet"], [3164.7, "delta", " werden"], [3165.8, "delta", "."], [3174.0, "done", ""]], "done": {"model": "openai/gpt-oss-20b", "provider": "groq", "usage": {"input_tokens": 111, "output_tokens": 130, "cost_usd": 4.732e-05}, "trace_id": null}};
+var CALLS=[{"model": "openai/gpt-oss-20b", "ev": [[3132.7, "delta", "K"], [3133.2, "delta", "orr"], [3133.5, "delta", "ig"], [3134.5, "delta", "ierter"], [3134.5, "delta", " Satz"], [3134.5, "delta", ":"], [3134.5, "delta", " **"], [3134.6, "delta", "„"], [3134.6, "delta", "Ich"], [3134.6, "delta", " bin"], [3134.6, "delta", " gestern"], [3134.6, "delta", " ins"], [3134.7, "delta", " Kino"], [3134.7, "delta", " gegangen"], [3134.7, "delta", ".“"], [3134.8, "delta", "**"], [3135.4, "delta", "  \n"], [3136.5, "delta", "Fe"], [3138.6, "delta", "hler"], [3139.4, "delta", ":"], [3141.4, "delta", " Bei"], [3141.6, "delta", " Beweg"], [3142.6, "delta", "ungsver"], [3142.8, "delta", "ben"], [3144.7, "delta", " wie"], [3145.9, "delta", " „"], [3147.1, "delta", "gehen"], [3147.3, "delta", "“"], [3148.9, "delta", " muss"], [3150.0, "delta", " im"], [3151.1, "delta", " Perf"], [3152.2, "delta", "ekt"], [3152.7, "delta", " das"], [3153.3, "delta", " Hil"], [3154.5, "delta", "fs"], [3156.1, "delta", "verb"], [3157.1, "delta", " „"], [3157.6, "delta", "sein"], [3158.9, "delta", "“"], [3159.7, "delta", " statt"], [3161.1, "delta", " „"], [3161.8, "delta", "haben"], [3163.1, "delta", "“"], [3164.0, "delta", " verwendet"], [3164.7, "delta", " werden"], [3165.8, "delta", "."]], "done": {"model": "openai/gpt-oss-20b", "provider": "groq", "usage": {"input_tokens": 111, "output_tokens": 130, "cost_usd": 4.732e-05}, "trace_id": null}}, {"model": "openai/gpt-oss-120b", "ev": [[2857.3, "delta", "**"], [2859.3, "delta", "K"], [2861.6, "delta", "orre"], [2864.0, "delta", "ktur"], [2865.9, "delta", ":**"], [2868.5, "delta", "  \n"], [2869.8, "delta", "*"], [2871.7, "delta", "Ich"], [2874.4, "delta", " bin"], [2876.1, "delta", " gestern"], [2878.2, "delta", " ins"], [2880.5, "delta", " Kino"], [2882.3, "delta", " gegangen"], [2884.1, "delta", ".*\n\n"], [2886.3, "delta", "**"], [2888.1, "delta", "Er"], [2890.9, "delta", "klärung"], [2892.9, "delta", ":**"], [2894.5, "delta", " Bei"], [2896.7, "delta", " Ver"], [2898.9, "delta", "ben"], [2900.8, "delta", " der"], [2903.0, "delta", " Fort"], [2905.2, "delta", "beweg"], [2907.2, "delta", "ung"], [2909.3, "delta", " bildet"], [2911.3, "delta", " man"], [2913.5, "delta", " das"], [2915.5, "delta", " Perf"], [2918.3, "delta", "ekt"], [2919.6, "delta", " mit"], [2921.8, "delta", " dem"], [2923.8, "delta", " Hil"], [2926.3, "delta", "fs"], [2928.6, "delta", "verb"], [2931.2, "delta", " **"], [2932.4, "delta", "sein"], [2934.8, "delta", "**"], [2936.7, "delta", " („"], [2938.7, "delta", "bin"], [2940.6, "delta", " gegangen"], [2942.7, "delta", "“"], [2944.8, "delta", "),"], [2946.8, "delta", " nicht"], [2949.0, "delta", " mit"], [2951.0, "delta", " **"], [2954.2, "delta", "haben"], [2955.3, "delta", "**"], [2957.1, "delta", "."]], "done": {"model": "openai/gpt-oss-120b", "provider": "groq", "usage": {"input_tokens": 111, "output_tokens": 124, "cost_usd": 9.105e-05}, "trace_id": null}}], CALL=CALLS[0];
 var lane=$('#lane'), stages=$$('.st',lane), packet=$('#packet'), out=$('#live-out'), ms=$('#live-ms'), ledger=$('#live-ledger');
 var timers=[], raf=0, played=false;
 function clearT(){ timers.forEach(clearTimeout); timers=[]; cancelAnimationFrame(raf); }
 function at(t,fn){ timers.push(setTimeout(fn,t)); }
-function full(){ return CALL.ev.filter(function(e){ return e[1]==='delta'; }).map(function(e){ return e[2]; }).join('').replace(/\*\*/g,''); }
+function full(){ return CALL.ev.filter(function(e){ return e[1]==='delta'; }).map(function(e){ return e[2]; }).join('').replace(/\*+/g,''); }
 function stage(i){ stages.forEach(function(s,k){ s.classList.toggle('on',k===i); s.classList.toggle('done',k<i); });
   if(i>=0&&i<stages.length&&getComputedStyle(packet).display!=='none'){ var r=stages[i].getBoundingClientRect(), r0=lane.getBoundingClientRect(); packet.style.opacity='1'; packet.style.transform='translateX('+(r.left-r0.left+r.width/2-5)+'px)'; } }
+function fmt(n){ return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+function setCall(i){ CALL=CALLS[i]; $('#lg-in').textContent=CALL.done.usage.input_tokens; $('#lg-out').textContent=CALL.done.usage.output_tokens;
+  $('#lg-cost').textContent='$'+CALL.done.usage.cost_usd.toFixed(7); $('#lg-ttft').textContent=fmt(CALL.ev[0][0])+' ms'; $('#lane-model').textContent=CALL.model;
+  $$('#model-seg button').forEach(function(b,k){ b.setAttribute('aria-pressed',k===i?'true':'false'); }); }
 function finalState(){ clearT(); stages.forEach(function(s){ s.classList.remove('on'); s.classList.add('done'); }); packet.style.opacity='0';
-  out.textContent=full(); ms.textContent='3,133 ms'; ledger.classList.remove('pending'); }
+  out.textContent=full(); ms.textContent=fmt(CALL.ev[0][0])+' ms'; ledger.classList.remove('pending'); }
 function playLive(){
   played=true; clearT(); out.textContent=''; ledger.classList.add('pending'); ms.textContent='0 ms';
   if(reduced){ finalState(); return; }
@@ -832,12 +952,14 @@ function playLive(){
   var t0=performance.now()+700, first=CALL.ev[0][0];
   (function tick(){ var e=Math.max(0,performance.now()-t0); ms.textContent=Math.min(e,first).toFixed(0).replace(/\B(?=(\d{3})+(?!\d))/g,',')+' ms'; if(e<first) raf=requestAnimationFrame(tick); })();
   var cur=document.createElement('span'); cur.className='cur';
-  CALL.ev.forEach(function(e){ if(e[1]!=='delta') return; at(700+e[0],function(){ if(cur.parentNode) cur.remove(); out.appendChild(document.createTextNode(e[2].replace(/\*\*/g,''))); out.appendChild(cur); }); });
+  CALL.ev.forEach(function(e){ if(e[1]!=='delta') return; at(700+e[0],function(){ if(cur.parentNode) cur.remove(); out.appendChild(document.createTextNode(e[2].replace(/\*+/g,''))); out.appendChild(cur); }); });
   var end=700+CALL.ev[CALL.ev.length-1][0];
   at(end+200,function(){ cur.remove(); stage(3); }); at(end+650,function(){ stage(4); ledger.classList.remove('pending'); });
   at(end+1150,function(){ stages.forEach(function(s){ s.classList.remove('on'); s.classList.add('done'); }); packet.style.opacity='0'; });
 }
 $('#live-replay').addEventListener('click',playLive);
+$$('#model-seg button').forEach(function(b,i){ b.addEventListener('click',function(){ setCall(i); playLive(); }); });
+setCall(0);
 try{ new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting&&!played) playLive(); }); },{threshold:.4}).observe($('#live')); }catch(e){ finalState(); }
 
 /* ---- pipelines light up stage by stage as they scroll through the view ---- */
@@ -889,6 +1011,116 @@ try{ new IntersectionObserver(function(es){ es.forEach(function(e){ var on=!e.is
   $$('a',mbar).forEach(function(a){ a.tabIndex=on?0:-1; }); }); }).observe(sideLinks); }catch(e){}
 
 $('#yr').textContent=new Date().getFullYear();
+})();
+
+(function(){
+'use strict';
+var reduced=matchMedia('(prefers-reduced-motion: reduce)').matches;
+function $(s,c){ return (c||document).querySelector(s); }
+function $$(s,c){ return [].slice.call((c||document).querySelectorAll(s)); }
+function eur(v){ return '€'+(v/1e6).toFixed(2)+'M'; }
+var MONTHS=['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+/* ---- tabs ---- */
+var tabs=$$('.ex-tabs [role="tab"]');
+function selTab(i){ tabs.forEach(function(t,k){ t.setAttribute('aria-selected',k===i?'true':'false'); t.tabIndex=k===i?0:-1; document.getElementById(t.getAttribute('aria-controls')).hidden=k!==i; }); }
+tabs.forEach(function(t,i){ t.addEventListener('click',function(){ selTab(i); });
+  t.addEventListener('keydown',function(e){ var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0; if(!d) return; e.preventDefault(); var n=(i+d+tabs.length)%tabs.length; selTab(n); tabs[n].focus(); }); });
+
+/* ---- wind farm (removed from the page 2026-11-26: it was a case study; kept guarded) ---- */
+var WF=[];
+if(document.getElementById('wf-bars')){
+var wf={m:6,c:2}, bars=$('#wf-bars'), rng=$('#wf-month');
+var maxP50=Math.max.apply(null,WF.map(function(p){ return p.cost_total_p50_eur; }));
+function plan(m,c){ for(var i=0;i<WF.length;i++) if(WF[i].start_month===m&&WF[i].main_cranes===c) return WF[i]; }
+var naive=plan(11,1);
+for(var m=1;m<=12;m++){ (function(m){ var b=document.createElement('button'); b.type='button'; b.setAttribute('aria-label','Start 15 '+MONTHS[m-1]);
+  b.addEventListener('click',function(){ wf.m=m; rng.value=m; drawWF(); }); bars.appendChild(b); })(m); }
+function drawWF(){
+  var p=plan(wf.m,wf.c), row=WF.filter(function(x){ return x.main_cranes===wf.c; });
+  var best=row.reduce(function(a,b){ return b.cost_total_p50_eur<a.cost_total_p50_eur?b:a; });
+  $$('button',bars).forEach(function(b,i){ var q=row[i]; b.style.setProperty('--h',(q.cost_total_p50_eur/maxP50*100).toFixed(1)+'%');
+    b.classList.toggle('on',i+1===wf.m); b.classList.toggle('best',q===best); b.classList.toggle('naive',wf.c===1&&i===10&&q!==best);
+    b.setAttribute('aria-pressed',i+1===wf.m?'true':'false'); b.title=MONTHS[i]+': '+eur(q.cost_total_p50_eur)+', '+q.duration_p50_days+' days'; });
+  $('#wf-mv').textContent='15 '+MONTHS[wf.m-1];
+  $$('#wf-cranes button').forEach(function(b){ b.setAttribute('aria-pressed',+b.getAttribute('data-c')===wf.c?'true':'false'); });
+  $('#wf-p50').textContent=eur(p.cost_total_p50_eur); $('#wf-days').textContent=p.duration_p50_days+' days'; $('#wf-p90').textContent=eur(p.cost_total_p90_eur);
+  var d=naive.cost_total_p50_eur-p.cost_total_p50_eur, dd=naive.duration_p50_days-p.duration_p50_days;
+  $('#wf-vs').innerHTML=(p===naive?'This is the <b>obvious plan</b>: start at site access in November with one crane.':
+    (d>=0?'Saves <b>'+eur(d)+'</b>':'Costs <b>'+eur(-d)+' more</b>')+' and '+(dd>=0?'<b>'+dd+' fewer days</b>':'<b>'+(-dd)+' more days</b>')+' than the obvious plan (15 Nov, 1 crane, '+eur(naive.cost_total_p50_eur)+').')+
+    ' Finished in '+p.years_feasible+' of '+p.years_run+' weather years.';
+  var bk=p.cost_buckets_eur, tot=0, k; for(k in bk) tot+=bk[k];
+  var cols={'Cranes':'var(--accent)','Labour':'color-mix(in srgb,var(--accent) 55%,var(--ink))','Site Cost':'color-mix(in srgb,var(--ink) 45%,transparent)','Site Security':'color-mix(in srgb,var(--ink) 22%,transparent)'};
+  $('#wf-stack').innerHTML=Object.keys(bk).map(function(k){ return '<i style="width:'+(bk[k]/tot*100).toFixed(1)+'%;background:'+cols[k]+'" title="'+k+': '+eur(bk[k])+'"></i>'; }).join('');
+  $('#wf-legend').innerHTML=Object.keys(bk).map(function(k){ return '<span style="--c:'+cols[k]+'">'+k+' '+eur(bk[k])+'</span>'; }).join('');
+}
+rng.addEventListener('input',function(){ wf.m=+rng.value; drawWF(); });
+$$('#wf-cranes button').forEach(function(b){ b.addEventListener('click',function(){ wf.c=+b.getAttribute('data-c'); drawWF(); }); });
+drawWF();
+}
+
+/* ---- RAG test set: the 50 questions of the committed run ---- */
+var RQ=[["What is LangGraph and what problem does it solve?", 0, 1, 10100, 5], ["How does LangGraph handle state management?", 1, 1, 3628, 5], ["What is the difference between edges and conditional edges in LangGraph?", 1, 1, 4652, 5], ["How do you add tool calling to a LangGraph agent?", 1, 1, 7901, 5], ["What is a checkpoint in LangGraph?", 1, 1, 2768, 5], ["How does RAG retrieval work with vector databases?", 1, 1, 3639, 5], ["What is hybrid retrieval and why is it better than dense-only search?", 1, 1, 3531, 5], ["What metrics does RAGAS use to evaluate RAG systems?", 1, 0, 2086, 5], ["What is chunking and how does chunk size affect retrieval quality?", 1, 1, 4988, 5], ["How does Reciprocal Rank Fusion work?", 1, 1, 28539, 5], ["What is faithfulness in RAGAS and how is it measured?", 1, 1, 4729, 5], ["How does answer relevancy differ from faithfulness?", 1, 1, 3224, 5], ["What is context precision and why does it matter?", 1, 1, 3786, 5], ["What is context recall and how is it computed?", 1, 1, 2727, 5], ["Why use BM25 alongside dense embeddings instead of relying on dense alone?", 1, 1, 3431, 5], ["How does Qdrant differ from FAISS or Chroma?", 1, 1, 4889, 5], ["What is HNSW and why is it used in vector databases?", 1, 1, 3970, 5], ["What does cosine similarity measure between two embeddings?", 1, 1, 2928, 5], ["Why are embeddings often normalized to unit length before storage?", 1, 1, 3836, 5], ["What is sentence-transformers all-MiniLM-L6-v2 and when should you use it?", 1, 1, 5219, 5], ["What does it mean to embed a query and a document into the same vector space?", 1, 1, 3997, 5], ["What is query rewriting and why does it improve RAG?", 1, 1, 4160, 5], ["Why does pre-computing embeddings asynchronously help latency?", 1, 1, 3467, 5], ["What is semantic caching and how does it differ from a regular query cache?", 1, 1, 3876, 5], ["How do you measure p95 latency for a RAG query?", 1, 1, 3952, 5], ["What is MLflow used for in an LLM project?", 1, 1, 4382, 5], ["How would you detect a regression in RAG quality between two MLflow runs?", 1, 1, 5386, 5], ["Why instrument LLM calls with tracing?", 1, 1, 5576, 5], ["What's the role of structured outputs in agent reliability?", 0, 1, 5296, 5], ["What is the difference between fine-tuning and RAG for adding knowledge to an LLM?", 1, 0, 2854, 5], ["When does fine-tuning make more sense than RAG?", 1, 1, 5713, 5], ["What is QLoRA and why is it efficient?", 1, 1, 5813, 5], ["What does PEFT stand for and what does it enable?", 0, 1, 4598, 5], ["Why use Pydantic for LLM output validation?", 1, 1, 4918, 5], ["What is the role of the Planner agent in a multi-agent pipeline?", 1, 1, 3660, 5], ["What does the Researcher agent typically do in a research pipeline?", 1, 1, 2669, 5], ["What does the Writer agent do at the end of a pipeline?", 1, 1, 2790, 5], ["Why are role boundaries between agents important?", 1, 1, 3537, 5], ["What is a Pydantic structured output and why use it for agent steps?", 1, 1, 3489, 5], ["How does FastAPI help with serving an LLM application?", 1, 1, 4130, 5], ["Why use Server-Sent Events (SSE) instead of polling for streaming LLM output?", 1, 1, 5550, 5], ["What is the difference between p50, p95, and p99 latency?", 1, 1, 5699, 5], ["What is cold-start latency in a RAG service and how can you reduce it?", 1, 1, 7815, 5], ["Why is a singleton retriever often used in a FastAPI RAG app?", 1, 1, 4177, 5], ["How does Docker help in deploying a RAG service?", 1, 1, 4305, 5], ["What does GitHub Actions CI do for a RAG project?", 1, 1, 4483, 5], ["Why include a /health endpoint in a RAG service?", 1, 1, 4443, 5], ["What is prompt injection and how do you defend against it in RAG?", 1, 1, 5546, 5], ["Why use a per-tenant namespace in a vector database for multi-client RAG?", 1, 1, 4470, 5], ["What is a golden test set in RAG evaluation?", 1, 1, 4558, 5]], grid=$('#rq-grid'), card=$('#rq-card'), cur=-1;
+var lats=RQ.map(function(q){ return q[3]; }), lmin=Math.min.apply(null,lats), lmax=Math.max.apply(null,lats);
+var slow=RQ.map(function(q,i){ return [q[3],i]; }).sort(function(a,b){ return b[0]-a[0]; }).slice(0,10).map(function(x){ return x[1]; });
+RQ.forEach(function(q,i){ var b=document.createElement('button'); b.type='button'; b.textContent=i+1;
+  b.style.setProperty('--s',(1-(q[3]-lmin)/(lmax-lmin)).toFixed(2)); if(!q[1]) b.classList.add('miss'); if(!q[2]) b.classList.add('nocite');
+  b.setAttribute('aria-label','Question '+(i+1)+(q[1]?'':', missed'));
+  b.addEventListener('click',function(){ showQ(i); }); grid.appendChild(b); });
+function showQ(i){ cur=i; var q=RQ[i];
+  $$('button',grid).forEach(function(b,k){ b.setAttribute('aria-pressed',k===i?'true':'false'); });
+  card.innerHTML='<span class="ex-src">Question '+(i+1)+' of 50</span><q></q><div class="rq-tags"><span class="'+(q[1]?'ok':'bad')+'">'+(q[1]?'right source in the top 5':'right source missed')+'</span><span class="'+(q[2]?'ok':'bad')+'">'+(q[2]?'answer cites a source':'answer has no citation')+'</span><span>'+(q[3]/1000).toFixed(1)+' s end to end</span></div>';
+  $('q',card).textContent=q[0]; }
+$$('#rq-filter button').forEach(function(b){ b.addEventListener('click',function(){ var f=b.getAttribute('data-f');
+  $$('#rq-filter button').forEach(function(x){ x.setAttribute('aria-pressed',x===b?'true':'false'); });
+  $$('button',grid).forEach(function(c,i){ var keep=f==='all'||(f==='miss'&&!RQ[i][1])||(f==='slow'&&slow.indexOf(i)>=0)||(f==='nocite'&&!RQ[i][2]); c.classList.toggle('dim',!keep); });
+  var first=RQ.findIndex(function(q,i){ return f==='miss'?!q[1]:f==='slow'?i===slow[0]:f==='nocite'?!q[2]:i===0; }); if(first>=0) showQ(first); }); });
+showQ(RQ.findIndex(function(q){ return !q[1]; }));
+
+/* ---- Fusion: accuracy against compute saved (DSD 2026, Table II) ---- */
+var FU={"base": [["DynamicViT", 79.3, 36.8, 9, -6], ["EViT", 79.5, 35.0, -9, -6], ["ToMe", 79.4, 35.0, -9, 6], ["A-ViT", 78.6, 26.0, 9, 4]], "fusion": [{"name": "Full model", "acc": 79.85, "flops": 0.0, "energy": "0%", "note": "The unmodified DeiT-S, the reference point."}, {"name": "Balanced", "acc": 79.76, "flops": 31.8, "energy": "not reported", "note": "<b>0.09 pp</b> below the full model with <b>31.8% fewer FLOPs</b>."}, {"name": "Power-save", "acc": 79.15, "flops": 40.1, "energy": "est. 48%", "note": "Same trained model, no retraining: <b>0.70 pp</b> below the full model, an estimated <b>48% less inference energy</b>."}]}, fsel=1;
+var W=640,Hh=300,PL=44,PR=16,PT=16,PB=40, x0=0,x1=45,y0=78.4,y1=80.1;
+function X(v){ return PL+(v-x0)/(x1-x0)*(W-PL-PR); } function Y(v){ return PT+(1-(v-y0)/(y1-y0))*(Hh-PT-PB); }
+function svgEl(t,a){ var e=document.createElementNS('http://www.w3.org/2000/svg',t); for(var k in a) e.setAttribute(k,a[k]); return e; }
+var svg=svgEl('svg',{viewBox:'0 0 '+W+' '+Hh,role:'img','aria-label':'Top-1 accuracy against FLOPs saved for Fusion and published methods'});
+[0,10,20,30,40].forEach(function(v){ svg.appendChild(svgEl('line',{x1:X(v),x2:X(v),y1:PT,y2:Hh-PB,class:'ax'})); var t=svgEl('text',{x:X(v),y:Hh-PB+18,class:'tx','text-anchor':'middle'}); t.textContent=v+'%'; svg.appendChild(t); });
+[78.5,79,79.5,80].forEach(function(v){ svg.appendChild(svgEl('line',{x1:PL,x2:W-PR,y1:Y(v),y2:Y(v),class:'ax'})); var t=svgEl('text',{x:PL-8,y:Y(v)+4,class:'tx','text-anchor':'end'}); t.textContent=v.toFixed(1); svg.appendChild(t); });
+var xl=svgEl('text',{x:(PL+W-PR)/2,y:Hh-4,class:'tx','text-anchor':'middle'}); xl.textContent='FLOPs saved →'; svg.appendChild(xl);
+FU.base.forEach(function(b){ svg.appendChild(svgEl('circle',{cx:X(b[2]),cy:Y(b[1]),r:4,class:'base'}));
+  var t=svgEl('text',{x:X(b[2])+(b[3]||7),y:Y(b[1])+(b[4]||4),class:'basel','text-anchor':b[3]<0?'end':'start'}); t.textContent=b[0]; svg.appendChild(t); });
+svg.appendChild(svgEl('polyline',{points:FU.fusion.map(function(f){ return X(f.flops)+','+Y(f.acc); }).join(' '),class:'fline'}));
+var pts=FU.fusion.map(function(f,i){ var c=svgEl('circle',{cx:X(f.flops),cy:Y(f.acc),r:6,class:'fpt'}); svg.appendChild(c); return c; });
+var flab=svgEl('text',{class:'fl'}); svg.appendChild(flab);
+$('#fu-chart').appendChild(svg);
+function drawFU(){ var f=FU.fusion[fsel];
+  pts.forEach(function(p,i){ p.classList.toggle('on',i===fsel); p.setAttribute('r',i===fsel?8:6); });
+  flab.setAttribute('x',X(f.flops)+(fsel===2?-12:12)); flab.setAttribute('y',Y(f.acc)+(fsel===2?24:-12)); flab.setAttribute('text-anchor',fsel===2?'end':'start'); flab.textContent=f.name;
+  $('#fu-acc').textContent=f.acc.toFixed(2)+'%'; $('#fu-flops').textContent=f.flops.toFixed(1)+'%'; $('#fu-energy').textContent=f.energy;
+  $('#fu-note').innerHTML=f.note;
+  $$('#fu-seg button').forEach(function(b,i){ b.setAttribute('aria-pressed',i===fsel?'true':'false'); }); }
+$$('#fu-seg button').forEach(function(b,i){ b.addEventListener('click',function(){ fsel=i; drawFU(); }); });
+drawFU();
+
+/* ---- numbers count up the first time they come into view ---- */
+function countUp(el){
+  if(reduced||el._done) return; el._done=true;
+  var text=el.textContent, re=/\d+(?:[.,]\d+)?/g, parts=[], m, last=0;
+  while((m=re.exec(text))){ parts.push(text.slice(last,m.index)); parts.push({v:parseFloat(m[0].replace(',','')),d:(m[0].split('.')[1]||'').length,comma:m[0].indexOf(',')>=0}); last=m.index+m[0].length; }
+  parts.push(text.slice(last));
+  if(!parts.some(function(p){ return typeof p==='object'; })) return;
+  var t0=performance.now(), dur=900;
+  (function step(now){ var k=Math.min(1,(now-t0)/dur), e=1-Math.pow(1-k,3);
+    el.textContent=parts.map(function(p){ if(typeof p!=='object') return p; var v=(p.v*e).toFixed(p.d); return p.comma?Number(v).toLocaleString('en-GB'):v; }).join('');
+    if(k<1) requestAnimationFrame(step); else el.textContent=text; })(t0);
+}
+try{ var cio=new IntersectionObserver(function(es){ es.forEach(function(e){ if(e.isIntersecting){ countUp(e.target); cio.unobserve(e.target); } }); },{threshold:.6});
+  $$('.glance .n,.case-head .big .n,.stats .n').forEach(function(n){ if(/\d/.test(n.textContent)) cio.observe(n); }); }catch(e){}
+
+/* ---- side nav: a short line fills as you read the current section ---- */
+var links=$$('.nav a').map(function(a){ var s=document.createElement('span'); s.className='prog'; s.setAttribute('aria-hidden','true'); a.appendChild(s); return [a,document.getElementById(a.getAttribute('href').slice(1))]; });
+var tk=false;
+addEventListener('scroll',function(){ if(tk) return; tk=true; requestAnimationFrame(function(){ tk=false;
+  links.forEach(function(l){ var s=l[1]; if(!s) return; var r=s.getBoundingClientRect(), p=Math.max(0,Math.min(1,(innerHeight*.5-r.top)/r.height)); l[0].style.setProperty('--p',p.toFixed(3)); }); }); },{passive:true});
 })();
 
 </script>
@@ -984,8 +1216,8 @@ var BOT_INTENTS = [
   links:[['See Projects','#projects']], proj:['rag','gateway','tutor','wind','gagent','multi','llmops','gstudio','news','jd','resume'], rel:['featured','live_demo','rag','agents']},
  {id:'featured', title:'Featured projects', status:'site', source:'Projects · featured cards',
   ex:['best project','favourite project','most impressive project','featured project','featured projects','his strongest work','main projects'],
-  a:"Three are featured. The **RAG Evaluation System**: hybrid BM25 + dense retrieval, **0.94 hit@5** on a 50-question set (an easy corpus, its README says so). The **LLM Gateway**: a FastAPI proxy the live tutor calls, with a Langfuse trace and a cost for every LLM call. **Deutsch-Tutor**: a live German tutor app. His biggest numbers are on the **Wind-Farm Installation Planner** under Other work: **€5.59M → €3.56M** and 189 → 64 days across 19/19 weather-years.",
-  proj:['rag','gateway','tutor','wind'], rel:['projects','skills']},
+  a:"Three are featured. The **RAG Evaluation System**: hybrid BM25 + dense retrieval, **0.94 hit@5** on a 50-question set (an easy corpus, its README says so). The **LLM Gateway**: a FastAPI proxy the live tutor calls, with a Langfuse trace and a cost for every LLM call. **Deutsch-Tutor**: a live German tutor app.",
+  proj:['rag','gateway','tutor'], rel:['projects','skills']},
  {id:'windfarm', title:'Wind-Farm planner', status:'site', source:'Projects · Wind-Farm card',
   ex:['wind farm','wind-farm planner','scheduler','optimization project','turbine','offshore wind','crane scheduling'],
   a:"The **Wind-Farm Installation Planner**: a weather-aware scheduler for a 12-turbine build, 48 campaigns × 20 years of hourly wind, priced as risk. Result: **€5.59M → €3.56M** and 189 → 64 days, across 19/19 weather-years. Crane lifts can't be paused, have wind limits and must fit working hours; the scheduling maths stays deterministic, and the LLM handles only the human edges.",
